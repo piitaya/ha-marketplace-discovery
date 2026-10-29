@@ -223,14 +223,20 @@ export class MarketplaceDiscoveryPanel extends LitElement {
             : nothing
         }
         <h1 class="main-title">${localize("panel.title")}</h1>
-        <ha-button appearance="accent" class="search-button" @click=${this._search}>
-          ${
-            this._loading
-              ? html`<ha-spinner slot="start" size="tiny" aria-hidden="true"></ha-spinner>`
-              : html`<ha-svg-icon slot="start" .path=${mdiRadar}></ha-svg-icon>`
-          }
-          ${localize(this._loading ? "panel.scanning" : "panel.scan")}
-        </ha-button>
+        ${
+          this._response || this._error !== undefined
+            ? html`
+                <ha-button appearance="accent" class="search-button" @click=${this._search}>
+                  ${
+                    this._loading
+                      ? html`<ha-spinner slot="start" size="tiny" aria-hidden="true"></ha-spinner>`
+                      : html`<ha-svg-icon slot="start" .path=${mdiRadar}></ha-svg-icon>`
+                  }
+                  ${localize(this._loading ? "panel.scanning" : "panel.scan")}
+                </ha-button>
+              `
+            : nothing
+        }
       </div>
       <div class="content">${this._renderBody()}</div>
     `;
@@ -263,6 +269,10 @@ export class MarketplaceDiscoveryPanel extends LitElement {
             <strong>${localize("start.title")}</strong>
             <span>${localize("start.text")}</span>
           </div>
+          <ha-button appearance="accent" class="search-button" @click=${this._search}>
+            <ha-svg-icon slot="start" .path=${mdiRadar}></ha-svg-icon>
+            ${localize("panel.scan")}
+          </ha-button>
         </div>
       `;
     }
