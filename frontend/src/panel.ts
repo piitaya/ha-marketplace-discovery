@@ -34,6 +34,18 @@ interface ErrorLike {
   message?: string;
 }
 
+interface SavedState {
+  response: MatchesResponse;
+  ignored: Set<string>;
+  filter: string;
+  selectedSources: Set<Source>;
+  showInstalled: boolean;
+  showIgnored: boolean;
+  openCards: Map<string, boolean>;
+}
+
+let savedState: SavedState | undefined;
+
 const errorMessage = (err: unknown, localize: LocalizeFunc): string => {
   const { code, message } = (typeof err === "object" && err !== null ? err : {}) as ErrorLike;
   if (code === "not_loaded") {
@@ -87,6 +99,15 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
+    if (!this._response && savedState) {
+      this._response = savedState.response;
+      this._ignored = savedState.ignored;
+      this._filter = savedState.filter;
+      this._selectedSources = savedState.selectedSources;
+      this._showInstalled = savedState.showInstalled;
+      this._showIgnored = savedState.showIgnored;
+      this._openCards = savedState.openCards;
+    }
     this._tokenInterval = setInterval(() => {
       if (this.hass) {
         this._fetchBrandsToken();
@@ -115,6 +136,20 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       oldHass.themes?.darkMode !== this.hass.themes?.darkMode ||
       languageOf(oldHass) !== languageOf(this.hass)
     );
+  }
+
+  protected updated(): void {
+    savedState = this._response
+      ? {
+          response: this._response,
+          ignored: this._ignored,
+          filter: this._filter,
+          selectedSources: this._selectedSources,
+          showInstalled: this._showInstalled,
+          showIgnored: this._showIgnored,
+          openCards: this._openCards,
+        }
+      : undefined;
   }
 
   protected willUpdate(changedProps: PropertyValues<this>): void {
