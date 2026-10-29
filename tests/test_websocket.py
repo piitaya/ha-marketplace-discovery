@@ -157,6 +157,7 @@ async def test_matches(
         "description": "Control Acme lights locally.",
         "installed": False,
         "ignored": False,
+        "marketplace": True,
         "source": "bluetooth",
         "matchers": [{"manufacturer_id": 1234, "manufacturer_data_start": [1, 2]}],
         "device": {"name": "Acme BLE", "ip": None, "mac": "AA:BB:CC:DD:EE:01"},
@@ -591,3 +592,25 @@ async def test_ignore_invalid_request(
     )
     assert not msg["success"]
     assert msg["error"]["code"] == "invalid_format"
+
+
+async def test_matches_marks_custom_repositories(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+    collectors: dict[str, MagicMock],
+) -> None:
+    dataset_payload["integrations"]["200"]["marketplace"] = False
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    entry = MockConfigEntry(domain=DOMAIN)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+
+    msg = await send(hass_ws_client, hass)
+    assert msg["result"]["dataset"]["integrations"] == 2
+    assert msg["result"]["dataset"]["custom_integrations"] == 1
+    marketplace = {
+        r["repository_id"]: r["marketplace"] for r in msg["result"]["results"]
+    }
+    assert marketplace == {"100": True, "200": False, "300": True}

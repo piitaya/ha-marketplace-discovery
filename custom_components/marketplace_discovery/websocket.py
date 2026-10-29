@@ -193,6 +193,7 @@ async def async_build_results(
                         "description": _optional(integration.get("description"), str),
                         "installed": integration.get("domain") in installed_domains,
                         "ignored": match.repository_id in ignored,
+                        "marketplace": integration.get("marketplace") is not False,
                         "source": source,
                         "matchers": [],
                         "device": device(info),

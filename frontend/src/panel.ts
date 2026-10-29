@@ -2,6 +2,7 @@ import {
   mdiAlertCircleOutline,
   mdiClose,
   mdiFormatListChecks,
+  mdiGithub,
   mdiInformationOutline,
   mdiMagnify,
   mdiMenu,
@@ -41,6 +42,7 @@ interface SavedState {
   selectedSources: Set<Source>;
   showInstalled: boolean;
   showIgnored: boolean;
+  showCustom: boolean;
   openCards: Map<string, boolean>;
 }
 
@@ -98,6 +100,8 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   @state() private _showIgnored = false;
 
+  @state() private _showCustom = true;
+
   @state() private _selectMode = false;
 
   @state() private _selected = new Set<string>();
@@ -133,6 +137,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       this._selectedSources = savedState.selectedSources;
       this._showInstalled = savedState.showInstalled;
       this._showIgnored = savedState.showIgnored;
+      this._showCustom = savedState.showCustom;
       this._openCards = savedState.openCards;
       this._restoreScroll = true;
     }
@@ -194,6 +199,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
           selectedSources: this._selectedSources,
           showInstalled: this._showInstalled,
           showIgnored: this._showIgnored,
+          showCustom: this._showCustom,
           openCards: this._openCards,
         }
       : undefined;
@@ -271,6 +277,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       sources: this._selectedSources,
       showInstalled: this._showInstalled,
       showIgnored: this._showIgnored,
+      showCustom: this._showCustom,
       ignored: this._ignored,
     });
     const hasResults = response.results.length > 0;
@@ -309,19 +316,30 @@ export class MarketplaceDiscoveryPanel extends LitElement {
     const { localize, formatDate } = this._localizer;
     const dataset = response.dataset!;
     const count = dataset.integrations;
+    const customCount = dataset.custom_integrations ?? 0;
+    const custom = localize("summary.custom", { count: customCount });
     const title = response.results.length
       ? `${localize("summary.integrations", { count: view.availableCount })} ${localize("summary.devices", {
           count: view.deviceCount,
         })}`
       : localize("summary.none");
     if (this.narrow) {
-      return html`<p class="summary"><strong>${title}</strong><br />${localize("summary.compared", { count })}</p>`;
+      const compared = customCount ? localize("summary.compared_custom", { count, custom }) : localize("summary.compared", { count });
+      return html`<p class="summary"><strong>${title}</strong><br />${compared}</p>`;
     }
     const date = formatDate(dataset.generated_at);
     return html`
       <p class="summary">
         <strong>${title}</strong> ${localize("summary.on_network")}
-        ${date ? localize("summary.compared_date", { count, date }) : localize("summary.compared_end", { count })}
+        ${
+          customCount
+            ? date
+              ? localize("summary.compared_custom_date", { count, custom, date })
+              : localize("summary.compared_custom_end", { count, custom })
+            : date
+              ? localize("summary.compared_date", { count, date })
+              : localize("summary.compared_end", { count })
+        }
       </p>
     `;
   }
@@ -403,6 +421,15 @@ export class MarketplaceDiscoveryPanel extends LitElement {
         <span>${localize("toolbar.ignored")}</span>
         <span class="count">${view.ignoredCount}</span>
       </button>
+      ${
+        view.customCount
+          ? html`<button class="chip" type="button" aria-pressed=${this._showCustom ? "true" : "false"} @click=${this._toggleCustom}>
+              <ha-svg-icon .path=${mdiGithub}></ha-svg-icon>
+              <span>${localize("toolbar.custom_repositories")}</span>
+              <span class="count">${view.customCount}</span>
+            </button>`
+          : nothing
+      }
     `;
   }
 
@@ -468,7 +495,8 @@ export class MarketplaceDiscoveryPanel extends LitElement {
     const { localize } = this._localizer;
     const installed = view.integrations.filter((group) => group.installed);
     const ignored = view.integrations.filter((group) => group.ignored && !group.installed);
-    const available = view.integrations.filter((group) => !group.installed && !group.ignored);
+    const available = view.integrations.filter((group) => !group.installed && !group.ignored && group.marketplace);
+    const custom = view.integrations.filter((group) => !group.installed && !group.ignored && !group.marketplace);
     const sections = (
       [
         ["section.installed", installed],
@@ -483,11 +511,20 @@ export class MarketplaceDiscoveryPanel extends LitElement {
         `,
       )}
       ${
-        available.length && sections.length
+        available.length && (sections.length || custom.length)
           ? html`<h2 class="section-title">${localize("section.available")} <span class="count">${available.length}</span></h2>`
           : nothing
       }
       ${this._renderCardList(available)}
+      ${
+        custom.length
+          ? html`
+              <h2 class="section-title">${localize("section.custom_repositories")} <span class="count">${custom.length}</span></h2>
+              <p class="section-description">${localize("section.custom_repositories_description")}</p>
+              ${this._renderCardList(custom)}
+            `
+          : nothing
+      }
     `;
   }
 
@@ -701,6 +738,10 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   private _toggleIgnored(): void {
     this._showIgnored = !this._showIgnored;
+  }
+
+  private _toggleCustom(): void {
+    this._showCustom = !this._showCustom;
   }
 
   static styles = [
@@ -988,6 +1029,11 @@ export class MarketplaceDiscoveryPanel extends LitElement {
         margin: var(--ha-space-2, 8px) 0 0;
         font-size: var(--ha-font-size-m, 14px);
         font-weight: var(--ha-font-weight-medium, 500);
+        color: var(--secondary-text-color, #5e5e5e);
+      }
+      .section-description {
+        margin: calc(-1 * var(--ha-space-2, 8px)) 0 0;
+        font-size: var(--ha-font-size-s, 12px);
         color: var(--secondary-text-color, #5e5e5e);
       }
       .chip:focus-visible {

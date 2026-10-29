@@ -8,5 +8,17 @@
     "abort": {
       "single_instance_allowed": "Déjà configuré. Une seule configuration possible."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "custom_repositories": "Inclure les dépôts personnalisés (expérimental)"
+        },
+        "data_description": {
+          "custom_repositories": "Compare aussi avec les intégrations trouvées sur GitHub qui ne sont pas dans le Marketplace. Personne ne les a vérifiées et une intégration a un accès complet à Home Assistant : vérifiez le dépôt avant de l'installer avec « Ajouter grâce à un lien » dans le Marketplace."
+        }
+      }
+    }
   }
 }

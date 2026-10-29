@@ -6,9 +6,12 @@ import aiohttp
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClientMocker
+from yarl import URL
 
 from custom_components.marketplace_discovery import sources
 from custom_components.marketplace_discovery.const import (
+    CONF_CUSTOM_REPOSITORIES,
+    DATASET_CUSTOM_URL,
     DATASET_URL,
     DOMAIN,
     IGNORED_STORAGE_KEY,
@@ -195,3 +198,39 @@ async def test_remove_entry_deletes_storage(
     await hass.async_block_till_done()
     assert STORAGE_KEY not in hass_storage
     assert IGNORED_STORAGE_KEY not in hass_storage
+
+
+async def test_setup_with_custom_repositories(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    entry = MockConfigEntry(domain=DOMAIN, options={CONF_CUSTOM_REPOSITORIES: True})
+    entry.add_to_hass(hass)
+    aioclient_mock.get(DATASET_CUSTOM_URL, json=dataset_payload)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    assert [call[1] for call in aioclient_mock.mock_calls] == [URL(DATASET_CUSTOM_URL)]
+    assert entry.runtime_data.dataset.url == DATASET_CUSTOM_URL
+
+
+async def test_changing_options_reloads_with_other_dataset(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+    config_entry: MockConfigEntry,
+) -> None:
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    aioclient_mock.get(DATASET_CUSTOM_URL, json=dataset_payload)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+    await hass.config_entries.options.async_configure(
+        result["flow_id"], {CONF_CUSTOM_REPOSITORIES: True}
+    )
+    await hass.async_block_till_done()
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert config_entry.runtime_data.dataset.url == DATASET_CUSTOM_URL

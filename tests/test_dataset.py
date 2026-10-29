@@ -11,6 +11,7 @@ from pytest_homeassistant_custom_component.common import async_fire_time_changed
 from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClientMocker
 
 from custom_components.marketplace_discovery.const import (
+    DATASET_CUSTOM_URL,
     DATASET_URL,
     STORAGE_KEY,
     UPDATE_INTERVAL,
@@ -60,6 +61,7 @@ async def test_fetch_and_cache(
         "generated_at": "2026-10-29T03:00:00+00:00",
         "fetched_at": dataset.fetched_at.isoformat(),
         "integrations": 3,
+        "custom_integrations": 0,
     }
     assert hass_storage[STORAGE_KEY]["data"]["data"] == dataset_payload
     dataset.async_shutdown()
@@ -304,3 +306,64 @@ async def test_refresh_every_interval(
     async_fire_time_changed(hass)
     await hass.async_block_till_done()
     assert aioclient_mock.call_count == 0
+
+
+async def test_custom_url(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    aioclient_mock.get(DATASET_CUSTOM_URL, json=dataset_payload)
+    dataset = Dataset(hass, DATASET_CUSTOM_URL)
+    await dataset.async_setup()
+
+    assert aioclient_mock.call_count == 1
+    assert dataset.data == dataset_payload
+    assert hass_storage[STORAGE_KEY]["data"]["url"] == DATASET_CUSTOM_URL
+    dataset.async_shutdown()
+
+
+async def test_cache_from_other_url_is_ignored(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    store_dataset(hass_storage, dataset_payload, timedelta(hours=1), etag='"abc"')
+    aioclient_mock.get(DATASET_CUSTOM_URL, exc=aiohttp.ClientError())
+    dataset = Dataset(hass, DATASET_CUSTOM_URL)
+    await dataset.async_setup()
+
+    assert dataset.data is None
+    assert aioclient_mock.mock_calls[0][3] == {}
+    dataset.async_shutdown()
+
+
+async def test_meta_counts_custom_repositories(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    dataset_payload["integrations"]["200"]["marketplace"] = False
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = await setup_dataset(hass)
+
+    assert dataset.meta["integrations"] == 2
+    assert dataset.meta["custom_integrations"] == 1
+    dataset.async_shutdown()
+
+
+async def test_shut_down_dataset_does_not_save(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = Dataset(hass)
+    dataset.async_shutdown()
+
+    assert not await dataset.async_update()
+    assert STORAGE_KEY not in hass_storage
+    assert dataset.data is None

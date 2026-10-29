@@ -33,6 +33,19 @@ const en = {
     one: "Compared with {count} Marketplace integration.",
     other: "Compared with {count} Marketplace integrations.",
   },
+  "summary.custom": { one: "{count} custom repository", other: "{count} custom repositories" },
+  "summary.compared_custom": {
+    one: "Compared with {count} Marketplace integration and {custom}",
+    other: "Compared with {count} Marketplace integrations and {custom}",
+  },
+  "summary.compared_custom_date": {
+    one: "Compared with {count} Marketplace integration and {custom}, list from {date}.",
+    other: "Compared with {count} Marketplace integrations and {custom}, list from {date}.",
+  },
+  "summary.compared_custom_end": {
+    one: "Compared with {count} Marketplace integration and {custom}.",
+    other: "Compared with {count} Marketplace integrations and {custom}.",
+  },
   "sources.skipped_title": "Some sources were not scanned",
   "sources.skipped_text": {
     one: "{sources} is not set up in Home Assistant.",
@@ -44,6 +57,7 @@ const en = {
   "toolbar.filters": "Filters",
   "toolbar.installed": "Installed",
   "toolbar.ignored": "Ignored",
+  "toolbar.custom_repositories": "Custom repositories",
   "selection.label": "Selection",
   "selection.count": { one: "{count} integration selected", other: "{count} integrations selected" },
   "selection.select_all": "Select all",
@@ -52,8 +66,8 @@ const en = {
   "card.select": "Select {name}",
   "card.installed": "Installed",
   "card.ignored": "Ignored",
+  "card.custom_repository": "Custom repository",
   "card.devices": { one: "{count} device", other: "{count} devices" },
-  "card.more": { one: "{list} and {count} more", other: "{list} and {count} more" },
   "card.stars": { one: "star", other: "stars" },
   "card.updated": "Updated {time}",
   "card.show_all": { one: "Show {count} device", other: "Show all {count} devices" },
@@ -62,10 +76,13 @@ const en = {
   "card.ignore": "Ignore",
   "card.stop_ignoring": "Stop ignoring",
   "card.open": "Open in Marketplace",
+  "card.open_github": "Open on GitHub",
   "card.unknown_device": "Unknown device",
   "section.installed": "Installed",
   "section.ignored": "Ignored",
   "section.available": "Available",
+  "section.custom_repositories": "Custom repositories",
+  "section.custom_repositories_description": "Found on GitHub, not in the Marketplace and not reviewed. To install one, open it on GitHub, copy its link and use Add from link in the Marketplace.",
 } satisfies Record<string, Message>;
 
 export type LocalizeKey = keyof typeof en;
@@ -107,6 +124,19 @@ const fr: Dictionary = {
     one: "Comparé à {count} intégration du Marketplace.",
     other: "Comparé à {count} intégrations du Marketplace.",
   },
+  "summary.custom": { one: "{count} dépôt personnalisé", other: "{count} dépôts personnalisés" },
+  "summary.compared_custom": {
+    one: "Comparé à {count} intégration du Marketplace et {custom}",
+    other: "Comparé à {count} intégrations du Marketplace et {custom}",
+  },
+  "summary.compared_custom_date": {
+    one: "Comparé à {count} intégration du Marketplace et {custom}, liste du {date}.",
+    other: "Comparé à {count} intégrations du Marketplace et {custom}, liste du {date}.",
+  },
+  "summary.compared_custom_end": {
+    one: "Comparé à {count} intégration du Marketplace et {custom}.",
+    other: "Comparé à {count} intégrations du Marketplace et {custom}.",
+  },
   "sources.skipped_title": "Certaines sources n'ont pas été scannées",
   "sources.skipped_text": {
     one: "{sources} n'est pas configuré dans Home Assistant.",
@@ -118,6 +148,7 @@ const fr: Dictionary = {
   "toolbar.filters": "Filtres",
   "toolbar.installed": "Installées",
   "toolbar.ignored": "Ignorées",
+  "toolbar.custom_repositories": "Dépôts personnalisés",
   "selection.label": "Sélection",
   "selection.count": { one: "{count} intégration sélectionnée", other: "{count} intégrations sélectionnées" },
   "selection.select_all": "Tout sélectionner",
@@ -126,8 +157,8 @@ const fr: Dictionary = {
   "card.select": "Sélectionner {name}",
   "card.installed": "Installée",
   "card.ignored": "Ignorée",
+  "card.custom_repository": "Dépôt personnalisé",
   "card.devices": { one: "{count} appareil", other: "{count} appareils" },
-  "card.more": { one: "{list} et {count} autre", other: "{list} et {count} autres" },
   "card.stars": { one: "étoile", other: "étoiles" },
   "card.updated": "Mis à jour {time}",
   "card.show_all": { one: "Afficher {count} appareil", other: "Afficher les {count} appareils" },
@@ -136,10 +167,13 @@ const fr: Dictionary = {
   "card.ignore": "Ignorer",
   "card.stop_ignoring": "Ne plus ignorer",
   "card.open": "Ouvrir dans le Marketplace",
+  "card.open_github": "Ouvrir sur GitHub",
   "card.unknown_device": "Appareil inconnu",
   "section.installed": "Installées",
   "section.ignored": "Ignorées",
   "section.available": "Disponibles",
+  "section.custom_repositories": "Dépôts personnalisés",
+  "section.custom_repositories_description": "Trouvés sur GitHub, absents du Marketplace et non vérifiés. Pour en installer un, ouvrez-le sur GitHub, copiez son lien et utilisez « Ajouter grâce à un lien » dans le Marketplace.",
 };
 
 export const DICTIONARIES = { en, fr } as const;

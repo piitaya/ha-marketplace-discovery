@@ -63,7 +63,8 @@ define(
         :host([disabled]) :is(button,a){cursor:default;background:var(--ha-color-fill-disabled-normal-resting,#f3f3f3);color:var(--ha-color-on-disabled-normal,#b1b1b1);border-color:transparent}
         :host([disabled][appearance=plain]) :is(button,a){background:none}
         ::slotted([slot=start]){margin-inline-end:4px}
-      </style><button part="base"><slot name="start"></slot><slot></slot></button>`;
+        ::slotted([slot=end]){margin-inline-start:4px;--mdc-icon-size:18px}
+      </style><button part="base"><slot name="start"></slot><slot></slot><slot name="end"></slot></button>`;
       this._button = this.shadowRoot.querySelector("button");
       const start = this.shadowRoot.querySelector("slot[name=start]");
       start.addEventListener("slotchange", () =>
@@ -75,6 +76,11 @@ define(
       if (href && this._button.tagName === "BUTTON") {
         const link = document.createElement("a");
         link.href = href;
+        for (const name of ["target", "rel"]) {
+          if (this.hasAttribute(name)) {
+            link.setAttribute(name, this.getAttribute(name));
+          }
+        }
         link.setAttribute("part", "base");
         link.className = this._button.className;
         link.append(...this._button.childNodes);

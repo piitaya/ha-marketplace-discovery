@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildView, countDevices, devicePreview, groupByDevice, groupByIntegration, sourcesOf, type ViewOptions } from "../src/group.ts";
+import { buildView, countDevices, groupByDevice, groupByIntegration, sourcesOf, type ViewOptions } from "../src/group.ts";
 import type { MatchDevice, MatchResult, Matcher, Source } from "../src/types.ts";
 
 const make = (
@@ -40,6 +40,7 @@ const options = (overrides: Partial<ViewOptions> = {}): ViewOptions => ({
   sources: new Set(),
   showInstalled: false,
   showIgnored: false,
+  showCustom: true,
   ignored: new Set(),
   ...overrides,
 });
@@ -186,21 +187,31 @@ test("keeps repository metadata on the group", () => {
   assert.equal(groupByIntegration([wiim[0]])[0].stars, null);
 });
 
-test("previews unique devices by name with counts", () => {
-  assert.deepEqual(devicePreview(lametric), [{ name: "LaMetric TIME", count: 1 }]);
-  const plugs = [
-    make("m", "dhcp", { name: "Plug", ip: "10.0.0.1" }),
-    make("m", "dhcp", { name: "Plug", ip: "10.0.0.2" }),
-    make("m", "dhcp", { name: "Door", ip: "10.0.0.3" }),
-    make("m", "dhcp", {}),
-  ];
-  assert.deepEqual(devicePreview(plugs), [
-    { name: "Plug", count: 2 },
-    { name: "Door", count: 1 },
-    { name: null, count: 1 },
-  ]);
+test("marks results without the marketplace field as Marketplace integrations", () => {
+  const custom = { ...make("custom", "dhcp", { name: "Plug", ip: "10.0.0.9" }), marketplace: false };
+  const groups = groupByIntegration([lametric[0], custom]);
   assert.deepEqual(
-    devicePreview(wiim).map((entry) => entry.name),
-    ["WiiM Pro", "Samsung TV", "Sonos"],
+    groups.map((group) => [group.repository_id, group.marketplace]),
+    [
+      ["lametric", true],
+      ["custom", false],
+    ],
+  );
+});
+
+test("hides custom repositories when they are turned off", () => {
+  const custom = { ...make("custom", "dhcp", { name: "Plug", ip: "10.0.0.9" }), marketplace: false };
+  const shown = buildView([...lametric, custom], options());
+  assert.equal(shown.customCount, 1);
+  assert.deepEqual(
+    shown.integrations.map((group) => group.repository_id),
+    ["custom", "lametric"].sort((a, b) => `Name ${a}`.localeCompare(`Name ${b}`)),
+  );
+
+  const hidden = buildView([...lametric, custom], options({ showCustom: false }));
+  assert.equal(hidden.customCount, 1);
+  assert.deepEqual(
+    hidden.integrations.map((group) => group.repository_id),
+    ["lametric"],
   );
 });

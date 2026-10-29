@@ -85,3 +85,95 @@ def test_build_integration_without_matchers(builder: ModuleType) -> None:
     entries = builder.catalog_entries({"123": CATALOG_ITEM}, dropped)
     manifest = {"domain": "bermuda", "name": "Bermuda", "bluetooth": [{"bad": 1}]}
     assert builder.build_integration(entries["123"], manifest, dropped) is None
+
+
+def test_custom_integrations(builder: ModuleType) -> None:
+    data = {
+        "repositories": {
+            "1": {
+                "full_name": "acme/acme-ble",
+                "ref": "abc123",
+                "stars": 4,
+                "last_updated": "2026-10-01T00:00:00Z",
+                "description": " Acme BLE ",
+                "manifest": {
+                    "domain": "acme_ble",
+                    "name": "Acme BLE",
+                    "bluetooth": [{"local_name": "Acme*"}],
+                },
+            },
+            "2": {
+                "full_name": "agittins/bermuda",
+                "manifest": {
+                    "domain": "bermuda",
+                    "bluetooth": [{"manufacturer_id": 76}],
+                },
+            },
+            "3": {"full_name": "bad name", "manifest": {"domain": "x"}},
+            "5": {
+                "full_name": "other/bermuda-fork",
+                "manifest": {
+                    "domain": "bermuda",
+                    "bluetooth": [{"manufacturer_id": 76}],
+                },
+            },
+            "4": {
+                "full_name": "acme/no-matchers",
+                "manifest": {"domain": "nothing", "bluetooth": [{"bad": 1}]},
+            },
+        }
+    }
+    dropped: Counter[str] = Counter()
+    catalog = builder.catalog_entries({"2": CATALOG_ITEM}, Counter())
+    integrations = builder.custom_integrations(data, catalog, dropped)
+    assert integrations == {
+        "1": {
+            "full_name": "acme/acme-ble",
+            "domain": "acme_ble",
+            "name": "Acme BLE",
+            "ref": "abc123",
+            "stars": 4,
+            "last_updated": "2026-10-01T00:00:00Z",
+            "description": "Acme BLE",
+            "bluetooth": [{"local_name": "Acme*"}],
+            "marketplace": False,
+        }
+    }
+    assert dropped == {
+        "repository_invalid": 1,
+        "marketplace_domain": 1,
+        "bluetooth_invalid": 1,
+    }
+
+
+def test_custom_integrations_requires_repositories(builder: ModuleType) -> None:
+    with pytest.raises(SystemExit):
+        builder.custom_integrations({}, {}, Counter())
+
+
+def test_custom_integrations_keeps_one_repo_per_domain(builder: ModuleType) -> None:
+    def repo(name: str, stars: int, updated: str) -> dict[str, Any]:
+        return {
+            "full_name": f"{name}/govee",
+            "stars": stars,
+            "last_updated": updated,
+            "manifest": {
+                "domain": "govee_ble",
+                "bluetooth": [{"local_name": "Govee*"}],
+            },
+        }
+
+    data = {
+        "repositories": {
+            "10": repo("small", 1, "2026-10-01T00:00:00Z"),
+            "11": repo("popular", 136, "2025-01-01T00:00:00Z"),
+            "12": repo("recent", 1, "2026-10-20T00:00:00Z"),
+        }
+    }
+    dropped: Counter[str] = Counter()
+    integrations = builder.custom_integrations(data, {}, dropped)
+    assert list(integrations) == ["11"]
+    assert dropped == {"duplicate_domain": 2}
+
+    data["repositories"]["11"]["stars"] = 1
+    assert list(builder.custom_integrations(data, {}, Counter())) == ["12"]

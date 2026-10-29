@@ -1,4 +1,4 @@
-import { describeDevice, matchesFilter, SOURCES } from "./format.ts";
+import { matchesFilter, SOURCES } from "./format.ts";
 import type { MatchDevice, MatchResult, Matcher, Source } from "./types.ts";
 
 export interface IntegrationGroup {
@@ -8,6 +8,7 @@ export interface IntegrationGroup {
   domain: string;
   installed: boolean;
   ignored: boolean;
+  marketplace: boolean;
   stars: number | null;
   last_updated: string | null;
   description: string | null;
@@ -26,16 +27,12 @@ export interface DeviceEntry {
   rules: Rule[];
 }
 
-export interface PreviewEntry {
-  name: string | null;
-  count: number;
-}
-
 export interface ViewOptions {
   filter: string;
   sources: ReadonlySet<Source>;
   showInstalled: boolean;
   showIgnored: boolean;
+  showCustom: boolean;
   ignored: ReadonlySet<string>;
 }
 
@@ -44,6 +41,7 @@ export interface DiscoveryView {
   sourceCounts: Record<Source, number>;
   installedCount: number;
   ignoredCount: number;
+  customCount: number;
   availableCount: number;
   deviceCount: number;
 }
@@ -63,6 +61,7 @@ export const groupByIntegration = (results: readonly MatchResult[]): Integration
       domain: result.domain,
       installed: result.installed,
       ignored: result.ignored ?? false,
+      marketplace: result.marketplace ?? true,
       stars: result.stars ?? null,
       last_updated: result.last_updated ?? null,
       description: result.description ?? null,
@@ -110,20 +109,6 @@ export const groupByDevice = (results: readonly MatchResult[]): DeviceEntry[] =>
 
 export const countDevices = (results: readonly MatchResult[]): number => groupByDevice(results).length;
 
-export const devicePreview = (results: readonly MatchResult[]): PreviewEntry[] => {
-  const entries = new Map<string | null, PreviewEntry>();
-  for (const { result } of groupByDevice(results)) {
-    const { name } = describeDevice(result);
-    const entry = entries.get(name);
-    if (entry) {
-      entry.count += 1;
-    } else {
-      entries.set(name, { name, count: 1 });
-    }
-  }
-  return [...entries.values()];
-};
-
 export const sourcesOf = (results: readonly MatchResult[]): Source[] =>
   SOURCES.filter((source) => results.some((result) => result.source === source));
 
@@ -137,7 +122,12 @@ export const buildView = (results: readonly MatchResult[], options: ViewOptions)
     .map((group) => ({ ...group, ignored: options.ignored.has(group.repository_id) }))
     .sort(compareGroups);
   const visible = all
-    .filter((group) => (options.showInstalled || !group.installed) && (options.showIgnored || !group.ignored))
+    .filter(
+      (group) =>
+        (options.showInstalled || !group.installed) &&
+        (options.showIgnored || !group.ignored) &&
+        (options.showCustom || group.marketplace),
+    )
     .map((group) => ({ ...group, results: group.results.filter((result) => matchesFilter(result, options.filter)) }))
     .filter((group) => group.results.length);
 
@@ -157,6 +147,7 @@ export const buildView = (results: readonly MatchResult[], options: ViewOptions)
     sourceCounts,
     installedCount: all.filter((group) => group.installed).length,
     ignoredCount: options.ignored.size,
+    customCount: all.filter((group) => !group.marketplace).length,
     availableCount: counted.filter((group) => !group.installed).length,
     deviceCount: countDevices(counted.flatMap((group) => group.results)),
   };

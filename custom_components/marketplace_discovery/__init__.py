@@ -6,7 +6,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 
 from . import panel, websocket
-from .const import DOMAIN
+from .const import CONF_CUSTOM_REPOSITORIES, DATASET_CUSTOM_URL, DATASET_URL, DOMAIN
 from .dataset import Dataset, async_remove_cache
 from .ignored import IgnoredRepositories, async_remove_ignored
 from .sources import ZeroconfBrowser
@@ -35,7 +35,12 @@ async def async_setup_entry(
     ignored = IgnoredRepositories(hass)
     await ignored.async_load()
 
-    dataset = Dataset(hass)
+    url = (
+        DATASET_CUSTOM_URL
+        if entry.options.get(CONF_CUSTOM_REPOSITORIES)
+        else DATASET_URL
+    )
+    dataset = Dataset(hass, url)
     await dataset.async_setup()
     entry.async_on_unload(dataset.async_shutdown)
 

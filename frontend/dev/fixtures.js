@@ -24,13 +24,14 @@ const APPLE = [
   ["7F:28:BC:A0:3D:56", -92],
 ];
 
-const integration = (repository_id, full_name, domain, name, stars, last_updated, description, installed = false) => ({
+const integration = (repository_id, full_name, domain, name, stars, last_updated, description, installed = false, marketplace = true) => ({
   repository_id,
   full_name,
   domain,
   name,
   installed,
   ignored: false,
+  marketplace,
   stars,
   last_updated,
   description,
@@ -164,6 +165,28 @@ const bambu = integration(
   "A Home Assistant Integration for Bambu Lab Printers",
   true,
 );
+const mammotion = integration(
+  "679404307",
+  "mikey0000/Mammotion-HA",
+  "mammotion",
+  "Mammotion",
+  559,
+  "2026-10-28T07:44:30Z",
+  "Home Assistant integration for Mammotion lawn mowers",
+  false,
+  false,
+);
+const marstek = integration(
+  "1012345678",
+  "jaapp/ha-marstek-local-api",
+  "marstek_local_api",
+  "Marstek Local API",
+  210,
+  "2026-10-24T18:20:00Z",
+  "Local API integration for Marstek home batteries (Venus, Jupiter)",
+  false,
+  false,
+);
 
 const MEDIA_RENDERER = "urn:schemas-upnp-org:device:MediaRenderer:1";
 
@@ -175,6 +198,8 @@ export const results = [
   ),
   bluetooth(govee, [{ local_name: "Govee_*" }], "Govee_H5075_3A1F", "C4:7C:8D:6A:3A:1F", -61, { 60552: "00031b5a6400" }),
   bluetooth(govee, [{ local_name: "Govee_*" }], "Govee_H5179_88B2", "A4:C1:38:22:88:B2", -77, { 34817: "ec0001010a0" }),
+  bluetooth(mammotion, [{ local_name: "Luba-*", service_uuid: "0000ffff-0000-1000-8000-00805f9b34fb" }], "Luba-VSNKC2MA", "E8:3C:1A:52:7F:04", -71),
+  dhcp(marstek, [{ hostname: "marstek*" }], "marstek-venus-e", "192.168.1.66", "f0:9e:9e:41:2b:7a"),
   zeroconf(lametric, [{ type: "_lametric-api._tcp.local." }], "LaMetric TIME", "_lametric-api._tcp.local.", "192.168.1.57"),
   ssdp(lametric, [{ deviceType: "urn:schemas-upnp-org:device:LaMetric:1" }], "LaMetric TIME", "192.168.1.57", "urn:schemas-upnp-org:device:LaMetric:1", {
     manufacturer: "LaMetric Inc.",
@@ -207,7 +232,7 @@ export const results = [
 const rank = (result, ignored) => (result.installed || ignored.has(result.repository_id) ? 1 : 0);
 
 export const response = (ignored = new Set(), overrides = {}) => ({
-  dataset: { generated_at: "2026-10-29T08:50:43+00:00", fetched_at: "2026-10-29T09:00:00+00:00", integrations: 442 },
+  dataset: { generated_at: "2026-10-29T08:50:43+00:00", fetched_at: "2026-10-29T09:00:00+00:00", integrations: 442, custom_integrations: 1650 },
   sources: { bluetooth: true, zeroconf: true, dhcp: true, ssdp: true },
   results: results
     .map((result) => ({ ...result, ignored: ignored.has(result.repository_id) }))

@@ -444,6 +444,62 @@ def build_integration(
     }
 
 
+def custom_integrations(
+    data: Any,
+    catalog: dict[str, dict[str, Any]],
+    dropped: Counter[str],
+) -> dict[str, dict[str, Any]]:
+    repositories = data.get("repositories") if isinstance(data, dict) else None
+    if not isinstance(repositories, dict):
+        raise SystemExit("Custom repositories file has no repositories")
+    catalog_domains = {entry["domain"] for entry in catalog.values()}
+    candidates: dict[str, dict[str, Any]] = {}
+    for repository_id, item in repositories.items():
+        if repository_id in catalog:
+            continue
+        manifest = item.get("manifest") if isinstance(item, dict) else None
+        full_name = item.get("full_name") if isinstance(item, dict) else None
+        if (
+            not repository_id.isdigit()
+            or not isinstance(manifest, dict)
+            or not isinstance(full_name, str)
+            or not FULL_NAME_PATTERN.fullmatch(full_name)
+            or not isinstance(manifest.get("domain"), str)
+        ):
+            dropped["repository_invalid"] += 1
+            continue
+        if manifest["domain"] in catalog_domains:
+            dropped["marketplace_domain"] += 1
+            continue
+        entry = {
+            "full_name": full_name,
+            "domain": manifest["domain"],
+            "ref": item.get("ref") if isinstance(item.get("ref"), str) else "HEAD",
+            "manifest_name": None,
+            "stars": optional_int(item.get("stars")),
+            "last_updated": optional_text(item.get("last_updated")),
+            "description": optional_text(item.get("description")),
+        }
+        if integration := build_integration(entry, manifest, dropped):
+            candidates[repository_id] = {**integration, "marketplace": False}
+
+    best: dict[str, str] = {}
+    for repository_id, integration in sorted(
+        candidates.items(),
+        key=lambda item: (
+            item[1]["stars"] or 0,
+            item[1]["last_updated"] or "",
+            -int(item[0]),
+        ),
+        reverse=True,
+    ):
+        if integration["domain"] in best:
+            dropped["duplicate_domain"] += 1
+        else:
+            best[integration["domain"]] = repository_id
+    return {repository_id: candidates[repository_id] for repository_id in best.values()}
+
+
 def prune_cache(cache_dir: Path, keep: set[str]) -> int:
     removed = 0
     for path in cache_dir.glob("*.json"):
@@ -467,6 +523,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, default=Path("dist/matchers.json"))
     parser.add_argument("--cache-dir", type=Path, default=Path(".cache/manifests"))
     parser.add_argument("--concurrency", type=int, default=12)
+    parser.add_argument("--custom", type=Path)
+    parser.add_argument("--custom-output", type=Path)
     args = parser.parse_args()
 
     started = time.monotonic()
@@ -533,21 +591,40 @@ def main() -> int:
     if fetch_errors > len(entries) * MAX_FETCH_ERROR_RATIO:
         raise SystemExit(f"{fetch_errors} fetch errors, refusing to write the dataset")
 
-    write_output(
-        args.output,
-        {
-            "version": DATASET_VERSION,
-            "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
-            "stats": {
-                "repositories": len(entries),
-                "manifests": manifests,
-                "with_matchers": len(integrations),
-                "dropped": dict(dropped),
-            },
-            "integrations": integrations,
+    dataset = {
+        "version": DATASET_VERSION,
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "stats": {
+            "repositories": len(entries),
+            "manifests": manifests,
+            "with_matchers": len(integrations),
+            "dropped": dict(dropped),
         },
-    )
+        "integrations": integrations,
+    }
+    write_output(args.output, dataset)
     log(f"Wrote {args.output}")
+
+    if args.custom and args.custom_output:
+        custom_dropped: Counter[str] = Counter()
+        custom = custom_integrations(
+            parse_json(args.custom.read_bytes()),
+            entries,
+            custom_dropped,
+        )
+        write_output(
+            args.custom_output,
+            {
+                **dataset,
+                "stats": {
+                    **dataset["stats"],
+                    "custom": len(custom),
+                    "custom_dropped": dict(custom_dropped),
+                },
+                "integrations": {**integrations, **custom},
+            },
+        )
+        log(f"Wrote {args.custom_output} with {len(custom)} custom repositories")
     return 0
 
 

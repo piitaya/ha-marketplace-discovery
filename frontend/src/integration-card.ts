@@ -4,7 +4,9 @@ import {
   mdiCheckCircle,
   mdiChevronDown,
   mdiChevronUp,
+  mdiGithub,
   mdiIpNetworkOutline,
+  mdiOpenInNew,
   mdiPuzzleOutline,
   mdiRouterNetwork,
   mdiStar,
@@ -12,7 +14,7 @@ import {
 import { css, html, LitElement, nothing, type TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
 import { describeDevice, formatMatcher, SOURCE_LABELS } from "./format.ts";
-import { countDevices, type DeviceEntry, devicePreview, groupByDevice, type IntegrationGroup, sourcesOf } from "./group.ts";
+import { countDevices, type DeviceEntry, groupByDevice, type IntegrationGroup, sourcesOf } from "./group.ts";
 import { createLocalizer, type Localizer } from "./localize.ts";
 import { sharedStyles } from "./styles.ts";
 import type { Source } from "./types.ts";
@@ -26,8 +28,6 @@ export const SOURCE_ICONS: Record<Source, string> = {
 
 const DEVICE_LIMIT = 4;
 const NARROW_DEVICE_LIMIT = 3;
-const PREVIEW_LIMIT = 3;
-const NARROW_PREVIEW_LIMIT = 2;
 
 export class MpdIntegrationCard extends LitElement {
   @property({ attribute: false }) public group!: IntegrationGroup;
@@ -86,12 +86,8 @@ export class MpdIntegrationCard extends LitElement {
     return html`
       <span class="logo">${this._renderLogo()}</span>
       <span class="main">
-        <span class="title">
-          <span class="name">${group.name}</span>
-          <span class="repo">${group.full_name}</span>
-          ${this._renderBadges()}
-        </span>
-        <span class="preview">${this._preview(PREVIEW_LIMIT)}</span>
+        <span class="title"><span class="name">${group.name}</span>${this._renderBadges()}</span>
+        ${this._renderDevicesLine()}
         ${this._renderMeta()}
       </span>
       ${this._renderChevron()}
@@ -104,13 +100,12 @@ export class MpdIntegrationCard extends LitElement {
       <span class="row">
         <span class="logo">${this._renderLogo()}</span>
         <span class="main">
-          <span class="title"><span class="name">${group.name}</span>${this._renderBadges()}</span>
+          <span class="title"><span class="name" title=${group.name}>${group.name}</span>${this._renderBadges()}</span>
           <span class="repo">${group.full_name}</span>
         </span>
         ${this._renderChevron()}
       </span>
-      <span class="preview">${this._preview(NARROW_PREVIEW_LIMIT)}</span>
-      ${this._renderMeta()}
+      ${this._renderDevicesLine(this._renderStats())}
     `;
   }
 
@@ -119,10 +114,15 @@ export class MpdIntegrationCard extends LitElement {
     return html`
       ${
         this.group.installed
-          ? html`<span class="badge installed"><ha-svg-icon .path=${mdiCheckCircle}></ha-svg-icon>${localize("card.installed")}</span>`
+          ? html`<span class="badge installed"><ha-svg-icon .path=${mdiCheckCircle}></ha-svg-icon><span class="badge-label">${localize("card.installed")}</span></span>`
           : nothing
       }
-      ${this.ignored ? html`<span class="badge">${localize("card.ignored")}</span>` : nothing}
+      ${this.ignored ? html`<span class="badge"><span class="badge-label">${localize("card.ignored")}</span></span>` : nothing}
+      ${
+        this.group.marketplace
+          ? nothing
+          : html`<span class="badge"><ha-svg-icon .path=${mdiGithub}></ha-svg-icon><span class="badge-label">${localize("card.custom_repository")}</span></span>`
+      }
     `;
   }
 
@@ -131,38 +131,39 @@ export class MpdIntegrationCard extends LitElement {
   }
 
   private _renderMeta(): TemplateResult {
+    return html`<span class="meta"><span class="repo">${this.group.full_name}</span>${this._renderStats()}</span>`;
+  }
+
+  private _renderStats(): TemplateResult {
     const { localize, formatCompact, formatRelative } = this.localizer;
     const group = this.group;
     const updated = group.last_updated ? formatRelative(group.last_updated) : null;
     const separator = html`<span class="sep" aria-hidden="true">·</span>`;
     return html`
-      <span class="meta">
-        <span class="devices-count">${localize("card.devices", { count: countDevices(group.results) })}</span>
-        ${separator}
-        ${sourcesOf(group.results).map(
-          (source) => html`<span class="pill"><ha-svg-icon .path=${SOURCE_ICONS[source]}></ha-svg-icon>${SOURCE_LABELS[source]}</span>`,
-        )}
-        ${
-          group.stars !== null
-            ? html`${separator}<span class="stars">
-                  <ha-svg-icon .path=${mdiStar}></ha-svg-icon>
-                  <span>${formatCompact(group.stars)}<span class="visually-hidden"> ${localize("card.stars", { count: group.stars })}</span></span>
-                </span>`
-            : nothing
-        }
-        ${updated ? html`${separator}<span>${localize("card.updated", { time: updated })}</span>` : nothing}
-      </span>
+      ${
+        group.stars !== null
+          ? html`${separator}<span class="stars">
+                <ha-svg-icon .path=${mdiStar}></ha-svg-icon>
+                <span>${formatCompact(group.stars)}<span class="visually-hidden"> ${localize("card.stars", { count: group.stars })}</span></span>
+              </span>`
+          : nothing
+      }
+      ${updated ? html`${separator}<span>${localize("card.updated", { time: updated })}</span>` : nothing}
     `;
   }
 
-  private _preview(limit: number): string {
-    const { localize } = this.localizer;
-    const parts = devicePreview(this.group.results).map((entry) => {
-      const name = entry.name ?? localize("card.unknown_device");
-      return entry.count > 1 ? `${name} (${entry.count})` : name;
-    });
-    const list = parts.slice(0, limit).join(", ");
-    return parts.length > limit ? localize("card.more", { list, count: parts.length - limit }) : list;
+  private _renderDevicesLine(stats: TemplateResult | typeof nothing = nothing): TemplateResult {
+    const sources = sourcesOf(this.group.results);
+    return html`
+      <span class="devices-line">
+        <span class="source-icons">
+          ${sources.map((source) => html`<ha-svg-icon .path=${SOURCE_ICONS[source]} title=${SOURCE_LABELS[source]}></ha-svg-icon>`)}
+          <span class="visually-hidden">${sources.map((source) => SOURCE_LABELS[source]).join(", ")}</span>
+        </span>
+        <span class="device-count">${this.localizer.localize("card.devices", { count: countDevices(this.group.results) })}</span>
+        ${stats === nothing ? nothing : html`<span class="stats">${stats}</span>`}
+      </span>
+    `;
   }
 
   private _renderLogo(): TemplateResult | typeof nothing {
@@ -183,21 +184,31 @@ export class MpdIntegrationCard extends LitElement {
       ${this._renderDevices()}
       <div class="footer">
         <ha-button
-          appearance=${this.narrow ? "outlined" : "plain"}
-          variant=${this.narrow ? "neutral" : "brand"}
+          appearance="plain"
           .disabled=${this.busy}
           @click=${this._toggleIgnore}
         >
           ${localize(this.ignored ? "card.stop_ignoring" : "card.ignore")}
         </ha-button>
-        <ha-button
-          class="open"
-          appearance="filled"
-          href=${`/marketplace/repository/${encodeURIComponent(this.group.repository_id)}`}
-          >${localize("card.open")}</ha-button
-        >
+        ${this.group.marketplace ? this._renderMarketplaceAction() : this._renderCustomActions()}
       </div>
     `;
+  }
+
+  private _renderMarketplaceAction(): TemplateResult {
+    const href = `/marketplace/repository/${encodeURIComponent(this.group.repository_id)}`;
+    return html`<ha-button class="open" appearance="filled" href=${href}>${this.localizer.localize("card.open")}</ha-button>`;
+  }
+
+  private _renderCustomActions(): TemplateResult {
+    return html`<ha-button
+      class="open"
+      appearance="filled"
+      href=${`https://github.com/${this.group.full_name}`}
+      target="_blank"
+      rel="noreferrer"
+      >${this.localizer.localize("card.open_github")}<ha-svg-icon slot="end" .path=${mdiOpenInNew}></ha-svg-icon
+    ></ha-button>`;
   }
 
   private _renderDevices(): TemplateResult {
@@ -440,11 +451,23 @@ export class MpdIntegrationCard extends LitElement {
         background: var(--ha-color-fill-success-normal-resting, #dcf2dc);
         color: var(--ha-color-on-success-normal, #1e6b28);
       }
-      .preview {
-        display: block;
+      .stats > span:last-child {
+        min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+      }
+      .devices-line {
+        display: flex;
+        align-items: center;
+        gap: var(--ha-space-2, 8px);
+        min-width: 0;
+      }
+      .source-icons {
+        display: inline-flex;
+        flex: none;
+        gap: 2px;
+        color: var(--mpd-primary-text, #00799f);
+        --mdc-icon-size: 16px;
       }
       .meta {
         display: flex;
@@ -457,23 +480,40 @@ export class MpdIntegrationCard extends LitElement {
       :host([narrow]) .meta {
         gap: 4px 8px;
       }
-      :host([narrow]) .meta .sep {
-        display: none;
-      }
-      .devices-count {
-        font-weight: var(--ha-font-weight-medium, 500);
-        color: var(--primary-text-color, #141414);
-      }
-      .pill {
+      .stats {
         display: inline-flex;
         align-items: center;
-        gap: var(--ha-space-1, 4px);
-        height: 22px;
-        padding: 0 var(--ha-space-2, 8px);
-        border-radius: var(--ha-border-radius-pill, 9999px);
-        background: var(--ha-color-fill-neutral-quiet-resting, #f2f2f2);
-        color: var(--ha-color-on-neutral-normal, #3d3d3d);
-        --mdc-icon-size: 14px;
+        gap: 6px;
+        min-width: 0;
+        overflow: hidden;
+        font-size: var(--ha-font-size-s, 12px);
+        color: var(--secondary-text-color, #5e5e5e);
+        white-space: nowrap;
+      }
+      :host([narrow]) .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      :host([narrow]) .title {
+        flex-wrap: nowrap;
+        min-width: 0;
+      }
+      :host([narrow]) .title .name {
+        flex: 0 1 auto;
+        min-width: 6em;
+      }
+      :host([narrow]) .title .badge {
+        flex: 0 1 auto;
+        min-width: 0;
+      }
+      .badge ha-svg-icon {
+        flex: none;
+      }
+      .badge-label {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .stars {
         display: inline-flex;
@@ -587,7 +627,6 @@ export class MpdIntegrationCard extends LitElement {
         border-top: 1px solid var(--divider-color, #ececec);
       }
       :host([narrow]) .footer {
-        justify-content: flex-start;
         padding: 12px var(--ha-space-4, 16px);
       }
       .footer ha-button {

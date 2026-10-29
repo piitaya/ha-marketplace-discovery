@@ -8,5 +8,17 @@
     "abort": {
       "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]"
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "custom_repositories": "Include custom repositories (experimental)"
+        },
+        "data_description": {
+          "custom_repositories": "Also compare with integrations found on GitHub that are not in the Marketplace. Nobody has reviewed them and an integration runs with full access to Home Assistant, so check a repository before installing it with Add from link in the Marketplace."
+        }
+      }
+    }
   }
 }

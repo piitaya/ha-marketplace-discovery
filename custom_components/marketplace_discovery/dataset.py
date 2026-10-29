@@ -31,6 +31,7 @@ class StoredDataset(TypedDict):
     fetched_at: str
     data: dict[str, Any]
     etag: NotRequired[str | None]
+    url: NotRequired[str]
 
 
 class DatasetError(Exception):
@@ -53,8 +54,9 @@ async def async_remove_cache(hass: HomeAssistant) -> None:
 
 
 class Dataset:
-    def __init__(self, hass: HomeAssistant) -> None:
+    def __init__(self, hass: HomeAssistant, url: str = DATASET_URL) -> None:
         self.hass = hass
+        self.url = url
         self._store: Store[StoredDataset] = Store(hass, STORAGE_VERSION, STORAGE_KEY)
         self.data: dict[str, Any] | None = None
         self.fetched_at: datetime | None = None
@@ -63,6 +65,7 @@ class Dataset:
         self._listeners: list[CALLBACK_TYPE] = []
         self._unsub_interval: CALLBACK_TYPE | None = None
         self._update_task: asyncio.Task[bool] | None = None
+        self._closed = False
 
     @property
     def integrations(self) -> dict[str, Any]:
@@ -74,10 +77,15 @@ class Dataset:
     def meta(self) -> dict[str, Any] | None:
         if self.data is None or self.fetched_at is None:
             return None
+        custom = sum(
+            integration.get("marketplace") is False
+            for integration in self.integrations.values()
+        )
         return {
             "generated_at": self.data.get("generated_at"),
             "fetched_at": self.fetched_at.isoformat(),
-            "integrations": len(self.integrations),
+            "integrations": len(self.integrations) - custom,
+            "custom_integrations": custom,
         }
 
     async def async_setup(self) -> None:
@@ -97,6 +105,7 @@ class Dataset:
 
     @callback
     def async_shutdown(self) -> None:
+        self._closed = True
         if self._unsub_interval:
             self._unsub_interval()
             self._unsub_interval = None
@@ -111,7 +120,7 @@ class Dataset:
 
     async def _async_load_cache(self) -> None:
         stored = await self._store.async_load()
-        if not stored:
+        if not stored or stored.get("url", DATASET_URL) != self.url:
             return
         try:
             data = validate_dataset(stored.get("data"))
@@ -144,12 +153,19 @@ class Dataset:
                     err,
                 )
             return False
+        if self._closed:
+            return False
         fetched_at = dt_util.utcnow()
         if data is None:
             data = self.data
             etag = self.etag
         await self._store.async_save(
-            {"fetched_at": fetched_at.isoformat(), "data": data, "etag": etag}
+            {
+                "fetched_at": fetched_at.isoformat(),
+                "data": data,
+                "etag": etag,
+                "url": self.url,
+            }
         )
         changed = data != self.data
         self.etag = etag
@@ -166,7 +182,7 @@ class Dataset:
         )
         try:
             async with session.get(
-                DATASET_URL, headers=headers, timeout=FETCH_TIMEOUT
+                self.url, headers=headers, timeout=FETCH_TIMEOUT
             ) as response:
                 if response.status == HTTPStatus.NOT_MODIFIED:
                     return None, self.etag

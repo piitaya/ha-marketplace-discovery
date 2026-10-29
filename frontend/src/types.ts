@@ -15,6 +15,7 @@ export interface MatchResult {
   name: string;
   installed: boolean;
   ignored?: boolean;
+  marketplace?: boolean;
   stars?: number | null;
   last_updated?: string | null;
   description?: string | null;
@@ -28,6 +29,7 @@ export interface DatasetInfo {
   generated_at: string;
   fetched_at: string;
   integrations: number;
+  custom_integrations?: number;
 }
 
 export interface MatchesResponse {
