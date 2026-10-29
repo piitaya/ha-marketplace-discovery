@@ -14,7 +14,6 @@ import { property, state } from "lit/decorators.js";
 import { describeDevice, formatMatcher, SOURCE_LABELS } from "./format.ts";
 import { countDevices, type DeviceEntry, devicePreview, groupByDevice, type IntegrationGroup, sourcesOf } from "./group.ts";
 import { createLocalizer, type Localizer } from "./localize.ts";
-import { navigate } from "./navigate.ts";
 import { sharedStyles } from "./styles.ts";
 import type { Source } from "./types.ts";
 
@@ -191,7 +190,12 @@ export class MpdIntegrationCard extends LitElement {
         >
           ${localize(this.ignored ? "card.stop_ignoring" : "card.ignore")}
         </ha-button>
-        <ha-button class="open" appearance="filled" @click=${this._openInMarketplace}>${localize("card.open")}</ha-button>
+        <ha-button
+          class="open"
+          appearance="filled"
+          href=${`/marketplace/repository/${encodeURIComponent(this.group.repository_id)}`}
+          >${localize("card.open")}</ha-button
+        >
       </div>
     `;
   }
@@ -272,10 +276,6 @@ export class MpdIntegrationCard extends LitElement {
 
   private _toggleShowAll(): void {
     this._showAll = !this._showAll;
-  }
-
-  private _openInMarketplace(): void {
-    navigate(`/marketplace/repository/${encodeURIComponent(this.group.repository_id)}`);
   }
 
   static styles = [

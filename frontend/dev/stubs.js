@@ -53,15 +53,15 @@ define(
       super();
       this.attachShadow({ mode: "open" }).innerHTML = `<style>
         :host{display:inline-block;--on:var(--wa-color-brand-on-normal,var(--ha-color-on-primary-normal,#009ac7))}
-        button{display:inline-flex;align-items:center;justify-content:center;gap:4px;width:100%;height:var(--ha-button-height,40px);padding:0 16px;border-radius:9999px;border:1px solid transparent;box-sizing:border-box;font:inherit;font-weight:500;cursor:pointer;white-space:nowrap;background:var(--primary-color);color:var(--ha-color-on-primary-loud,#fff)}
-        button.has-start{padding-inline-start:12px}
-        :host([appearance=filled]) button{background:var(--ha-color-fill-primary-normal-resting,#dff3fc);color:var(--on)}
-        :host([appearance=plain]) button{background:none;color:var(--on)}
-        :host([appearance=outlined]) button{background:none;color:var(--on);border-color:var(--ha-color-border-primary-normal,#7bd4fb)}
-        :host([variant=neutral][appearance=outlined]) button{color:var(--primary-text-color);border-color:var(--ha-color-border-neutral-normal,#989898)}
-        :host([variant=neutral][appearance=plain]) button{color:var(--primary-text-color)}
-        :host([disabled]) button{cursor:default;background:var(--ha-color-fill-disabled-normal-resting,#f3f3f3);color:var(--ha-color-on-disabled-normal,#b1b1b1);border-color:transparent}
-        :host([disabled][appearance=plain]) button{background:none}
+        :is(button,a){text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;width:100%;height:var(--ha-button-height,40px);padding:0 16px;border-radius:9999px;border:1px solid transparent;box-sizing:border-box;font:inherit;font-weight:500;cursor:pointer;white-space:nowrap;background:var(--primary-color);color:var(--ha-color-on-primary-loud,#fff)}
+        :is(button,a).has-start{padding-inline-start:12px}
+        :host([appearance=filled]) :is(button,a){background:var(--ha-color-fill-primary-normal-resting,#dff3fc);color:var(--on)}
+        :host([appearance=plain]) :is(button,a){background:none;color:var(--on)}
+        :host([appearance=outlined]) :is(button,a){background:none;color:var(--on);border-color:var(--ha-color-border-primary-normal,#7bd4fb)}
+        :host([variant=neutral][appearance=outlined]) :is(button,a){color:var(--primary-text-color);border-color:var(--ha-color-border-neutral-normal,#989898)}
+        :host([variant=neutral][appearance=plain]) :is(button,a){color:var(--primary-text-color)}
+        :host([disabled]) :is(button,a){cursor:default;background:var(--ha-color-fill-disabled-normal-resting,#f3f3f3);color:var(--ha-color-on-disabled-normal,#b1b1b1);border-color:transparent}
+        :host([disabled][appearance=plain]) :is(button,a){background:none}
         ::slotted([slot=start]){margin-inline-end:4px}
       </style><button part="base"><slot name="start"></slot><slot></slot></button>`;
       this._button = this.shadowRoot.querySelector("button");
@@ -69,6 +69,18 @@ define(
       start.addEventListener("slotchange", () =>
         this._button.classList.toggle("has-start", start.assignedElements().length > 0),
       );
+    }
+    connectedCallback() {
+      const href = this.getAttribute("href");
+      if (href && this._button.tagName === "BUTTON") {
+        const link = document.createElement("a");
+        link.href = href;
+        link.setAttribute("part", "base");
+        link.className = this._button.className;
+        link.append(...this._button.childNodes);
+        this._button.replaceWith(link);
+        this._button = link;
+      }
     }
     set disabled(value) {
       this._button.disabled = Boolean(value);
