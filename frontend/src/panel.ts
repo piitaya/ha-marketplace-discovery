@@ -610,6 +610,11 @@ export class MarketplaceDiscoveryPanel extends LitElement {
         repository_ids: repositoryIds,
       });
       this._ignored = new Set(response.ignored);
+      const openCards = new Map(this._openCards);
+      for (const id of repositoryIds) {
+        openCards.set(id, false);
+      }
+      this._openCards = openCards;
       return true;
     } catch (err) {
       this._actionError = err ?? "";
