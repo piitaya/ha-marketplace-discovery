@@ -1,0 +1,116 @@
+[project]
+name = "marketplace-discovery"
+version = "0.1.0"
+requires-python = ">=3.14"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py314"
+extend-exclude = ["frontend", "custom_components/marketplace_discovery/frontend"]
+
+[tool.ruff.lint]
+select = [
+  "A001",
+  "ASYNC",
+  "B",
+  "BLE",
+  "C",
+  "COM818",
+  "DTZ003",
+  "DTZ004",
+  "DTZ011",
+  "E",
+  "F",
+  "FLY",
+  "FURB",
+  "G",
+  "I",
+  "ICN001",
+  "ICN002",
+  "ISC",
+  "LOG",
+  "N804",
+  "N805",
+  "N806",
+  "N815",
+  "PERF",
+  "PGH",
+  "PIE",
+  "PL",
+  "PT",
+  "PTH",
+  "PYI",
+  "RET",
+  "RSE",
+  "RUF",
+  "S102",
+  "S103",
+  "S307",
+  "SIM",
+  "SLOT",
+  "T100",
+  "T20",
+  "TC",
+  "TID",
+  "TRY",
+  "UP",
+  "W",
+]
+ignore = [
+  "B008",
+  "E501",
+  "PLC0415",
+  "PLR0911",
+  "PLR0912",
+  "PLR0913",
+  "PLR0915",
+  "PLR0917",
+  "PLR2004",
+  "PT011",
+  "PT018",
+  "RUF012",
+  "SIM102",
+  "SIM103",
+  "SIM108",
+  "TC001",
+  "TC002",
+  "TC003",
+  "TC006",
+  "TRY003",
+  "TRY400",
+  "W191",
+  "E111",
+  "E114",
+  "E117",
+  "COM812",
+  "COM819",
+]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["custom_components", "homeassistant"]
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"homeassistant.helpers.config_validation" = "cv"
+"homeassistant.helpers.device_registry" = "dr"
+"homeassistant.util.dt" = "dt_util"
+
+[tool.ruff.lint.flake8-import-conventions.banned-aliases]
+"probatio" = ["vol"]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"async_timeout".msg = "use asyncio.timeout instead"
+"voluptuous".msg = "use probatio instead"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25

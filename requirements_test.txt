@@ -1,0 +1,10 @@
+pytest-homeassistant-custom-component==0.13.375
+ruff==0.17.3
+aiodhcpwatcher==1.2.7
+aiodiscover==3.3.2
+aiousbwatcher==1.1.2
+async-upnp-client==0.48.2
+cached-ipaddress==1.1.2
+dbus-fast==5.0.22
+home-assistant-frontend==20260930.5
+serialx==1.11.0

@@ -1,0 +1,329 @@
+{
+  "generated_at": "2026-10-29T08:15:39+00:00",
+  "integrations": {
+    "1001666416": {
+      "domain": "mass_queue",
+      "full_name": "droans/mass_queue",
+      "name": "Music Assistant Queue Actions",
+      "ref": "v0.10.4",
+      "zeroconf": [
+        {
+          "type": "_mass._tcp.local."
+        }
+      ]
+    },
+    "1008725569": {
+      "bluetooth": [
+        {
+          "connectable": false,
+          "manufacturer_id": 2407
+        }
+      ],
+      "domain": "neosmartblue",
+      "full_name": "ikifar2012/neosmartblue-ha",
+      "name": "Neo Smart Blinds Blue",
+      "ref": "0.1.2"
+    },
+    "1014269100": {
+      "domain": "keba_keenergy",
+      "full_name": "superbox-dev/keba_keenergy",
+      "name": "KEBA KeEnergy",
+      "ref": "v1.11.0",
+      "zeroconf": [
+        {
+          "name": "ap440*",
+          "type": "_keba-device._tcp.local."
+        }
+      ]
+    },
+    "1020452819": {
+      "dhcp": [
+        {
+          "hostname": "irobot-*",
+          "macaddress": "501479*"
+        },
+        {
+          "hostname": "roomba-*",
+          "macaddress": "80A589*"
+        },
+        {
+          "hostname": "roomba-*",
+          "macaddress": "DCF505*"
+        },
+        {
+          "hostname": "roomba-*",
+          "macaddress": "204EF6*"
+        }
+      ],
+      "domain": "roomba_rest980",
+      "full_name": "ia74/roomba_rest980",
+      "name": "Roomba (Rest980)",
+      "ref": "v1.19.2",
+      "zeroconf": [
+        {
+          "name": "irobot-*",
+          "type": "_amzn-alexa._tcp.local."
+        },
+        {
+          "name": "roomba-*",
+          "type": "_amzn-alexa._tcp.local."
+        }
+      ]
+    },
+    "1029387850": {
+      "bluetooth": [
+        {
+          "local_name": "Desky*"
+        }
+      ],
+      "domain": "desky_desk",
+      "full_name": "j0rdsta/ha-desky",
+      "name": "Desky Standing Desk",
+      "ref": "v2.0.1"
+    },
+    "1036812316": {
+      "domain": "stiebel_eltron_http",
+      "full_name": "pmq/stiebel-eltron-http",
+      "name": "Stiebel Eltron",
+      "ref": "v1.7.0",
+      "ssdp": [
+        {
+          "manufacturer": "STIEBEL ELTRON",
+          "modelURL": "http://www.stiebel-eltron.de/isg/"
+        }
+      ]
+    },
+    "1048127126": {
+      "dhcp": [
+        {
+          "hostname": "tm-*"
+        },
+        {
+          "hostname": "rongta_*"
+        }
+      ],
+      "domain": "escpos_printer",
+      "full_name": "cognitivegears/ha-escpos-thermal-printer",
+      "name": "ESC/POS Thermal Printer",
+      "ref": "v1.2.0"
+    },
+    "1052536792": {
+      "bluetooth": [
+        {
+          "connectable": true,
+          "service_data_uuid": "0000be30-0000-1000-8000-00805f9b34fb"
+        },
+        {
+          "connectable": false,
+          "service_data_uuid": "0000be30-0000-1000-8000-00805f9b34fb"
+        },
+        {
+          "connectable": true,
+          "service_uuid": "99e7be30-0001-4c6b-98a2-70fcb3471a72"
+        },
+        {
+          "connectable": true,
+          "local_name": "Meross-*"
+        }
+      ],
+      "domain": "meross_rpc",
+      "full_name": "Meross-Tech/meross_rpc",
+      "name": "Meross",
+      "ref": "v1.2.0",
+      "zeroconf": [
+        {
+          "name": "meross*",
+          "type": "_http._tcp.local."
+        }
+      ]
+    },
+    "1053243236": {
+      "domain": "qube_heatpump",
+      "full_name": "MattieGit/qube_heatpump",
+      "name": "Qube heat pump",
+      "ref": "v2026.10.10",
+      "zeroconf": [
+        {
+          "properties": {
+            "ProjectName": "deqsihpb*",
+            "Vendor": "000a5c"
+          },
+          "type": "_workstation._tcp.local."
+        }
+      ]
+    },
+    "1062978596": {
+      "domain": "powersensor",
+      "full_name": "DiUS/homeassistant-powersensor",
+      "name": "Powersensor",
+      "ref": "v1.0.1",
+      "zeroconf": [
+        {
+          "type": "_powersensor._udp.local."
+        }
+      ]
+    },
+    "1066027219": {
+      "dhcp": [
+        {
+          "macaddress": "3C3178*"
+        },
+        {
+          "macaddress": "18C1E2*"
+        }
+      ],
+      "domain": "qolsys_panel",
+      "full_name": "EHylands/ha-qolsys-panel",
+      "name": "Qolsys Panel",
+      "ref": "v1.12.2"
+    },
+    "1092976275": {
+      "domain": "fritzbox_vpn",
+      "full_name": "rosch100/fritzbox-vpn",
+      "name": "Fritz!Box VPN",
+      "ref": "v1.2.10",
+      "ssdp": [
+        {
+          "st": "urn:schemas-upnp-org:device:fritzbox:1"
+        }
+      ]
+    },
+    "1095872281": {
+      "bluetooth": [
+        {
+          "connectable": true,
+          "manufacturer_id": 89
+        }
+      ],
+      "domain": "solamagic",
+      "full_name": "Pocke01/homeassistant-solamagic",
+      "name": "Solamagic",
+      "ref": "v0.5.13"
+    },
+    "1124629220": {
+      "bluetooth": [
+        {
+          "connectable": true,
+          "manufacturer_id": 9286
+        }
+      ],
+      "domain": "opendisplay",
+      "full_name": "OpenDisplay/Home_Assistant_Integration",
+      "name": "OpenDisplay",
+      "ref": "3.2.0",
+      "zeroconf": [
+        {
+          "type": "_opendisplay._tcp.local."
+        }
+      ]
+    },
+    "1127298592": {
+      "bluetooth": [
+        {
+          "service_uuid": "847bba10-a31f-41bf-a35f-3f73a22bb307"
+        }
+      ],
+      "domain": "blanco_unit",
+      "full_name": "Nailik/blanco_unit",
+      "name": "Blanco Unit",
+      "ref": "0.0.12"
+    },
+    "1130003818": {
+      "dhcp": [
+        {
+          "macaddress": "9013DA*"
+        }
+      ],
+      "domain": "homey_hass",
+      "full_name": "ifMike/homeyHASS",
+      "name": "Homey 2.x",
+      "ref": "v2.1.4",
+      "zeroconf": [
+        {
+          "type": "_homey._tcp.local."
+        }
+      ]
+    },
+    "1148686466": {
+      "domain": "2n_intercom",
+      "full_name": "mastalir1980/ha-2N-intercom",
+      "name": "2N Intercom",
+      "ref": "v1.5.1",
+      "ssdp": [
+        {
+          "manufacturer": "2N, part of Axis group"
+        }
+      ]
+    },
+    "1188974075": {
+      "dhcp": [
+        {
+          "hostname": "sunriser*"
+        }
+      ],
+      "domain": "sunriser",
+      "full_name": "MrInterBugs/ha-sunriser",
+      "name": "SunRiser",
+      "ref": "v2.2.3"
+    },
+    "1199759176": {
+      "dhcp": [
+        {
+          "hostname": "lametric-*"
+        }
+      ],
+      "domain": "lametric_hass_local",
+      "full_name": "ElectroAttacks/lametric-hass-local",
+      "name": "LaMetric Local",
+      "ref": "v4.0.2",
+      "ssdp": [
+        {
+          "deviceType": "urn:schemas-upnp-org:device:LaMetric:1"
+        }
+      ],
+      "zeroconf": [
+        {
+          "type": "_lametric-api._tcp.local."
+        }
+      ]
+    },
+    "1286470671": {
+      "domain": "denon_avr",
+      "full_name": "LaserGuruGuy/denon_avr",
+      "name": "Denon AVR",
+      "ref": "v1.1.2",
+      "ssdp": [
+        {
+          "deviceType": "urn:schemas-denon-com:device:AiosDevice:1",
+          "manufacturer": "Denon"
+        }
+      ]
+    }
+  },
+  "stats": {
+    "dropped": {
+      "bluetooth_invalid": 0,
+      "bluetooth_not_indexable": 0,
+      "bluetooth_not_list": 0,
+      "bluetooth_wildcard_prefix": 0,
+      "dhcp_invalid": 0,
+      "dhcp_no_key": 0,
+      "dhcp_not_list": 0,
+      "dhcp_registered_devices": 28,
+      "manifest_fetch_error": 0,
+      "manifest_invalid": 0,
+      "manifest_not_found": 2,
+      "repository_invalid": 0,
+      "ssdp_invalid": 0,
+      "ssdp_no_primary_key": 2,
+      "ssdp_not_list": 1,
+      "zeroconf_homekit": 6,
+      "zeroconf_invalid": 0,
+      "zeroconf_not_list": 0
+    },
+    "manifests": 4288,
+    "repositories": 4290,
+    "with_matchers": 442
+  },
+  "version": 1
+}

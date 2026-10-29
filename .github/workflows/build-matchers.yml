@@ -1,0 +1,54 @@
+name: Build matchers
+
+on:
+  schedule:
+    - cron: "23 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - uses: actions/cache@v6
+        with:
+          path: .cache/manifests
+          key: manifests-${{ github.run_id }}
+          restore-keys: manifests-
+
+      - name: Build matchers.json
+        run: python scripts/build_matchers.py --output dist/matchers.json --cache-dir .cache/manifests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add index page
+        run: printf '<!doctype html><meta charset="utf-8"><title>Marketplace discovery</title><a href="matchers.json">matchers.json</a>\n' > dist/index.html
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

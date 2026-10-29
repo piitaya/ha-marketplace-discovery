@@ -1,0 +1,15 @@
+{
+  "domain": "marketplace_discovery",
+  "name": "Marketplace Discovery",
+  "after_dependencies": ["bluetooth", "zeroconf", "dhcp", "ssdp"],
+  "codeowners": ["@piitaya"],
+  "config_flow": true,
+  "dependencies": ["http", "websocket_api", "panel_custom"],
+  "documentation": "https://github.com/piitaya/ha-marketplace-discovery",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/piitaya/ha-marketplace-discovery/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.1.0"
+}

@@ -1,0 +1,257 @@
+import asyncio
+from datetime import timedelta
+from typing import Any
+from unittest.mock import MagicMock, patch
+
+import aiohttp
+from freezegun.api import FrozenDateTimeFactory
+import pytest
+from pytest_homeassistant_custom_component.common import async_fire_time_changed
+from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClientMocker
+
+from custom_components.marketplace_discovery.const import (
+    DATASET_URL,
+    STORAGE_KEY,
+    UPDATE_INTERVAL,
+)
+from custom_components.marketplace_discovery.dataset import Dataset
+from homeassistant.core import HomeAssistant
+from homeassistant.util import dt as dt_util
+
+
+def store_dataset(
+    hass_storage: dict[str, Any], data: dict[str, Any], age: timedelta
+) -> None:
+    hass_storage[STORAGE_KEY] = {
+        "version": 1,
+        "minor_version": 1,
+        "key": STORAGE_KEY,
+        "data": {
+            "fetched_at": (dt_util.utcnow() - age).isoformat(),
+            "data": data,
+        },
+    }
+
+
+async def setup_dataset(hass: HomeAssistant) -> Dataset:
+    dataset = Dataset(hass)
+    await dataset.async_setup()
+    return dataset
+
+
+async def test_fetch_and_cache(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = await setup_dataset(hass)
+
+    assert aioclient_mock.call_count == 1
+    assert dataset.data == dataset_payload
+    assert dataset.matchers.zeroconf_types == {"_zed._tcp.local."}
+    assert dataset.meta == {
+        "generated_at": "2026-10-29T03:00:00+00:00",
+        "fetched_at": dataset.fetched_at.isoformat(),
+        "integrations": 3,
+    }
+    assert hass_storage[STORAGE_KEY]["data"]["data"] == dataset_payload
+    dataset.async_shutdown()
+
+
+async def test_fresh_cache_skips_download(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    store_dataset(hass_storage, dataset_payload, timedelta(hours=1))
+    dataset = await setup_dataset(hass)
+
+    assert aioclient_mock.call_count == 0
+    assert dataset.data == dataset_payload
+    assert dataset.matchers.zeroconf_types == {"_zed._tcp.local."}
+    dataset.async_shutdown()
+
+
+async def test_stale_cache_is_refreshed(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    old = {**dataset_payload, "generated_at": "2026-10-01T03:00:00+00:00"}
+    store_dataset(hass_storage, old, UPDATE_INTERVAL + timedelta(minutes=1))
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = await setup_dataset(hass)
+    await hass.async_block_till_done()
+
+    assert aioclient_mock.call_count == 1
+    assert dataset.data == dataset_payload
+    dataset.async_shutdown()
+
+
+async def test_stale_cache_does_not_wait_for_download(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    dataset_payload: dict[str, Any],
+) -> None:
+    old = {**dataset_payload, "generated_at": "2026-10-01T03:00:00+00:00"}
+    store_dataset(hass_storage, old, UPDATE_INTERVAL + timedelta(minutes=1))
+    release = asyncio.Event()
+
+    async def fetch() -> dict[str, Any]:
+        await release.wait()
+        return dataset_payload
+
+    with patch.object(Dataset, "_async_fetch", side_effect=fetch):
+        dataset = await setup_dataset(hass)
+        assert dataset.data == old
+        release.set()
+        await hass.async_block_till_done()
+    assert dataset.data == dataset_payload
+    dataset.async_shutdown()
+
+
+async def test_shutdown_cancels_pending_download(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    dataset_payload: dict[str, Any],
+) -> None:
+    store_dataset(hass_storage, dataset_payload, UPDATE_INTERVAL * 2)
+    cancelled = asyncio.Event()
+
+    async def fetch() -> dict[str, Any]:
+        try:
+            await asyncio.Event().wait()
+        finally:
+            cancelled.set()
+        return dataset_payload
+
+    with patch.object(Dataset, "_async_fetch", side_effect=fetch):
+        dataset = await setup_dataset(hass)
+        dataset.async_shutdown()
+        await hass.async_block_till_done()
+    assert cancelled.is_set()
+
+
+@pytest.mark.parametrize(
+    "mock_kwargs",
+    [
+        {"exc": aiohttp.ClientError()},
+        {"exc": TimeoutError()},
+        {"status": 500},
+        {"text": "not json"},
+    ],
+)
+async def test_offline_uses_cache(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+    caplog: pytest.LogCaptureFixture,
+    mock_kwargs: dict[str, Any],
+) -> None:
+    store_dataset(hass_storage, dataset_payload, UPDATE_INTERVAL * 2)
+    aioclient_mock.get(DATASET_URL, **mock_kwargs)
+    dataset = await setup_dataset(hass)
+    await hass.async_block_till_done()
+
+    assert dataset.data == dataset_payload
+    assert "using the cached copy" in caplog.text
+    dataset.async_shutdown()
+
+
+async def test_offline_without_cache(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    aioclient_mock.get(DATASET_URL, exc=aiohttp.ClientError())
+    dataset = await setup_dataset(hass)
+
+    assert dataset.data is None
+    assert dataset.meta is None
+    assert dataset.integrations == {}
+    assert dataset.matchers.zeroconf_types == set()
+    assert "Unable to download the matcher dataset" in caplog.text
+    dataset.async_shutdown()
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"version": 2, "integrations": {}},
+        {"integrations": {}},
+        {"version": 1, "integrations": []},
+        ["not", "an", "object"],
+    ],
+)
+async def test_invalid_dataset_is_rejected(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+    payload: Any,
+) -> None:
+    store_dataset(hass_storage, dataset_payload, UPDATE_INTERVAL * 2)
+    aioclient_mock.get(DATASET_URL, json=payload)
+    dataset = await setup_dataset(hass)
+    await hass.async_block_till_done()
+
+    assert aioclient_mock.call_count == 1
+    assert dataset.data == dataset_payload
+    dataset.async_shutdown()
+
+
+async def test_invalid_cache_is_ignored(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    store_dataset(hass_storage, {"version": 99}, timedelta(hours=1))
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = await setup_dataset(hass)
+
+    assert aioclient_mock.call_count == 1
+    assert dataset.data == dataset_payload
+    dataset.async_shutdown()
+
+
+async def test_refresh_every_interval(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+    freezer: FrozenDateTimeFactory,
+) -> None:
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = await setup_dataset(hass)
+    listener = MagicMock()
+    unsubscribe = dataset.async_add_listener(listener)
+    assert aioclient_mock.call_count == 1
+
+    freezer.tick(UPDATE_INTERVAL)
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert aioclient_mock.call_count == 2
+    listener.assert_not_called()
+
+    updated = {**dataset_payload, "generated_at": "2026-10-30T03:00:00+00:00"}
+    aioclient_mock.clear_requests()
+    aioclient_mock.get(DATASET_URL, json=updated)
+    freezer.tick(UPDATE_INTERVAL)
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert aioclient_mock.call_count == 1
+    assert dataset.data == updated
+    listener.assert_called_once()
+
+    unsubscribe()
+    dataset.async_shutdown()
+    aioclient_mock.clear_requests()
+    freezer.tick(UPDATE_INTERVAL)
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert aioclient_mock.call_count == 0

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Marketplace discovery panel harness</title>
+    <style>
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      :root {
+        --primary-color: #009ac7;
+        --primary-text-color: #141414;
+        --secondary-text-color: #5e5e5e;
+        --primary-background-color: #fafafa;
+        --secondary-background-color: #f2f2f2;
+        --card-background-color: #ffffff;
+        --divider-color: rgba(0, 0, 0, 0.12);
+        --app-header-background-color: #fafafa;
+        --app-header-text-color: #141414;
+        --app-header-border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        color-scheme: light;
+      }
+      :root.dark {
+        --primary-text-color: #e1e1e1;
+        --secondary-text-color: #9b9b9b;
+        --primary-background-color: #111111;
+        --secondary-background-color: #282828;
+        --card-background-color: #1c1c1c;
+        --divider-color: rgba(225, 225, 225, 0.12);
+        --app-header-background-color: #111111;
+        --app-header-text-color: #e1e1e1;
+        --app-header-border-bottom: 1px solid rgba(225, 225, 225, 0.12);
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background: var(--primary-background-color);
+        font-family: Roboto, sans-serif;
+      }
+      #controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+        font-size: 12px;
+        background: #333;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <label>Response <select id="mode">
+        <option value="results">results</option>
+        <option value="empty">empty</option>
+        <option value="no-dataset">dataset unavailable</option>
+        <option value="error">error</option>
+        <option value="not-loaded">not loaded</option>
+      </select></label>
+      <label><input type="checkbox" id="narrow" /> narrow</label>
+      <label><input type="checkbox" id="dark" /> dark</label>
+      <label><input type="checkbox" id="hidden" /> sidebar always hidden</label>
+    </div>
+    <script type="module">
+      import "./stubs.js";
+      import { response } from "./fixtures.js";
+      import "./build/panel.js";
+
+      const mode = document.getElementById("mode");
+      const hass = {
+        config: { version: "2026.10.4" },
+        locale: { language: "en" },
+        kioskMode: false,
+        dockedSidebar: "docked",
+        callWS: (message) =>
+          new Promise((resolve, reject) => {
+            console.log("callWS", JSON.stringify(message));
+            setTimeout(() => {
+              switch (mode.value) {
+                case "empty":
+                  return resolve(response({ results: [] }));
+                case "no-dataset":
+                  return resolve(response({ dataset: null, results: [] }));
+                case "error":
+                  return reject({ code: "unknown_error", message: "Something broke" });
+                case "not-loaded":
+                  return reject({ code: "not_loaded", message: "Not loaded" });
+                default:
+                  return resolve(response());
+              }
+            }, message.refresh ? 1500 : 300);
+          }),
+      };
+
+      const panel = document.createElement("marketplace-discovery-panel");
+      panel.hass = hass;
+      panel.narrow = false;
+      panel.route = { prefix: "/marketplace-discovery", path: "" };
+      panel.panel = { url_path: "marketplace-discovery", title: "Marketplace discovery", config: null };
+      document.body.append(panel);
+      window.panel = panel;
+
+      document.getElementById("narrow").addEventListener("change", (ev) => (panel.narrow = ev.target.checked));
+      document.getElementById("dark").addEventListener("change", (ev) =>
+        document.documentElement.classList.toggle("dark", ev.target.checked),
+      );
+      document.getElementById("hidden").addEventListener("change", (ev) => {
+        panel.hass = { ...panel.hass, dockedSidebar: ev.target.checked ? "always_hidden" : "docked" };
+      });
+      window.addEventListener("location-changed", () => console.log("location-changed", location.pathname));
+      panel.addEventListener("hass-toggle-menu", () => console.log("hass-toggle-menu"));
+    </script>
+  </body>
+</html>
