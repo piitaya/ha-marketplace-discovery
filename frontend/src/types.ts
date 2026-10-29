@@ -14,6 +14,10 @@ export interface MatchResult {
   domain: string;
   name: string;
   installed: boolean;
+  ignored?: boolean;
+  stars?: number | null;
+  last_updated?: string | null;
+  description?: string | null;
   source: Source;
   matchers: Matcher[];
   device: MatchDevice;
@@ -30,6 +34,7 @@ export interface MatchesResponse {
   dataset: DatasetInfo | null;
   sources: Record<Source, boolean>;
   results: MatchResult[];
+  ignored?: string[];
 }
 
 export interface MatchesRequest {
@@ -37,12 +42,30 @@ export interface MatchesRequest {
   refresh?: boolean;
 }
 
+export interface IgnoreRequest {
+  type: "marketplace_discovery/ignore" | "marketplace_discovery/unignore";
+  repository_ids: string[];
+}
+
+export interface IgnoreResponse {
+  ignored: string[];
+}
+
+export interface BrandsTokenRequest {
+  type: "brands/access_token";
+}
+
+export interface BrandsTokenResponse {
+  token: string;
+}
+
 export interface HomeAssistant {
-  callWS<T>(message: MatchesRequest): Promise<T>;
+  callWS<T>(message: MatchesRequest | IgnoreRequest | BrandsTokenRequest): Promise<T>;
   config: { version: string };
   language?: string;
   locale?: { language: string };
   kioskMode?: boolean;
+  themes?: { darkMode?: boolean };
   dockedSidebar?: "docked" | "always_hidden" | "auto";
   auth?: { external?: { config?: { hasSidebar?: boolean } } };
 }

@@ -11,6 +11,7 @@ from custom_components.marketplace_discovery import sources
 from custom_components.marketplace_discovery.const import (
     DATASET_URL,
     DOMAIN,
+    IGNORED_STORAGE_KEY,
     PANEL_STATIC_URL,
     PANEL_URL_PATH,
     STORAGE_KEY,
@@ -174,7 +175,7 @@ async def test_failed_setup_stops_browser(
     mock_browser.return_value.async_cancel.assert_awaited_once()
 
 
-async def test_remove_entry_deletes_cache(
+async def test_remove_entry_deletes_storage(
     hass: HomeAssistant,
     hass_storage: dict[str, Any],
     aioclient_mock: AiohttpClientMocker,
@@ -184,8 +185,11 @@ async def test_remove_entry_deletes_cache(
     aioclient_mock.get(DATASET_URL, json=dataset_payload)
     assert await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
+    await config_entry.runtime_data.ignored.async_add(["200"])
     assert STORAGE_KEY in hass_storage
+    assert IGNORED_STORAGE_KEY in hass_storage
 
     assert await hass.config_entries.async_remove(config_entry.entry_id)
     await hass.async_block_till_done()
     assert STORAGE_KEY not in hass_storage
+    assert IGNORED_STORAGE_KEY not in hass_storage

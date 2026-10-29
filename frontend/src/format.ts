@@ -1,4 +1,4 @@
-import type { MatchDevice, MatchResult, Matcher, Source } from "./types.ts";
+import type { MatchResult, Matcher, Source } from "./types.ts";
 
 export const SOURCES: readonly Source[] = ["bluetooth", "zeroconf", "dhcp", "ssdp"];
 
@@ -42,14 +42,20 @@ export const formatMatcher = (source: Source, matcher: Matcher): string => {
 };
 
 export interface DeviceSummary {
-  name: string;
-  address: string | null;
+  name: string | null;
+  details: string[];
 }
 
-export const describeDevice = (device: MatchDevice): DeviceSummary => {
-  const address = device.ip || device.mac || null;
-  const name = device.name || address || "Unknown device";
-  return { name, address: address === name ? null : address };
+export const describeDevice = (result: MatchResult): DeviceSummary => {
+  const { name, ip, mac } = result.device;
+  const addresses = [ip, mac].filter((part): part is string => typeof part === "string" && part !== "");
+  const label = name || addresses[0] || null;
+  const details = addresses.filter((address) => address !== label);
+  const rssi = result.discovery?.rssi;
+  if (result.source === "bluetooth" && typeof rssi === "number") {
+    details.push(`${rssi} dBm`);
+  }
+  return { name: label, details };
 };
 
 export const searchText = (result: MatchResult): string =>
@@ -74,3 +80,8 @@ export const matchesFilter = (result: MatchResult, filter: string): boolean => {
   const text = searchText(result);
   return terms.every((term) => text.includes(term));
 };
+
+export const brandIconUrl = (domain: string, token: string | undefined, dark: boolean): string | undefined =>
+  token
+    ? `/api/brands/marketplace/${encodeURIComponent(domain)}/${dark ? "dark_" : ""}icon.png?token=${encodeURIComponent(token)}`
+    : undefined;

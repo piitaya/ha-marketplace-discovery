@@ -1,0 +1,12 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Compare les appareils découverts par Home Assistant avec les règles de découverte des intégrations du Marketplace. Les résultats s'affichent dans le panneau Marketplace discovery."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Déjà configuré. Une seule configuration possible."
+    }
+  }
+}

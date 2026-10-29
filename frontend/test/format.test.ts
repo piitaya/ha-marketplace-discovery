@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { describeDevice, formatMatcher, matchesFilter } from "../src/format.ts";
+import { brandIconUrl, describeDevice, formatMatcher, matchesFilter } from "../src/format.ts";
 import type { MatchResult } from "../src/types.ts";
 
 const result: MatchResult = {
@@ -30,20 +30,46 @@ test("formats matchers per source", () => {
   assert.equal(formatMatcher("ssdp", { manufacturer: "Acme" }), "ssdp: manufacturer=Acme");
 });
 
-test("describes a device with a fallback name", () => {
-  assert.deepEqual(describeDevice({ name: "plug", ip: "10.0.0.2", mac: null }), { name: "plug", address: "10.0.0.2" });
-  assert.deepEqual(describeDevice({ name: null, ip: null, mac: "aa:bb:cc:dd:ee:ff" }), {
-    name: "aa:bb:cc:dd:ee:ff",
-    address: null,
+test("describes a device with its addresses", () => {
+  assert.deepEqual(describeDevice(result), { name: "zhimi-airpurifier", details: ["192.168.1.20"] });
+  assert.deepEqual(
+    describeDevice({ ...result, source: "dhcp", device: { name: "plug", ip: "10.0.0.2", mac: "aa:bb:cc:dd:ee:ff" } }),
+    { name: "plug", details: ["10.0.0.2", "aa:bb:cc:dd:ee:ff"] },
+  );
+  assert.deepEqual(describeDevice({ ...result, device: { name: null, ip: "10.0.0.3", mac: null } }), {
+    name: "10.0.0.3",
+    details: [],
   });
-  assert.deepEqual(describeDevice({ name: null, ip: null, mac: null }), { name: "Unknown device", address: null });
+  assert.deepEqual(describeDevice({ ...result, device: { name: null, ip: null, mac: null } }), {
+    name: null,
+    details: [],
+  });
+});
+
+test("adds the signal strength of Bluetooth devices", () => {
+  const bluetooth: MatchResult = {
+    ...result,
+    source: "bluetooth",
+    device: { name: "Apple device", ip: null, mac: "0D:64:A6:5E:D0:AB" },
+    discovery: { rssi: -48 },
+  };
+  assert.deepEqual(describeDevice(bluetooth), { name: "Apple device", details: ["0D:64:A6:5E:D0:AB", "-48 dBm"] });
+  assert.deepEqual(describeDevice({ ...bluetooth, discovery: {} }).details, ["0D:64:A6:5E:D0:AB"]);
+  assert.deepEqual(describeDevice({ ...bluetooth, source: "dhcp" }).details, ["0D:64:A6:5E:D0:AB"]);
 });
 
 test("filters on name, device and matcher text", () => {
   assert.ok(matchesFilter(result, ""));
   assert.ok(matchesFilter(result, "xiaomi"));
   assert.ok(matchesFilter(result, "OWNER/xiaomi"));
+  assert.ok(matchesFilter(result, "xiaomi_x"));
   assert.ok(matchesFilter(result, "192.168.1.20"));
   assert.ok(matchesFilter(result, "_miio zhimi*"));
   assert.ok(!matchesFilter(result, "shelly"));
+});
+
+test("builds brand icon links only with a token", () => {
+  assert.equal(brandIconUrl("bermuda", undefined, false), undefined);
+  assert.equal(brandIconUrl("bermuda", "abc", false), "/api/brands/marketplace/bermuda/icon.png?token=abc");
+  assert.equal(brandIconUrl("bermuda", "a b", true), "/api/brands/marketplace/bermuda/dark_icon.png?token=a%20b");
 });

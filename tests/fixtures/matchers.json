@@ -2,10 +2,13 @@
   "generated_at": "2026-10-29T08:15:39+00:00",
   "integrations": {
     "1001666416": {
+      "description": "Actions to control player queues for Music Assistant",
       "domain": "mass_queue",
       "full_name": "droans/mass_queue",
+      "last_updated": "2026-10-20T21:31:19Z",
       "name": "Music Assistant Queue Actions",
       "ref": "v0.10.4",
+      "stars": 75,
       "zeroconf": [
         {
           "type": "_mass._tcp.local."
@@ -19,16 +22,22 @@
           "manufacturer_id": 2407
         }
       ],
+      "description": "Home Assistant Integration for Neo Smart Blinds Blue",
       "domain": "neosmartblue",
       "full_name": "ikifar2012/neosmartblue-ha",
+      "last_updated": "2026-10-27T03:21:51Z",
       "name": "Neo Smart Blinds Blue",
-      "ref": "0.1.2"
+      "ref": "0.1.2",
+      "stars": 4
     },
     "1014269100": {
+      "description": "A Home Assistant integration for heat pumps with a KEBA KeEnergy control system.",
       "domain": "keba_keenergy",
       "full_name": "superbox-dev/keba_keenergy",
+      "last_updated": "2026-10-28T17:12:32Z",
       "name": "KEBA KeEnergy",
       "ref": "v1.11.0",
+      "stars": 13,
       "zeroconf": [
         {
           "name": "ap440*",
@@ -37,6 +46,7 @@
       ]
     },
     "1020452819": {
+      "description": "An open source software reverse engineering project meant to decouple Roomba (i7, j7+, etc.) and other iRobot products from the cloud and easily integrate with Home Assistant. Jailbreak coming soon!",
       "dhcp": [
         {
           "hostname": "irobot-*",
@@ -57,8 +67,10 @@
       ],
       "domain": "roomba_rest980",
       "full_name": "ia74/roomba_rest980",
+      "last_updated": "2026-10-06T03:23:45Z",
       "name": "Roomba (Rest980)",
       "ref": "v1.19.2",
+      "stars": 62,
       "zeroconf": [
         {
           "name": "irobot-*",
@@ -76,14 +88,19 @@
           "local_name": "Desky*"
         }
       ],
+      "description": "Home Assistant integration for Desky standing desks via Bluetooth",
       "domain": "desky_desk",
       "full_name": "j0rdsta/ha-desky",
+      "last_updated": "2026-10-22T04:25:25Z",
       "name": "Desky Standing Desk",
-      "ref": "v2.0.1"
+      "ref": "v2.0.1",
+      "stars": 6
     },
     "1036812316": {
+      "description": "Stiebel Eltron (out-of-the-box ISG, no Modbus) integration for Home Assistant",
       "domain": "stiebel_eltron_http",
       "full_name": "pmq/stiebel-eltron-http",
+      "last_updated": "2026-10-27T05:53:20Z",
       "name": "Stiebel Eltron",
       "ref": "v1.7.0",
       "ssdp": [
@@ -91,9 +108,11 @@
           "manufacturer": "STIEBEL ELTRON",
           "modelURL": "http://www.stiebel-eltron.de/isg/"
         }
-      ]
+      ],
+      "stars": 10
     },
     "1048127126": {
+      "description": "Home Assistant / HACS integration for network/usb/serial/bluetooth  thermal printers",
       "dhcp": [
         {
           "hostname": "tm-*"
@@ -104,8 +123,10 @@
       ],
       "domain": "escpos_printer",
       "full_name": "cognitivegears/ha-escpos-thermal-printer",
+      "last_updated": "2026-10-19T23:05:51Z",
       "name": "ESC/POS Thermal Printer",
-      "ref": "v1.2.0"
+      "ref": "v1.2.0",
+      "stars": 114
     },
     "1052536792": {
       "bluetooth": [
@@ -126,10 +147,13 @@
           "local_name": "Meross-*"
         }
       ],
+      "description": "Official Home Assistant integration for Meross Wi-Fi and Bluetooth devices.",
       "domain": "meross_rpc",
       "full_name": "Meross-Tech/meross_rpc",
+      "last_updated": "2026-10-20T01:26:03Z",
       "name": "Meross",
       "ref": "v1.2.0",
+      "stars": 3,
       "zeroconf": [
         {
           "name": "meross*",
@@ -138,10 +162,13 @@
       ]
     },
     "1053243236": {
+      "description": "Qube heat pump integration Home Assistant",
       "domain": "qube_heatpump",
       "full_name": "MattieGit/qube_heatpump",
+      "last_updated": "2026-10-21T18:03:03Z",
       "name": "Qube heat pump",
       "ref": "v2026.10.10",
+      "stars": 3,
       "zeroconf": [
         {
           "properties": {
@@ -153,10 +180,13 @@
       ]
     },
     "1062978596": {
+      "description": "Home Assistant integration for Powersensor",
       "domain": "powersensor",
       "full_name": "DiUS/homeassistant-powersensor",
+      "last_updated": "2026-10-07T04:40:18Z",
       "name": "Powersensor",
       "ref": "v1.0.1",
+      "stars": 1,
       "zeroconf": [
         {
           "type": "_powersensor._udp.local."
@@ -164,6 +194,7 @@
       ]
     },
     "1066027219": {
+      "description": "Qolsys Panel Integration for Home Assistant",
       "dhcp": [
         {
           "macaddress": "3C3178*"
@@ -174,19 +205,24 @@
       ],
       "domain": "qolsys_panel",
       "full_name": "EHylands/ha-qolsys-panel",
+      "last_updated": "2026-10-29T01:18:16Z",
       "name": "Qolsys Panel",
-      "ref": "v1.12.2"
+      "ref": "v1.12.2",
+      "stars": 75
     },
     "1092976275": {
+      "description": "Home Assistant integration to control WireGuard VPN connections on AVM FritzBox routers",
       "domain": "fritzbox_vpn",
       "full_name": "rosch100/fritzbox-vpn",
+      "last_updated": "2026-10-16T19:34:21Z",
       "name": "Fritz!Box VPN",
       "ref": "v1.2.10",
       "ssdp": [
         {
           "st": "urn:schemas-upnp-org:device:fritzbox:1"
         }
-      ]
+      ],
+      "stars": 9
     },
     "1095872281": {
       "bluetooth": [
@@ -195,10 +231,13 @@
           "manufacturer_id": 89
         }
       ],
+      "description": "Home Assistant integration for Solamagic 2000BT Bluetooth heaters",
       "domain": "solamagic",
       "full_name": "Pocke01/homeassistant-solamagic",
+      "last_updated": "2026-04-29T19:52:45Z",
       "name": "Solamagic",
-      "ref": "v0.5.13"
+      "ref": "v0.5.13",
+      "stars": 1
     },
     "1124629220": {
       "bluetooth": [
@@ -207,10 +246,13 @@
           "manufacturer_id": 9286
         }
       ],
+      "description": "Home Assistant Integration for OpenDisplay",
       "domain": "opendisplay",
       "full_name": "OpenDisplay/Home_Assistant_Integration",
+      "last_updated": "2026-10-28T21:01:10Z",
       "name": "OpenDisplay",
       "ref": "3.2.0",
+      "stars": 89,
       "zeroconf": [
         {
           "type": "_opendisplay._tcp.local."
@@ -223,12 +265,16 @@
           "service_uuid": "847bba10-a31f-41bf-a35f-3f73a22bb307"
         }
       ],
+      "description": "HomeAssistant integration for Blanco Unit via Bluetooth.",
       "domain": "blanco_unit",
       "full_name": "Nailik/blanco_unit",
+      "last_updated": "2026-10-17T21:29:12Z",
       "name": "Blanco Unit",
-      "ref": "0.0.12"
+      "ref": "0.0.12",
+      "stars": 16
     },
     "1130003818": {
+      "description": "A Homey integration for Home Assistant that automatically discovers and connects all your Homey devices, making them available natively in Home Assistant.",
       "dhcp": [
         {
           "macaddress": "9013DA*"
@@ -236,8 +282,10 @@
       ],
       "domain": "homey_hass",
       "full_name": "ifMike/homeyHASS",
+      "last_updated": "2026-10-12T09:56:55Z",
       "name": "Homey 2.x",
       "ref": "v2.1.4",
+      "stars": 11,
       "zeroconf": [
         {
           "type": "_homey._tcp.local."
@@ -245,17 +293,21 @@
       ]
     },
     "1148686466": {
+      "description": "Plugin for 2N intercoms integration to Home Assistant",
       "domain": "2n_intercom",
       "full_name": "mastalir1980/ha-2N-intercom",
+      "last_updated": "2026-10-26T19:16:53Z",
       "name": "2N Intercom",
       "ref": "v1.5.1",
       "ssdp": [
         {
           "manufacturer": "2N, part of Axis group"
         }
-      ]
+      ],
+      "stars": 2
     },
     "1188974075": {
+      "description": "Home Assistant integration for the SunRiser 8/10 LED aquarium controller. Control per-channel lights, read DS1820 temperature sensor, control day/week planners, and monitor weather simulation — installed via HACS.",
       "dhcp": [
         {
           "hostname": "sunriser*"
@@ -263,10 +315,13 @@
       ],
       "domain": "sunriser",
       "full_name": "MrInterBugs/ha-sunriser",
+      "last_updated": "2026-10-23T10:04:46Z",
       "name": "SunRiser",
-      "ref": "v2.2.3"
+      "ref": "v2.2.3",
+      "stars": 2
     },
     "1199759176": {
+      "description": "🏠 Local Home Assistant integration for LaMetric Time and Sky. Control your devices entirely via your local network—no cloud dependency for notifications or lighting effects.",
       "dhcp": [
         {
           "hostname": "lametric-*"
@@ -274,6 +329,7 @@
       ],
       "domain": "lametric_hass_local",
       "full_name": "ElectroAttacks/lametric-hass-local",
+      "last_updated": "2026-10-21T01:08:54Z",
       "name": "LaMetric Local",
       "ref": "v4.0.2",
       "ssdp": [
@@ -281,6 +337,7 @@
           "deviceType": "urn:schemas-upnp-org:device:LaMetric:1"
         }
       ],
+      "stars": 6,
       "zeroconf": [
         {
           "type": "_lametric-api._tcp.local."
@@ -288,8 +345,10 @@
       ]
     },
     "1286470671": {
+      "description": "Custom integration for Denon AVR receivers in Home Assistant",
       "domain": "denon_avr",
       "full_name": "LaserGuruGuy/denon_avr",
+      "last_updated": "2026-09-19T14:48:00Z",
       "name": "Denon AVR",
       "ref": "v1.1.2",
       "ssdp": [
@@ -297,7 +356,8 @@
           "deviceType": "urn:schemas-denon-com:device:AiosDevice:1",
           "manufacturer": "Denon"
         }
-      ]
+      ],
+      "stars": 2
     }
   },
   "stats": {

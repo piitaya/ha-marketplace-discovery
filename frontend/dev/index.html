@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Marketplace discovery panel harness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Roboto+Mono:wght@400&display=swap" />
     <style>
       @keyframes spin {
         to {
@@ -15,12 +17,27 @@
         --primary-text-color: #141414;
         --secondary-text-color: #5e5e5e;
         --primary-background-color: #fafafa;
-        --secondary-background-color: #f2f2f2;
+        --secondary-background-color: #e5e5e5;
         --card-background-color: #ffffff;
         --divider-color: rgba(0, 0, 0, 0.12);
-        --app-header-background-color: #fafafa;
+        --app-header-background-color: #ffffff;
         --app-header-text-color: #141414;
         --app-header-border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        --ha-color-primary-30: #006787;
+        --ha-color-neutral-80: #cccccc;
+        --ha-color-border-neutral-quiet: #e6e6e6;
+        --ha-color-fill-neutral-quiet-resting: #f3f3f3;
+        --ha-color-fill-neutral-normal-resting: #e6e6e6;
+        --ha-color-fill-disabled-normal-resting: #f3f3f3;
+        --ha-color-on-disabled-normal: #b1b1b1;
+        --ha-color-border-neutral-normal: #989898;
+        --ha-color-on-neutral-normal: #5e5e5e;
+        --ha-color-fill-primary-quiet-resting: #eff9fe;
+        --ha-color-fill-primary-normal-resting: #dff3fc;
+        --ha-color-on-primary-normal: #009ac7;
+        --ha-color-on-primary-loud: #ffffff;
+        --ha-color-fill-success-normal-resting: #c2f2c1;
+        --ha-color-on-success-normal: #036730;
         color-scheme: light;
       }
       :root.dark {
@@ -30,9 +47,22 @@
         --secondary-background-color: #282828;
         --card-background-color: #1c1c1c;
         --divider-color: rgba(225, 225, 225, 0.12);
-        --app-header-background-color: #111111;
+        --app-header-background-color: #1c1c1c;
         --app-header-text-color: #e1e1e1;
         --app-header-border-bottom: 1px solid rgba(225, 225, 225, 0.12);
+        --ha-color-border-neutral-quiet: #5e5e5e;
+        --ha-color-fill-neutral-quiet-resting: #141414;
+        --ha-color-fill-neutral-normal-resting: #202020;
+        --ha-color-fill-disabled-normal-resting: #363636;
+        --ha-color-on-disabled-normal: #7a7a7a;
+        --ha-color-border-neutral-normal: #7a7a7a;
+        --ha-color-on-neutral-normal: #989898;
+        --ha-color-fill-primary-quiet-resting: #001721;
+        --ha-color-fill-primary-normal-resting: #002e3e;
+        --ha-color-on-primary-normal: #37c8fd;
+        --ha-color-on-primary-loud: #ffffff;
+        --ha-color-fill-success-normal-resting: #052310;
+        --ha-color-on-success-normal: #00ac49;
         color-scheme: dark;
       }
       body {
@@ -55,11 +85,17 @@
     <div id="controls">
       <label>Response <select id="mode">
         <option value="results">results</option>
+        <option value="sources-off">SSDP not set up</option>
         <option value="empty">empty</option>
         <option value="no-dataset">dataset unavailable</option>
         <option value="error">error</option>
         <option value="not-loaded">not loaded</option>
       </select></label>
+      <label>Language <select id="language">
+        <option value="en">en</option>
+        <option value="fr">fr</option>
+      </select></label>
+      <label><input type="checkbox" id="ignore-fails" /> ignore fails</label>
       <label><input type="checkbox" id="narrow" /> narrow</label>
       <label><input type="checkbox" id="dark" /> dark</label>
       <label><input type="checkbox" id="hidden" /> sidebar always hidden</label>
@@ -70,26 +106,49 @@
       import "./build/panel.js";
 
       const mode = document.getElementById("mode");
+      const ignoreFails = document.getElementById("ignore-fails");
+      const ignored = new Set();
       const hass = {
         config: { version: "2026.10.4" },
+        themes: { darkMode: false },
         locale: { language: "en" },
         kioskMode: false,
         dockedSidebar: "docked",
         callWS: (message) =>
           new Promise((resolve, reject) => {
             console.log("callWS", JSON.stringify(message));
+            if (message.type === "brands/access_token") {
+              return setTimeout(() => resolve({ token: "dev-token" }), 100);
+            }
+            if (message.type === "marketplace_discovery/ignore" || message.type === "marketplace_discovery/unignore") {
+              return setTimeout(() => {
+                if (ignoreFails.checked) {
+                  return reject({ code: "unknown_error", message: "Could not save the ignore list" });
+                }
+                for (const id of message.repository_ids) {
+                  if (message.type === "marketplace_discovery/ignore") {
+                    ignored.add(id);
+                  } else {
+                    ignored.delete(id);
+                  }
+                }
+                resolve({ ignored: [...ignored].sort() });
+              }, 300);
+            }
             setTimeout(() => {
               switch (mode.value) {
+                case "sources-off":
+                  return resolve(response(ignored, { sources: { bluetooth: true, zeroconf: true, dhcp: true, ssdp: false } }));
                 case "empty":
-                  return resolve(response({ results: [] }));
+                  return resolve(response(ignored, { results: [] }));
                 case "no-dataset":
-                  return resolve(response({ dataset: null, results: [] }));
+                  return resolve(response(ignored, { dataset: null, results: [] }));
                 case "error":
                   return reject({ code: "unknown_error", message: "Something broke" });
                 case "not-loaded":
                   return reject({ code: "not_loaded", message: "Not loaded" });
                 default:
-                  return resolve(response());
+                  return resolve(response(ignored));
               }
             }, message.refresh ? 1500 : 300);
           }),
@@ -103,10 +162,15 @@
       document.body.append(panel);
       window.panel = panel;
 
+      document.getElementById("language").addEventListener("change", (ev) => {
+        document.documentElement.lang = ev.target.value;
+        panel.hass = { ...panel.hass, locale: { language: ev.target.value } };
+      });
       document.getElementById("narrow").addEventListener("change", (ev) => (panel.narrow = ev.target.checked));
-      document.getElementById("dark").addEventListener("change", (ev) =>
-        document.documentElement.classList.toggle("dark", ev.target.checked),
-      );
+      document.getElementById("dark").addEventListener("change", (ev) => {
+        document.documentElement.classList.toggle("dark", ev.target.checked);
+        panel.hass = { ...panel.hass, themes: { darkMode: ev.target.checked } };
+      });
       document.getElementById("hidden").addEventListener("change", (ev) => {
         panel.hass = { ...panel.hass, dockedSidebar: ev.target.checked ? "always_hidden" : "docked" };
       });

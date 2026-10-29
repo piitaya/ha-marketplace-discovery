@@ -23,6 +23,8 @@ _LOGGER = logging.getLogger(__name__)
 @callback
 def async_setup(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_matches)
+    websocket_api.async_register_command(hass, ws_ignore)
+    websocket_api.async_register_command(hass, ws_unignore)
 
 
 def _bluetooth_device(info: Any) -> dict[str, Any]:
@@ -146,9 +148,15 @@ async def _async_installed_domains(hass: HomeAssistant) -> set[str]:
     return set(custom) | set(hass.config_entries.async_domains())
 
 
+def _optional(value: Any, expected: type) -> Any:
+    if type(value) is not expected:
+        return None
+    return value
+
+
 def _sort_key(result: dict[str, Any]) -> tuple[bool, str, str]:
     return (
-        result["installed"],
+        result["installed"] or result["ignored"],
         (result["name"] or "").casefold(),
         (result["device"]["name"] or "").casefold(),
     )
@@ -163,6 +171,7 @@ async def async_build_results(
     matchers = dataset.matchers
     integrations = dataset.integrations
     installed_domains = await _async_installed_domains(hass)
+    ignored = data.ignored.repository_ids
     collected = await _async_collect(hass, matchers)
 
     grouped: dict[tuple[str, Source, str], dict[str, Any]] = {}
@@ -178,7 +187,11 @@ async def async_build_results(
                         "full_name": integration.get("full_name"),
                         "domain": integration.get("domain"),
                         "name": integration.get("name") or integration.get("domain"),
+                        "stars": _optional(integration.get("stars"), int),
+                        "last_updated": _optional(integration.get("last_updated"), str),
+                        "description": _optional(integration.get("description"), str),
                         "installed": integration.get("domain") in installed_domains,
+                        "ignored": match.repository_id in ignored,
                         "source": source,
                         "matchers": [],
                         "device": device(info),
@@ -187,6 +200,18 @@ async def async_build_results(
                 if match.matcher not in result["matchers"]:
                     result["matchers"].append(match.matcher)
     return sorted(grouped.values(), key=_sort_key)
+
+
+@callback
+def _async_loaded_data(
+    connection: websocket_api.ActiveConnection, msg: dict[str, Any]
+) -> MarketplaceDiscoveryData | None:
+    if not (entries := connection.hass.config_entries.async_loaded_entries(DOMAIN)):
+        connection.send_error(
+            msg["id"], "not_loaded", "Marketplace discovery is not loaded"
+        )
+        return None
+    return entries[0].runtime_data
 
 
 @websocket_api.require_admin
@@ -202,12 +227,8 @@ async def ws_matches(
     connection: websocket_api.ActiveConnection,
     msg: dict[str, Any],
 ) -> None:
-    if not (entries := hass.config_entries.async_loaded_entries(DOMAIN)):
-        connection.send_error(
-            msg["id"], "not_loaded", "Marketplace discovery is not loaded"
-        )
+    if (data := _async_loaded_data(connection, msg)) is None:
         return
-    data: MarketplaceDiscoveryData = entries[0].runtime_data
     if data.dataset.data is None:
         await data.dataset.async_update()
     if msg["refresh"]:
@@ -218,5 +239,44 @@ async def ws_matches(
             "dataset": data.dataset.meta,
             "sources": sources.async_loaded_sources(hass),
             "results": await async_build_results(hass, data),
+            "ignored": data.ignored.sorted_ids,
         },
     )
+
+
+@websocket_api.require_admin
+@websocket_api.websocket_command(
+    {
+        probatio.Required("type"): "marketplace_discovery/ignore",
+        probatio.Required("repository_ids"): [str],
+    }
+)
+@websocket_api.async_response
+async def ws_ignore(
+    hass: HomeAssistant,
+    connection: websocket_api.ActiveConnection,
+    msg: dict[str, Any],
+) -> None:
+    if (data := _async_loaded_data(connection, msg)) is None:
+        return
+    await data.ignored.async_add(msg["repository_ids"])
+    connection.send_result(msg["id"], {"ignored": data.ignored.sorted_ids})
+
+
+@websocket_api.require_admin
+@websocket_api.websocket_command(
+    {
+        probatio.Required("type"): "marketplace_discovery/unignore",
+        probatio.Required("repository_ids"): [str],
+    }
+)
+@websocket_api.async_response
+async def ws_unignore(
+    hass: HomeAssistant,
+    connection: websocket_api.ActiveConnection,
+    msg: dict[str, Any],
+) -> None:
+    if (data := _async_loaded_data(connection, msg)) is None:
+        return
+    await data.ignored.async_remove(msg["repository_ids"])
+    connection.send_result(msg["id"], {"ignored": data.ignored.sorted_ids})

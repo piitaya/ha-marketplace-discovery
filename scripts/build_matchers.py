@@ -376,6 +376,16 @@ def build_matchers(
     return matchers
 
 
+def optional_int(value: Any) -> int | None:
+    return value if type(value) is int and value >= 0 else None
+
+
+def optional_text(value: Any) -> str | None:
+    if not isinstance(value, str) or not (value := value.strip()):
+        return None
+    return value
+
+
 def catalog_entries(data: Any, dropped: Counter[str]) -> dict[str, dict[str, Any]]:
     if not isinstance(data, dict):
         raise SystemExit("Catalog data is not a JSON object")
@@ -405,8 +415,33 @@ def catalog_entries(data: Any, dropped: Counter[str]) -> dict[str, dict[str, Any
             "domain": domain,
             "ref": ref,
             "manifest_name": manifest_name if isinstance(manifest_name, str) else None,
+            "stars": optional_int(item.get("stargazers_count")),
+            "last_updated": optional_text(item.get("last_updated")),
+            "description": optional_text(item.get("description")),
         }
     return entries
+
+
+def build_integration(
+    entry: dict[str, Any], manifest: dict[str, Any], dropped: Counter[str]
+) -> dict[str, Any] | None:
+    matchers = build_matchers(manifest, dropped)
+    if not matchers:
+        return None
+    domain = manifest.get("domain")
+    name = manifest.get("name")
+    return {
+        "full_name": entry["full_name"],
+        "domain": domain if isinstance(domain, str) and domain else entry["domain"],
+        "name": name
+        if isinstance(name, str) and name
+        else entry["manifest_name"] or entry["domain"],
+        "ref": entry["ref"],
+        "stars": entry["stars"],
+        "last_updated": entry["last_updated"],
+        "description": entry["description"],
+        **matchers,
+    }
 
 
 def prune_cache(cache_dir: Path, keep: set[str]) -> int:
@@ -479,21 +514,8 @@ def main() -> int:
                 )
             continue
         manifests += 1
-        manifest = record["manifest"]
-        matchers = build_matchers(manifest, dropped)
-        if not matchers:
-            continue
-        domain = manifest.get("domain")
-        name = manifest.get("name")
-        integrations[repository_id] = {
-            "full_name": entry["full_name"],
-            "domain": domain if isinstance(domain, str) and domain else entry["domain"],
-            "name": name
-            if isinstance(name, str) and name
-            else entry["manifest_name"] or entry["domain"],
-            "ref": entry["ref"],
-            **matchers,
-        }
+        if integration := build_integration(entry, record["manifest"], dropped):
+            integrations[repository_id] = integration
 
     pruned = prune_cache(args.cache_dir, set(entries))
     fetch_errors = dropped["manifest_fetch_error"]

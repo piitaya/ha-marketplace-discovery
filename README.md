@@ -32,9 +32,15 @@ Or go to **Settings** > **Devices & services** > **Add integration** and search 
 
 ## Usage
 
-Open **Marketplace discovery** in the sidebar (administrators only) and select **Search**. **Search with refresh** scans the network again for a few seconds first.
+Open **Marketplace discovery** in the sidebar (administrators only) and select **Scan**. It scans your network for about 10 seconds, then lists the integrations that match your devices.
 
-Each result shows the integration, the matched device and the discovery rule that fired, with a link to the integration in the Marketplace. If a result is wrong, use **Report false positive**.
+Use the search field to find an integration, device, address or rule, and the protocol chips to narrow the list. Installed and ignored integrations are hidden until you turn on **Installed** or **Ignored**.
+
+Each card shows the integration with its GitHub stars, when it was last updated and a preview of the matched devices. Expand it to read the description, the discovery rule that matched each device and the full device list, then select **Open in Marketplace** to install it.
+
+If an integration is not relevant, select **Ignore** on its card. To ignore several at once, enter selection mode with the button next to the search field, pick the cards and select **Ignore selected**. The ignored list is kept across restarts and you can undo it with **Stop ignoring**.
+
+The panel is available in English and French and follows your Home Assistant language.
 
 ## Known limitations
 

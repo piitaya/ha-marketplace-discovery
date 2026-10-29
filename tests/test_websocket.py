@@ -12,7 +12,11 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClien
 from pytest_homeassistant_custom_component.typing import WebSocketGenerator
 
 from custom_components.marketplace_discovery import sources
-from custom_components.marketplace_discovery.const import DATASET_URL, DOMAIN
+from custom_components.marketplace_discovery.const import (
+    DATASET_URL,
+    DOMAIN,
+    IGNORED_STORAGE_KEY,
+)
 from homeassistant.components.bluetooth import BluetoothServiceInfoBleak
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.service_info.dhcp import DhcpServiceInfo
@@ -98,12 +102,20 @@ async def config_entry(
     return entry
 
 
+async def send_command(
+    hass_ws_client: WebSocketGenerator, hass: HomeAssistant, command: str, **kwargs: Any
+) -> dict[str, Any]:
+    client = await hass_ws_client(hass)
+    await client.send_json_auto_id(
+        {"type": f"marketplace_discovery/{command}", **kwargs}
+    )
+    return await client.receive_json()
+
+
 async def send(
     hass_ws_client: WebSocketGenerator, hass: HomeAssistant, **kwargs: Any
 ) -> dict[str, Any]:
-    client = await hass_ws_client(hass)
-    await client.send_json_auto_id({"type": "marketplace_discovery/matches", **kwargs})
-    return await client.receive_json()
+    return await send_command(hass_ws_client, hass, "matches", **kwargs)
 
 
 @pytest.mark.usefixtures("config_entry")
@@ -140,7 +152,11 @@ async def test_matches(
         "full_name": "acme/acme-lights",
         "domain": "acme_lights",
         "name": "Acme Lights",
+        "stars": 2108,
+        "last_updated": "2026-10-20T08:00:00Z",
+        "description": "Control Acme lights locally.",
         "installed": False,
+        "ignored": False,
         "source": "bluetooth",
         "matchers": [{"manufacturer_id": 1234, "manufacturer_data_start": [1, 2]}],
         "device": {"name": "Acme BLE", "ip": None, "mac": "AA:BB:CC:DD:EE:01"},
@@ -190,6 +206,10 @@ async def test_matches(
     }
     assert installed["installed"] is True
     assert installed["name"] == "already here"
+    assert zeroconf["stars"] is None
+    assert zeroconf["last_updated"] is None
+    assert zeroconf["description"] is None
+    assert result["ignored"] == []
 
 
 async def test_matches_groups_matchers_per_device(
@@ -404,3 +424,170 @@ async def test_dataset_unavailable_then_downloaded(
     msg = await send(hass_ws_client, hass)
     assert msg["result"]["dataset"]["integrations"] == 3
     assert len(msg["result"]["results"]) == 5
+
+
+def stored(repository_ids: Any) -> dict[str, Any]:
+    return {
+        "version": 1,
+        "minor_version": 1,
+        "key": IGNORED_STORAGE_KEY,
+        "data": {"repository_ids": repository_ids},
+    }
+
+
+@pytest.mark.usefixtures("config_entry")
+async def test_ignore_and_unignore(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    hass_storage: dict[str, Any],
+    collectors: dict[str, MagicMock],
+) -> None:
+    with patch.object(sources, "async_refresh", AsyncMock()) as refresh:
+        msg = await send_command(
+            hass_ws_client, hass, "ignore", repository_ids=["300", "200", "300"]
+        )
+        assert msg["success"]
+        assert msg["result"] == {"ignored": ["200", "300"]}
+        assert hass_storage[IGNORED_STORAGE_KEY]["data"] == {
+            "repository_ids": ["200", "300"]
+        }
+
+        msg = await send_command(
+            hass_ws_client, hass, "unignore", repository_ids=["300", "999"]
+        )
+        assert msg["success"]
+        assert msg["result"] == {"ignored": ["200"]}
+        assert hass_storage[IGNORED_STORAGE_KEY]["data"] == {"repository_ids": ["200"]}
+
+    refresh.assert_not_awaited()
+    for collector in collectors.values():
+        collector.assert_not_called()
+
+
+async def test_ignored_survives_reload(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    config_entry: MockConfigEntry,
+) -> None:
+    msg = await send_command(hass_ws_client, hass, "ignore", repository_ids=["200"])
+    assert msg["success"]
+
+    assert await hass.config_entries.async_reload(config_entry.entry_id)
+    await hass.async_block_till_done()
+    assert config_entry.runtime_data.ignored.repository_ids == {"200"}
+
+
+@pytest.mark.usefixtures("collectors")
+async def test_matches_with_stored_ignore_list(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    hass_storage[IGNORED_STORAGE_KEY] = stored(["999", "200"])
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    MockConfigEntry(domain="already_here").add_to_hass(hass)
+    entry = MockConfigEntry(domain=DOMAIN)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    msg = await send(hass_ws_client, hass)
+    assert msg["success"]
+    result = msg["result"]
+    assert result["ignored"] == ["200", "999"]
+    assert [
+        (r["repository_id"], r["source"], r["installed"], r["ignored"])
+        for r in result["results"]
+    ] == [
+        ("100", "bluetooth", False, False),
+        ("100", "dhcp", False, False),
+        ("300", "dhcp", True, False),
+        ("200", "ssdp", False, True),
+        ("200", "zeroconf", False, True),
+    ]
+
+
+@pytest.mark.parametrize(
+    "repository_ids", [None, "200", ["200", 5], {"200": True}], ids=repr
+)
+async def test_invalid_stored_ignore_list(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+    repository_ids: Any,
+) -> None:
+    hass_storage[IGNORED_STORAGE_KEY] = stored(repository_ids)
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    entry = MockConfigEntry(domain=DOMAIN)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    expected = {"200"} if isinstance(repository_ids, list) else set()
+    assert entry.runtime_data.ignored.repository_ids == expected
+
+
+@pytest.mark.usefixtures("collectors")
+async def test_matches_ignores_malformed_dataset_fields(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    dataset_payload["integrations"]["100"] |= {
+        "stars": True,
+        "last_updated": 1792686716,
+        "description": ["not", "text"],
+    }
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    entry = MockConfigEntry(domain=DOMAIN)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+
+    msg = await send(hass_ws_client, hass)
+    result = next(r for r in msg["result"]["results"] if r["repository_id"] == "100")
+    assert result["stars"] is None
+    assert result["last_updated"] is None
+    assert result["description"] is None
+
+
+@pytest.mark.usefixtures("config_entry")
+@pytest.mark.parametrize("command", ["ignore", "unignore"])
+async def test_ignore_requires_admin(
+    hass: HomeAssistant,
+    hass_ws_client: WebSocketGenerator,
+    hass_read_only_access_token: str,
+    hass_storage: dict[str, Any],
+    command: str,
+) -> None:
+    client = await hass_ws_client(hass, hass_read_only_access_token)
+    await client.send_json_auto_id(
+        {"type": f"marketplace_discovery/{command}", "repository_ids": ["200"]}
+    )
+    msg = await client.receive_json()
+    assert not msg["success"]
+    assert msg["error"]["code"] == "unauthorized"
+    assert IGNORED_STORAGE_KEY not in hass_storage
+
+
+@pytest.mark.parametrize("command", ["ignore", "unignore"])
+async def test_ignore_not_loaded(
+    hass: HomeAssistant, hass_ws_client: WebSocketGenerator, command: str
+) -> None:
+    assert await async_setup_component(hass, DOMAIN, {})
+    msg = await send_command(hass_ws_client, hass, command, repository_ids=["200"])
+    assert not msg["success"]
+    assert msg["error"]["code"] == "not_loaded"
+
+
+@pytest.mark.usefixtures("config_entry")
+@pytest.mark.parametrize("repository_ids", ["200", [200], None])
+async def test_ignore_invalid_request(
+    hass: HomeAssistant, hass_ws_client: WebSocketGenerator, repository_ids: Any
+) -> None:
+    msg = await send_command(
+        hass_ws_client, hass, "ignore", repository_ids=repository_ids
+    )
+    assert not msg["success"]
+    assert msg["error"]["code"] == "invalid_format"
