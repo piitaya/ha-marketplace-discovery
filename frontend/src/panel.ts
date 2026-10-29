@@ -46,6 +46,19 @@ interface SavedState {
 
 let savedState: SavedState | undefined;
 
+let savedScrollTop = 0;
+
+const findScroller = (node: Element): HTMLElement => {
+  let current: Node | null = node;
+  while (current) {
+    current = current instanceof ShadowRoot ? current.host : current.parentNode;
+    if (current instanceof HTMLElement && /^(auto|scroll)$/.test(getComputedStyle(current).overflowY)) {
+      return current;
+    }
+  }
+  return document.scrollingElement as HTMLElement;
+};
+
 const errorMessage = (err: unknown, localize: LocalizeFunc): string => {
   const { code, message } = (typeof err === "object" && err !== null ? err : {}) as ErrorLike;
   if (code === "not_loaded") {
@@ -97,6 +110,20 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   private _tokenInterval?: ReturnType<typeof setInterval>;
 
+  private _scroller?: HTMLElement;
+
+  private _restoreScroll = false;
+
+  private _onScroll = (): void => {
+    if (this._scroller && this._response) {
+      savedScrollTop = this._scroller.scrollTop;
+    }
+  };
+
+  private get _scrollTarget(): HTMLElement | Window | undefined {
+    return this._scroller === document.scrollingElement ? window : this._scroller;
+  }
+
   public connectedCallback(): void {
     super.connectedCallback();
     if (!this._response && savedState) {
@@ -107,6 +134,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       this._showInstalled = savedState.showInstalled;
       this._showIgnored = savedState.showIgnored;
       this._openCards = savedState.openCards;
+      this._restoreScroll = true;
     }
     this._tokenInterval = setInterval(() => {
       if (this.hass) {
@@ -120,6 +148,8 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
+    this._scrollTarget?.removeEventListener("scroll", this._onScroll);
+    this._scroller = undefined;
     clearInterval(this._tokenInterval);
     this._tokenInterval = undefined;
   }
@@ -138,7 +168,24 @@ export class MarketplaceDiscoveryPanel extends LitElement {
     );
   }
 
+  protected firstUpdated(): void {
+    this._scroller = findScroller(this);
+    this._scrollTarget?.addEventListener("scroll", this._onScroll, { passive: true });
+    if (this._restoreScroll) {
+      this._restoreScroll = false;
+      const top = savedScrollTop;
+      requestAnimationFrame(() => {
+        if (this._scroller) {
+          this._scroller.scrollTop = top;
+        }
+      });
+    }
+  }
+
   protected updated(): void {
+    if (!this._response) {
+      savedScrollTop = 0;
+    }
     savedState = this._response
       ? {
           response: this._response,

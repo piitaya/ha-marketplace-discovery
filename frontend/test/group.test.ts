@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildView, countDevices, devicePreview, groupByIntegration, groupByRule, sourcesOf, type ViewOptions } from "../src/group.ts";
+import { buildView, countDevices, devicePreview, groupByDevice, groupByIntegration, sourcesOf, type ViewOptions } from "../src/group.ts";
 import type { MatchDevice, MatchResult, Matcher, Source } from "../src/types.ts";
 
 const make = (
@@ -55,27 +55,37 @@ test("groups results by integration in backend order", () => {
   assert.equal(groups[0].domain, "domain_wiim");
 });
 
-test("groups results by source and identical matchers", () => {
-  const rules = groupByRule(wiim);
-  assert.equal(rules.length, 3);
-  assert.equal(rules[0].source, "zeroconf");
-  assert.deepEqual(rules[1].results, [wiim[1], wiim[2]]);
-  assert.deepEqual(rules[1].matchers, [{ st: "MediaRenderer" }]);
-  assert.deepEqual(rules[2].results, [wiim[3]]);
-});
-
-test("orders rules by protocol", () => {
-  const rules = groupByRule([wiim[2], wiim[0], lametric[1]]);
+test("lists each device once with every rule that found it", () => {
+  const devices = groupByDevice(wiim);
   assert.deepEqual(
-    rules.map((rule) => rule.source),
-    ["zeroconf", "dhcp", "ssdp"],
+    devices.map((device) => device.result.device.name),
+    ["WiiM Pro", "Samsung TV", "Sonos"],
+  );
+  assert.deepEqual(devices[0].sources, ["zeroconf", "ssdp"]);
+  assert.deepEqual(
+    devices[0].rules.map((rule) => rule.source),
+    ["zeroconf", "ssdp"],
   );
 });
 
-test("ignores matcher order when grouping rules", () => {
-  const first = make("a", "dhcp", { ip: "10.0.0.1" }, [{ hostname: "a*" }, { macaddress: "AA*" }]);
-  const second = make("a", "dhcp", { ip: "10.0.0.2" }, [{ macaddress: "AA*" }, { hostname: "a*" }]);
-  assert.equal(groupByRule([first, second]).length, 1);
+test("merges a device found by two rules of the same protocol", () => {
+  const scanner = [
+    make("escl", "zeroconf", { name: "EcoTank", ip: "10.0.1.3" }, [{ type: "_uscan._tcp.local." }]),
+    make("escl", "zeroconf", { name: "EcoTank", ip: "10.0.1.3" }, [{ type: "_uscans._tcp.local." }]),
+  ];
+  const devices = groupByDevice(scanner);
+  assert.equal(devices.length, 1);
+  assert.equal(devices[0].rules.length, 2);
+});
+
+test("merges name and addresses across protocols", () => {
+  const [device] = groupByDevice([lametric[2], lametric[1], lametric[0]]);
+  assert.deepEqual(device.result.device, { name: "LaMetric TIME", ip: "192.168.1.57", mac: "50:02:91:a8:3e:11" });
+  assert.deepEqual(device.sources, ["zeroconf", "dhcp", "ssdp"]);
+});
+
+test("keeps unnamed devices apart", () => {
+  assert.equal(groupByDevice([make("a", "ssdp", {}), make("a", "ssdp", {})]).length, 2);
 });
 
 test("counts a device seen by several protocols once", () => {

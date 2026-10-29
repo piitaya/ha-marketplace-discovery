@@ -12,11 +12,11 @@ import {
 import { css, html, LitElement, nothing, type TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
 import { describeDevice, formatMatcher, SOURCE_LABELS } from "./format.ts";
-import { countDevices, devicePreview, groupByRule, type IntegrationGroup, type RuleGroup, sourcesOf } from "./group.ts";
+import { countDevices, type DeviceEntry, devicePreview, groupByDevice, type IntegrationGroup, sourcesOf } from "./group.ts";
 import { createLocalizer, type Localizer } from "./localize.ts";
 import { navigate } from "./navigate.ts";
 import { sharedStyles } from "./styles.ts";
-import type { MatchResult, Source } from "./types.ts";
+import type { Source } from "./types.ts";
 
 export const SOURCE_ICONS: Record<Source, string> = {
   bluetooth: mdiBluetooth,
@@ -49,7 +49,7 @@ export class MpdIntegrationCard extends LitElement {
 
   @property({ attribute: false }) public logoUrl?: string;
 
-  @state() private _showAll = new Set<string>();
+  @state() private _showAll = false;
 
   @state() private _failedLogo?: string;
 
@@ -181,7 +181,7 @@ export class MpdIntegrationCard extends LitElement {
     const description = this.group.description?.trim();
     return html`
       ${description ? html`<p class="description">${description}</p>` : nothing}
-      ${groupByRule(this.group.results).map((rule) => this._renderRule(rule))}
+      ${this._renderDevices()}
       <div class="footer">
         <ha-button
           appearance=${this.narrow ? "outlined" : "plain"}
@@ -196,21 +196,18 @@ export class MpdIntegrationCard extends LitElement {
     `;
   }
 
-  private _renderRule(rule: RuleGroup): TemplateResult {
+  private _renderDevices(): TemplateResult {
     const { localize } = this.localizer;
+    const devices = groupByDevice(this.group.results);
     const limit = this.narrow ? NARROW_DEVICE_LIMIT : DEVICE_LIMIT;
-    const hasMore = rule.results.length > limit;
-    const showAll = this._showAll.has(rule.key);
-    const shown = hasMore && !showAll ? rule.results.slice(0, limit) : rule.results;
-    const count = rule.results.length;
+    const hasMore = devices.length > limit;
+    const showAll = this._showAll;
+    const shown = hasMore && !showAll ? devices.slice(0, limit) : devices;
+    const count = devices.length;
     return html`
-      <section class="rule">
-        <div class="matched">
-          <span class="matched-label">${localize("card.matched_by")}</span>
-          ${rule.matchers.map((matcher) => html`<code>${formatMatcher(rule.source, matcher)}</code>`)}
-        </div>
+      <section class="device-list">
         <ul class="devices">
-          ${shown.map((result) => this._renderDevice(result))}
+          ${shown.map((device) => this._renderDevice(device))}
         </ul>
         ${
           hasMore
@@ -218,7 +215,6 @@ export class MpdIntegrationCard extends LitElement {
                 <button
                   type="button"
                   class="more"
-                  .value=${rule.key}
                   aria-expanded=${showAll ? "true" : "false"}
                   @click=${this._toggleShowAll}
                 >
@@ -236,11 +232,12 @@ export class MpdIntegrationCard extends LitElement {
     `;
   }
 
-  private _renderDevice(result: MatchResult): TemplateResult {
-    const { name, details } = describeDevice(result);
+  private _renderDevice(device: DeviceEntry): TemplateResult {
+    const { name, details } = describeDevice(device.result);
+    const rules = device.rules.flatMap(({ source, matchers }) => matchers.map((matcher) => formatMatcher(source, matcher)));
     return html`
-      <li>
-        <span class="device-icon"><ha-svg-icon .path=${SOURCE_ICONS[result.source]}></ha-svg-icon></span>
+      <li title=${rules.join("\n")}>
+        <span class="device-icon"><ha-svg-icon .path=${SOURCE_ICONS[device.sources[0]]}></ha-svg-icon></span>
         <span class="device-text">
           <span class="device-name">${name ?? this.localizer.localize("card.unknown_device")}</span>
           ${details.length ? html`<span class="device-detail">${details.join(" · ")}</span>` : nothing}
@@ -273,15 +270,8 @@ export class MpdIntegrationCard extends LitElement {
     this.dispatchEvent(new CustomEvent("mpd-ignore", { detail: { ignored: !this.ignored } }));
   }
 
-  private _toggleShowAll(ev: Event): void {
-    const key = (ev.currentTarget as HTMLButtonElement).value;
-    const showAll = new Set(this._showAll);
-    if (showAll.has(key)) {
-      showAll.delete(key);
-    } else {
-      showAll.add(key);
-    }
-    this._showAll = showAll;
+  private _toggleShowAll(): void {
+    this._showAll = !this._showAll;
   }
 
   private _openInMarketplace(): void {
@@ -513,42 +503,12 @@ export class MpdIntegrationCard extends LitElement {
       :host([narrow]) .description {
         padding: 12px var(--ha-space-4, 16px);
       }
-      .rule {
-        padding: 12px var(--ha-space-5, 20px) var(--ha-space-2, 8px);
+      .device-list {
+        padding: var(--ha-space-2, 8px) var(--ha-space-5, 20px);
         border-top: 1px solid var(--divider-color, #ececec);
       }
-      :host([narrow]) .rule {
-        padding: 12px var(--ha-space-4, 16px) var(--ha-space-2, 8px);
-      }
-      .matched {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: var(--ha-space-2, 8px);
-        min-width: 0;
-      }
-      :host([narrow]) .matched {
-        display: block;
-      }
-      .matched-label {
-        font-size: var(--ha-font-size-s, 12px);
-        color: var(--secondary-text-color, #5e5e5e);
-      }
-      :host([narrow]) .matched-label {
-        display: block;
-      }
-      code {
-        font-family: var(--ha-font-family-code, "Roboto Mono", monospace);
-        font-size: var(--ha-font-size-s, 12px);
-        padding: 2px var(--ha-space-2, 8px);
-        border-radius: 6px;
-        background: var(--ha-color-fill-neutral-quiet-resting, #f2f2f2);
-        color: var(--primary-text-color, #141414);
-        overflow-wrap: anywhere;
-      }
-      :host([narrow]) code {
-        display: inline-block;
-        margin: var(--ha-space-1, 4px) var(--ha-space-1, 4px) 0 0;
+      :host([narrow]) .device-list {
+        padding: var(--ha-space-2, 8px) var(--ha-space-4, 16px);
       }
       .devices {
         display: grid;

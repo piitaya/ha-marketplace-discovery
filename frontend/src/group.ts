@@ -14,11 +14,16 @@ export interface IntegrationGroup {
   results: MatchResult[];
 }
 
-export interface RuleGroup {
-  key: string;
+export interface Rule {
   source: Source;
   matchers: Matcher[];
-  results: MatchResult[];
+}
+
+export interface DeviceEntry {
+  key: string;
+  result: MatchResult;
+  sources: Source[];
+  rules: Rule[];
 }
 
 export interface PreviewEntry {
@@ -70,58 +75,50 @@ export const groupByIntegration = (results: readonly MatchResult[]): Integration
 const ruleKey = (result: MatchResult): string =>
   [result.source, ...result.matchers.map((matcher) => JSON.stringify(matcher)).sort()].join("\n");
 
-export const groupByRule = (results: readonly MatchResult[]): RuleGroup[] => {
-  const groups = new Map<string, RuleGroup>();
-  for (const result of results) {
-    const key = ruleKey(result);
-    const group = groups.get(key);
-    if (group) {
-      group.results.push(result);
-    } else {
-      groups.set(key, { key, source: result.source, matchers: result.matchers, results: [result] });
-    }
-  }
-  return [...groups.values()].sort((a, b) => SOURCES.indexOf(a.source) - SOURCES.indexOf(b.source));
-};
+const bySource = (a: MatchResult, b: MatchResult): number => SOURCES.indexOf(a.source) - SOURCES.indexOf(b.source);
 
 export const deviceKey = (device: MatchDevice): string | null => {
   const id = device.ip || device.mac || device.name;
   return id ? id.toLowerCase() : null;
 };
 
-export const countDevices = (results: readonly MatchResult[]): number => {
-  const keys = new Set<string>();
-  let unnamed = 0;
-  for (const result of results) {
-    const key = deviceKey(result.device);
-    if (key === null) {
-      unnamed += 1;
-    } else {
-      keys.add(key);
-    }
-  }
-  return keys.size + unnamed;
+const mergeDevice = (results: readonly MatchResult[]): MatchResult => {
+  const ordered = [...results].sort(bySource);
+  const pick = (field: keyof MatchDevice) => ordered.find((result) => result.device[field])?.device[field] ?? null;
+  const bluetooth = ordered.find((result) => result.source === "bluetooth");
+  return {
+    ...ordered[0],
+    device: { name: pick("name"), ip: pick("ip"), mac: pick("mac") },
+    discovery: (bluetooth ?? ordered[0]).discovery,
+  };
 };
 
+export const groupByDevice = (results: readonly MatchResult[]): DeviceEntry[] => {
+  const devices = new Map<string, MatchResult[]>();
+  results.forEach((result, index) => {
+    const key = deviceKey(result.device) ?? `#${index}`;
+    devices.set(key, [...(devices.get(key) ?? []), result]);
+  });
+  return [...devices].map(([key, deviceResults]) => {
+    const rules = new Map<string, Rule>();
+    for (const result of [...deviceResults].sort(bySource)) {
+      rules.set(ruleKey(result), { source: result.source, matchers: result.matchers });
+    }
+    return { key, result: mergeDevice(deviceResults), sources: sourcesOf(deviceResults), rules: [...rules.values()] };
+  });
+};
+
+export const countDevices = (results: readonly MatchResult[]): number => groupByDevice(results).length;
+
 export const devicePreview = (results: readonly MatchResult[]): PreviewEntry[] => {
-  const seen = new Set<string>();
   const entries = new Map<string | null, PreviewEntry>();
-  for (const rule of groupByRule(results)) {
-    for (const result of rule.results) {
-      const key = deviceKey(result.device);
-      if (key !== null) {
-        if (seen.has(key)) {
-          continue;
-        }
-        seen.add(key);
-      }
-      const { name } = describeDevice(result);
-      const entry = entries.get(name);
-      if (entry) {
-        entry.count += 1;
-      } else {
-        entries.set(name, { name, count: 1 });
-      }
+  for (const { result } of groupByDevice(results)) {
+    const { name } = describeDevice(result);
+    const entry = entries.get(name);
+    if (entry) {
+      entry.count += 1;
+    } else {
+      entries.set(name, { name, count: 1 });
     }
   }
   return [...entries.values()];
