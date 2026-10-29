@@ -5,11 +5,9 @@ type Message = string | PluralMessage;
 const en = {
   "panel.title": "Marketplace discovery",
   "panel.open_sidebar": "Open sidebar",
-  "panel.scan": "Scan",
+  "panel.rescan": "Scan the network again",
   "panel.scanning": "Scanning",
-  "start.title": "Find devices you can set up with the Marketplace",
-  "start.text":
-    "Scan checks your network and compares the devices it finds with the discovery rules of Marketplace integrations. A match means an integration may support a device, so check the integration before you install it.",
+  "panel.loading": "Loading",
   "scan.title": "Scanning your network",
   "scan.detail": "Asking Bluetooth, zeroconf and SSDP devices to announce themselves.",
   "scan.duration": { one: "This takes about {count} second.", other: "This takes about {count} seconds." },
@@ -77,11 +75,9 @@ type Dictionary = { [K in LocalizeKey]: (typeof en)[K] extends string ? string :
 const fr: Dictionary = {
   "panel.title": "Marketplace discovery",
   "panel.open_sidebar": "Ouvrir la barre latérale",
-  "panel.scan": "Scanner",
-  "panel.scanning": "Scan en cours…",
-  "start.title": "Trouvez les appareils à configurer avec le Marketplace",
-  "start.text":
-    "Le scan parcourt votre réseau et compare les appareils trouvés avec les règles de découverte des intégrations du Marketplace. Une correspondance indique qu'une intégration peut prendre en charge un appareil, vérifiez donc l'intégration avant de l'installer.",
+  "panel.rescan": "Scanner à nouveau le réseau",
+  "panel.scanning": "Scan en cours",
+  "panel.loading": "Chargement",
   "scan.title": "Scan de votre réseau",
   "scan.detail": "Les appareils Bluetooth, zeroconf et SSDP sont invités à se signaler.",
   "scan.duration": { one: "Cela prend environ {count} seconde.", other: "Cela prend environ {count} secondes." },

@@ -5,7 +5,7 @@ import {
   mdiInformationOutline,
   mdiMagnify,
   mdiMenu,
-  mdiRadar,
+  mdiRefresh,
 } from "@mdi/js";
 import { css, html, LitElement, nothing, type PropertyValues, type TemplateResult } from "lit";
 import { property, state } from "lit/decorators.js";
@@ -80,7 +80,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   @state() private _response?: MatchesResponse;
 
-  @state() private _loading = false;
+  @state() private _loading?: "load" | "scan";
 
   @state() private _error?: unknown;
 
@@ -210,6 +210,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
     }
     if (!oldHass) {
       this._fetchBrandsToken();
+      this._load(false);
     }
   }
 
@@ -224,18 +225,11 @@ export class MarketplaceDiscoveryPanel extends LitElement {
         }
         <h1 class="main-title">${localize("panel.title")}</h1>
         ${
-          this._response || this._error !== undefined
-            ? html`
-                <ha-button appearance="accent" class="search-button" @click=${this._search}>
-                  ${
-                    this._loading
-                      ? html`<ha-spinner slot="start" size="tiny" aria-hidden="true"></ha-spinner>`
-                      : html`<ha-svg-icon slot="start" .path=${mdiRadar}></ha-svg-icon>`
-                  }
-                  ${localize(this._loading ? "panel.scanning" : "panel.scan")}
-                </ha-button>
-              `
-            : nothing
+          this._loading === "scan"
+            ? html`<ha-spinner class="header-spinner" size="small" aria-label=${localize("panel.scanning")}></ha-spinner>`
+            : this._response || this._error !== undefined
+              ? html`<ha-icon-button .path=${mdiRefresh} .label=${localize("panel.rescan")} @click=${this._scan}></ha-icon-button>`
+              : nothing
         }
       </div>
       <div class="content">${this._renderBody()}</div>
@@ -244,7 +238,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
 
   private _renderBody(): TemplateResult {
     const { localize } = this._localizer;
-    if (this._loading) {
+    if (this._loading === "scan") {
       return html`
         <div class="card state" role="status">
           <ha-spinner class="scan-spinner"></ha-spinner>
@@ -263,16 +257,9 @@ export class MarketplaceDiscoveryPanel extends LitElement {
     const response = this._response;
     if (!response) {
       return html`
-        <div class="card state start">
-          <span class="start-icon"><ha-svg-icon .path=${mdiRadar}></ha-svg-icon></span>
-          <div class="state-text">
-            <strong>${localize("start.title")}</strong>
-            <span>${localize("start.text")}</span>
-          </div>
-          <ha-button appearance="accent" class="search-button" @click=${this._search}>
-            <ha-svg-icon slot="start" .path=${mdiRadar}></ha-svg-icon>
-            ${localize("panel.scan")}
-          </ha-button>
+        <div class="card state" role="status">
+          <ha-spinner class="scan-spinner"></ha-spinner>
+          <span>${localize("panel.loading")}</span>
         </div>
       `;
     }
@@ -563,19 +550,23 @@ export class MarketplaceDiscoveryPanel extends LitElement {
     }
   }
 
-  private async _search(): Promise<void> {
-    if (this._loading) {
+  private _scan(): void {
+    this._load(true);
+  }
+
+  private async _load(refresh: boolean): Promise<void> {
+    if (this._loading === "scan") {
       return;
     }
     const requestId = ++this._requestId;
-    this._loading = true;
+    this._loading = refresh ? "scan" : this._response ? undefined : "load";
     this._error = undefined;
     this._actionError = undefined;
     this._fetchBrandsToken();
     try {
       const response = await this.hass.callWS<MatchesResponse>({
         type: "marketplace_discovery/matches",
-        refresh: true,
+        refresh,
       });
       if (requestId !== this._requestId) {
         return;
@@ -593,7 +584,7 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       this._error = err ?? "";
     } finally {
       if (requestId === this._requestId) {
-        this._loading = false;
+        this._loading = undefined;
       }
     }
   }
@@ -764,16 +755,9 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       ha-icon-button + .main-title {
         margin-inline-start: var(--ha-space-1, 4px);
       }
-      .search-button {
+      .header-spinner {
         flex: none;
-        --ha-button-height: 36px;
-      }
-      .search-button ha-svg-icon {
-        --mdc-icon-size: 18px;
-      }
-      .search-button ha-spinner {
-        --ha-spinner-indicator-color: var(--ha-color-on-primary-loud, #ffffff);
-        --ha-spinner-divider-color: rgba(255, 255, 255, 0.4);
+        margin: 0 12px;
       }
       .content {
         box-sizing: border-box;
@@ -805,28 +789,15 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       :host([narrow]) .state {
         padding: var(--ha-space-10, 40px) var(--ha-space-5, 20px);
       }
-      .state[role="status"],
-      .state.start {
+      .state[role="status"] {
         padding: var(--ha-space-16, 64px) var(--ha-space-6, 24px);
       }
-      :host([narrow]) .state[role="status"],
-      :host([narrow]) .state.start {
+      :host([narrow]) .state[role="status"] {
         padding: var(--ha-space-12, 48px) var(--ha-space-5, 20px);
       }
       .scan-spinner {
         --ha-spinner-size: 40px;
         --ha-spinner-divider-color: var(--ha-color-fill-primary-normal-resting, #dff3fc);
-      }
-      .start-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: var(--ha-color-fill-primary-quiet-resting, #eff9fe);
-        color: var(--mpd-primary-text, #00799f);
-        --mdc-icon-size: 28px;
       }
       .state-text {
         display: flex;
