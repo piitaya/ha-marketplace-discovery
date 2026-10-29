@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/piitaya/ha-marketplace-discovery/main/custom_components/marketplace_discovery/brand/dark_icon@2x.png">
+  <img alt="Marketplace Discovery icon" src="https://raw.githubusercontent.com/piitaya/ha-marketplace-discovery/main/custom_components/marketplace_discovery/brand/icon@2x.png" width="96">
+</picture>
+
 # Marketplace Discovery
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
