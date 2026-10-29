@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-29T21:33:33+00:00",
+ "generated_at": "2026-10-29T23:06:49+00:00",
  "repositories": {
   "1000274956": {
    "description": "Port of hassio addon",
@@ -401,52 +401,6 @@
     ]
    },
    "ref": "fe10b948d244520a8eace6ef724991b196b8e409",
-   "stars": 0
-  },
-  "1028750659": {
-   "description": null,
-   "full_name": "zzysszzy/tuya-energy-hacs",
-   "last_updated": "2025-08-01T07:11:25Z",
-   "manifest": {
-    "dhcp": [
-     {
-      "macaddress": "105A17*"
-     },
-     {
-      "macaddress": "10D561*"
-     },
-     {
-      "macaddress": "1869D8*"
-     },
-     {
-      "macaddress": "381F8D*"
-     },
-     {
-      "macaddress": "508A06*"
-     },
-     {
-      "macaddress": "68572D*"
-     },
-     {
-      "macaddress": "708976*"
-     },
-     {
-      "macaddress": "7CF666*"
-     },
-     {
-      "macaddress": "84E342*"
-     },
-     {
-      "macaddress": "D4A651*"
-     },
-     {
-      "macaddress": "D81F12*"
-     }
-    ],
-    "domain": "tuya_energy",
-    "name": "Tuya Energy"
-   },
-   "ref": "46f963ebb69f724914ed9c622de110884f6c6881",
    "stars": 0
   },
   "1029236649": {
@@ -1987,6 +1941,23 @@
    "ref": "ad4e9449c0d21ff39b8548d4908dc47d72f42c9a",
    "stars": 4
   },
+  "1069542476": {
+   "description": null,
+   "full_name": "oferfeldman/bliss_integration",
+   "last_updated": "2026-08-30T14:22:35Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "00001910-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "bliss",
+    "name": "Bliss Blinds"
+   },
+   "ref": "9286e9af1f84e0d4ab7ee1633c78c1e4b7c06afb",
+   "stars": 0
+  },
   "1069844218": {
    "description": "Gemns ™  Home Assistant Integration for Battery less devices",
    "full_name": "manaam216/gemns_integration",
@@ -2269,6 +2240,23 @@
    "ref": "dc166d8e95a38795f85d2ca738385bcd2e06162a",
    "stars": 29
   },
+  "1080613256": {
+   "description": null,
+   "full_name": "aleksandr-bembel/neptun-local-ha",
+   "last_updated": "2025-10-21T17:42:40Z",
+   "manifest": {
+    "domain": "neptun_leak_protection",
+    "name": "Neptun Leak Protection",
+    "zeroconf": [
+     {
+      "name": "neptun*",
+      "type": "_neptun._tcp.local."
+     }
+    ]
+   },
+   "ref": "df64807d74f6abcd501e5d37c85929ab99e69649",
+   "stars": 0
+  },
   "1082632155": {
    "description": "The official repository for the HACS integration for the QuickBars for Home Assistant Android TV app",
    "full_name": "Trooped/home-assistant-quickbars",
@@ -2477,6 +2465,20 @@
    "ref": "a7b02204697d8915128ef88258e39ede30cea9b5",
    "stars": 0
   },
+  "1092057788": {
+   "description": null,
+   "full_name": "coagentpai/pipeplay-ha",
+   "last_updated": "2025-11-08T03:57:50Z",
+   "manifest": {
+    "domain": "pipeplay",
+    "name": "PipePlay PipeWire Media Player",
+    "zeroconf": [
+     "_pipeplay._tcp.local."
+    ]
+   },
+   "ref": "157883ba5cc62df16ac7484afca937a07d4d50ea",
+   "stars": 0
+  },
   "1092700467": {
    "description": "Home Assistant integration for the Blustream DMP168 multi-zone audio matrix",
    "full_name": "caidurbin/blustream",
@@ -2512,6 +2514,23 @@
     ]
    },
    "ref": "3e911f1f630dff7650d7304a56015f5da4af3027",
+   "stars": 3
+  },
+  "1093928564": {
+   "description": "This is a mirror of https://gitlab.com/kobaj/ha_taco",
+   "full_name": "kobaj/ha_taco",
+   "last_updated": "2026-06-22T04:27:24Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "_comment": "This is 0x0C53, Taco Inc",
+      "manufacturer_id": 3155
+     }
+    ],
+    "domain": "ha_taco",
+    "name": "Taco Controller"
+   },
+   "ref": "9315759715aee6bf68123e0ac97d037183545dd4",
    "stars": 3
   },
   "1096982236": {
@@ -2947,6 +2966,43 @@
    },
    "ref": "a176aa452df346940c06fecb15afabf30b8dc62b",
    "stars": 7
+  },
+  "1102564225": {
+   "description": "Zigbee Integration",
+   "full_name": "irtizzaaa/gemns_zigbee_integration",
+   "last_updated": "2025-12-01T07:15:00Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": false,
+      "local_name": "Gemns"
+     },
+     {
+      "connectable": false,
+      "local_name": "Gemns-*"
+     },
+     {
+      "connectable": false,
+      "local_name": "Gemns_*"
+     },
+     {
+      "connectable": false,
+      "manufacturer_data_start": [
+       80,
+       87
+      ],
+      "manufacturer_id": 22352
+     },
+     {
+      "connectable": false,
+      "service_uuid": "0000180a-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "gemns_iot",
+    "name": "Gemns™ IoT"
+   },
+   "ref": "d65bc7789ae0d28156a21114d244457b448b6fbd",
+   "stars": 0
   },
   "1102681289": {
    "description": "Home Assistant integration for OPUS greenNet (Jäger Direkt) EnOcean gateways: lights, switches, blinds, sensors and HOPPE handles over the gateway's local REST API",
@@ -3849,6 +3905,27 @@
    "ref": "90e0bb1dab814fbaac6a811996eb7f2556d9ba19",
    "stars": 32
   },
+  "1125992924": {
+   "description": null,
+   "full_name": "jpathak/schwinn-bike-ha",
+   "last_updated": "2026-02-27T02:22:44Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "3bf58980-3a2f-11e6-9011-0002a5d5c51b"
+     },
+     {
+      "connectable": true,
+      "local_name": "SCHWINN 170/270"
+     }
+    ],
+    "domain": "schwinn_bike",
+    "name": "Schwinn Exercise Bike"
+   },
+   "ref": "2c87acdb01ffa77dd8dcd4ea5cd9f0405c19a923",
+   "stars": 0
+  },
   "1126894963": {
    "description": "Audio Pro (LinkPlay) Home Assistant Integration",
    "full_name": "amsound/audiopro_linkplay_hacs",
@@ -3947,6 +4024,22 @@
    },
    "ref": "46910a440c6a174f547df64e95f62c9842e3b6d7",
    "stars": 9
+  },
+  "1127906673": {
+   "description": null,
+   "full_name": "yuriizee/pt-baby",
+   "last_updated": "2026-01-06T20:21:29Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "PT-BABY*"
+     }
+    ],
+    "domain": "pt_baby",
+    "name": "PT Baby Swing"
+   },
+   "ref": "391bd30c8107ea5833007fa526bda40c029cf61c",
+   "stars": 0
   },
   "1127948922": {
    "description": "BK Light ACT1026 control from homeassistant",
@@ -4405,6 +4498,36 @@
    "ref": "95bb78c796559eaf56b6f86302a75ca38998bcd4",
    "stars": 3
   },
+  "1141300006": {
+   "description": null,
+   "full_name": "frawau/ha-aiomadeavr",
+   "last_updated": "2026-02-05T09:15:35Z",
+   "manifest": {
+    "domain": "aiomadeavr",
+    "name": "Marantz/Denon AVR",
+    "ssdp": [
+     {
+      "manufacturer": "Denon"
+     },
+     {
+      "manufacturer": "Marantz"
+     },
+     {
+      "deviceType": "urn:schemas-denon-com:device:ACT-Denon:1"
+     },
+     {
+      "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1",
+      "manufacturer": "Denon"
+     },
+     {
+      "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1",
+      "manufacturer": "Marantz"
+     }
+    ]
+   },
+   "ref": "8ffd8dc1ed35e3364a82859befcc1da6a4717dae",
+   "stars": 1
+  },
   "1142046056": {
    "description": "Homeassistant integration for Wahoo WFTNP. Support for Kickr Core V2 and more",
    "full_name": "kilianyp/hacs-wahoo-wftnp",
@@ -4571,6 +4694,20 @@
    },
    "ref": "357f5f69d90db8567df30185af83ede8af944493",
    "stars": 0
+  },
+  "1146990582": {
+   "description": null,
+   "full_name": "Domocn/Laro",
+   "last_updated": "2026-10-07T17:53:38Z",
+   "manifest": {
+    "domain": "laro",
+    "name": "Laro",
+    "zeroconf": [
+     "_laro._tcp.local."
+    ]
+   },
+   "ref": "f0e2d88f7c22ef3f74f6f9bd4f8d9e255be8748d",
+   "stars": 1
   },
   "1147010347": {
    "description": "Home Assistant Integration for monitoring EUC Charging",
@@ -4784,6 +4921,23 @@
    "ref": "0c2950ac4b833c4452fd2e58e9b8f01865e3c632",
    "stars": 3
   },
+  "1151394355": {
+   "description": null,
+   "full_name": "ademasi/cycling-ble-sensors",
+   "last_updated": "2026-02-06T20:26:47Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "Ion*"
+     }
+    ],
+    "domain": "cycling_ble_sensors",
+    "name": "Cycling BLE Sensors"
+   },
+   "ref": "e0d9ecefd61a1075ee27ce746d1fba5de55766eb",
+   "stars": 0
+  },
   "1151830974": {
    "description": "Home Assistant custom integration for DewertOkin adjustable beds (FP2901) via BLE",
    "full_name": "SethCalkins/ha-dewertokin-bed",
@@ -4829,6 +4983,23 @@
     ]
    },
    "ref": "4d9a5c8d463c1b6065e1b4dfd5aa22c58e65692e",
+   "stars": 0
+  },
+  "1152606814": {
+   "description": null,
+   "full_name": "xxoolm/anti_loss_tag",
+   "last_updated": "2026-03-06T05:09:27Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "0000ffe0-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "anti_loss_tag",
+    "name": "KT6368A BLE 防丢标签"
+   },
+   "ref": "1af4f93e10e31d8432f4717fe16783793d9df665",
    "stars": 0
   },
   "1152856964": {
@@ -5170,6 +5341,23 @@
     "name": "The Lampster"
    },
    "ref": "de2c92b21fbe3488c182433dd241acc3719ce2f1",
+   "stars": 1
+  },
+  "1158757341": {
+   "description": null,
+   "full_name": "mcuelenaere/ha-inkposter",
+   "last_updated": "2026-02-16T00:41:05Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "706218ee-d3d6-46ad-8080-6eefbacf7dbc"
+     }
+    ],
+    "domain": "ha_inkposter",
+    "name": "Inkposter"
+   },
+   "ref": "5dc1b62b6dcf31afbd3508b21991f943458399b4",
    "stars": 1
   },
   "1158905479": {
@@ -5888,23 +6076,6 @@
    "ref": "f396c4e8fd767930ea3b106c7ec13a72e936828a",
    "stars": 0
   },
-  "1171183819": {
-   "description": "Home Assistant Euhomy Bluetooth Portable refrigerator CFC-25 (CF004-25BL-CAEH)",
-   "full_name": "lyntoo/ha-euhomy-ble",
-   "last_updated": "2026-09-23T02:18:26Z",
-   "manifest": {
-    "bluetooth": [
-     {
-      "local_name": "TY",
-      "manufacturer_id": 2000
-     }
-    ],
-    "domain": "euhomy_ble",
-    "name": "Euhomy BLE"
-   },
-   "ref": "72189f18e10e334ea7ea0f0db049caec2b19a2f1",
-   "stars": 1
-  },
   "1172059906": {
    "description": null,
    "full_name": "sdacunha/hass-ryse",
@@ -6265,6 +6436,23 @@
     ]
    },
    "ref": "4b8b52b8d8bfbcf945fa3035bded7c4eb0d97f76",
+   "stars": 0
+  },
+  "1177008532": {
+   "description": null,
+   "full_name": "chmuff/isma",
+   "last_updated": "2026-03-09T15:52:45Z",
+   "manifest": {
+    "domain": "isma_modbus",
+    "name": "ISMA Modbus TCP",
+    "zeroconf": [
+     {
+      "name": "isma*",
+      "type": "_modbus._tcp.local."
+     }
+    ]
+   },
+   "ref": "3d874f934e4d754fc8a09b4aa1ee9c599d01b7d3",
    "stars": 0
   },
   "1177053141": {
@@ -7893,6 +8081,37 @@
    "ref": "63e4b754308a5f874c20cf32158cbb8afd4919f8",
    "stars": 1
   },
+  "1207700461": {
+   "description": null,
+   "full_name": "binoalien/lt_thermometer",
+   "last_updated": "2026-04-12T13:57:48Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": false,
+      "manufacturer_data_start": [
+       3
+      ],
+      "manufacturer_id": 1177
+     },
+     {
+      "connectable": false,
+      "manufacturer_data_start": [
+       4
+      ],
+      "manufacturer_id": 1177
+     },
+     {
+      "connectable": false,
+      "manufacturer_id": 1177
+     }
+    ],
+    "domain": "lt_thermometer",
+    "name": "LT Thermometer"
+   },
+   "ref": "dd439cc339658ac208cf7ae1334675506b60bcf1",
+   "stars": 0
+  },
   "1207719529": {
    "description": "🏠 Home Assistant integration for the RVTech motor with Bluetooth receiver kit, automating manual Dometic Heki roof vents. Features persistent connections, real-time push updates, and auto-discovery. Dedicated to the vanlife community. 🚐💨",
    "full_name": "smartVanture/heki_remote",
@@ -7930,6 +8149,27 @@
    },
    "ref": "1da0a62798df513b3892aa6de97accf17cb1f735",
    "stars": 2
+  },
+  "1208363537": {
+   "description": null,
+   "full_name": "0leg7/keenetic-ndms2-ha",
+   "last_updated": "2026-05-03T17:09:07Z",
+   "manifest": {
+    "domain": "keenetic_ndms2_fixed",
+    "name": "Keenetic NDMS2 Router (Fixed)",
+    "ssdp": [
+     {
+      "deviceType": "urn:schemas-upnp-org:device:InternetGatewayDevice:1",
+      "manufacturer": "Keenetic Ltd."
+     },
+     {
+      "deviceType": "urn:schemas-upnp-org:device:InternetGatewayDevice:1",
+      "manufacturer": "ZyXEL Communications Corp."
+     }
+    ]
+   },
+   "ref": "9d896a5558ea4340421fb3ab7f240449ebda6c7c",
+   "stars": 0
   },
   "1208481106": {
    "description": "Home Assistant integration for Norman PerfectTilt Shutters.",
@@ -8527,6 +8767,22 @@
    "ref": "37aa56b3e47b8230cee568308867287c1b6c3b5b",
    "stars": 0
   },
+  "1215425654": {
+   "description": null,
+   "full_name": "chepa92/ha-xiaomi-abwheel",
+   "last_updated": "2026-04-19T22:49:46Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "0000fe95-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "xiaomi_abwheel",
+    "name": "Xiaomi Ab Wheel"
+   },
+   "ref": "99047aa343ed25c4a834f670b87b50947f440dfe",
+   "stars": 0
+  },
   "1215530368": {
    "description": "Home Assistant HACS integration for Outrider Components BLE tire pressure sensors",
    "full_name": "Leicas/outrider-tpms",
@@ -8903,6 +9159,27 @@
    },
    "ref": "d366454da7e6a01f5c83fc72bd3f5660f6b85d0c",
    "stars": 7
+  },
+  "1225271130": {
+   "description": null,
+   "full_name": "stkang/ha-component-my-smart-sofa",
+   "last_updated": "2026-04-30T06:09:04Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "6e403587-b5a3-f393-e0a9-e50e24dcca9e"
+     },
+     {
+      "connectable": true,
+      "local_name": "YKD*"
+     }
+    ],
+    "domain": "my_smart_sofa",
+    "name": "My Smart Sofa"
+   },
+   "ref": "4957e0a417a935efc5d1edee70451d88e1988e98",
+   "stars": 0
   },
   "1225798418": {
    "description": "Home Assistant integration for Ratio EV chargers (HACS)",
@@ -9635,6 +9912,20 @@
    "ref": "ac579016de53037f8c5bf8fa1ed5a693cdf1ac3c",
    "stars": 1
   },
+  "1234214242": {
+   "description": null,
+   "full_name": "rappo/boiler-room",
+   "last_updated": "2026-06-18T23:56:58Z",
+   "manifest": {
+    "domain": "boiler_room",
+    "name": "Boiler Room",
+    "zeroconf": [
+     "_boiler-room._tcp.local."
+    ]
+   },
+   "ref": "74c7a0f2f90eab81c2a2f6599ec3181ec03b54f6",
+   "stars": 0
+  },
   "1234334118": {
    "description": "Home Assistant integration for Rubik's Connected Cube",
    "full_name": "trueflint/ha-rubiks-connected",
@@ -9712,6 +10003,22 @@
     "name": "Konnwei BK300 Battery Monitor"
    },
    "ref": "06456a5f60df8f19a4c4d025adbb82b749e311a6",
+   "stars": 0
+  },
+  "1234581015": {
+   "description": null,
+   "full_name": "VVertyletskyi/co2_ble_sensor",
+   "last_updated": "2026-05-11T20:38:23Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "0000a201-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "co2_ble_sensor",
+    "name": "CO2 BLE Sensor (Tuya)"
+   },
+   "ref": "1cef006ba041269bf570c0c21dbda6e078983601",
    "stars": 0
   },
   "1234788477": {
@@ -9858,6 +10165,22 @@
    "ref": "43f56798e43442fa1af0ba2b6082572f2af0df4e",
    "stars": 0
   },
+  "1236828824": {
+   "description": null,
+   "full_name": "szupi-ipuzs/haylou_ls02_ha",
+   "last_updated": "2026-06-30T16:30:51Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "Haylou Smart Watch 2*"
+     }
+    ],
+    "domain": "haylou_ls02",
+    "name": "Haylou LS02 Watch"
+   },
+   "ref": "4183441838b06d0a4a779779da9f1ed371d1f634",
+   "stars": 0
+  },
   "1236943513": {
    "description": "Home Assistant custom integration for Ashly Audio AQM series zone mixers (AQM1208, AQM408) via AquaControl REST API",
    "full_name": "Limecooler/ha-ashly-aqm",
@@ -9922,6 +10245,23 @@
    },
    "ref": "6eeaddcbebad7dcd0200fedae9d71415da8606a7",
    "stars": 2
+  },
+  "1238724351": {
+   "description": null,
+   "full_name": "othorg/Minew-D15N-HA-Integration",
+   "last_updated": "2026-10-21T09:24:42Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": false,
+      "service_uuid": "7f280001-8204-f393-e0a9-e50e24dcca9e"
+     }
+    ],
+    "domain": "minewtech_d15n",
+    "name": "Minewtech D15N Beacon"
+   },
+   "ref": "f45fa3499c0926d9d7a795afcfac1ede3b81a1aa",
+   "stars": 0
   },
   "1239191245": {
    "description": "Home Assistant integration for Epson EcoTank printers: page counters, ink levels and status scraped from the embedded web UI, merged into the IPP device.",
@@ -10161,6 +10501,22 @@
    "ref": "9f5d7a8de2bf0141a40b3bc5dcb38159bf831970",
    "stars": 3
   },
+  "1242252594": {
+   "description": null,
+   "full_name": "marcinbauer-ohf/simulated-devices",
+   "last_updated": "2026-08-25T08:48:04Z",
+   "manifest": {
+    "domain": "simulated_devices",
+    "name": "Simulated Devices",
+    "zeroconf": [
+     {
+      "type": "_simulated-device._tcp.local."
+     }
+    ]
+   },
+   "ref": "0ef4f5c8a91c7c7ac9525087bf83981f3374e414",
+   "stars": 1
+  },
   "1242357016": {
    "description": "Home Assistant integration for Pet Piano — a BLE smart pet feeder that rewards your cat with food for playing piano keys",
    "full_name": "batareya16/PetPianoHass",
@@ -10271,6 +10627,68 @@
    },
    "ref": "4081c35ab8ace3ebfe00123c871a18d92b4ebd16",
    "stars": 0
+  },
+  "1243440820": {
+   "description": null,
+   "full_name": "zxjha/zhixiangquanwu",
+   "last_updated": "2026-05-19T17:37:55Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "macaddress": "105A17*"
+     },
+     {
+      "macaddress": "10D561*"
+     },
+     {
+      "macaddress": "1869D8*"
+     },
+     {
+      "macaddress": "381F8D*"
+     },
+     {
+      "macaddress": "508A06*"
+     },
+     {
+      "macaddress": "68572D*"
+     },
+     {
+      "macaddress": "708976*"
+     },
+     {
+      "macaddress": "7CF666*"
+     },
+     {
+      "macaddress": "84E342*"
+     },
+     {
+      "macaddress": "D4A651*"
+     },
+     {
+      "macaddress": "D81F12*"
+     }
+    ],
+    "domain": "zhixiangquanwu",
+    "name": "zhixiangquanwu"
+   },
+   "ref": "1f60f9758ecad50ce7eaaba7a76d7ea18e8bca93",
+   "stars": 0
+  },
+  "1243732339": {
+   "description": null,
+   "full_name": "TheTiEr/ha-hiflow-ble",
+   "last_updated": "2026-08-13T18:55:18Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "RMI-*"
+     }
+    ],
+    "domain": "hiflow_ble",
+    "name": "HiFlow BLE"
+   },
+   "ref": "8173617e6ef8a3b995f3bc2ab5cc724b3e86f117",
+   "stars": 23
   },
   "1243806604": {
    "description": "Custom component for home assistant supporting supersense sensors",
@@ -10521,6 +10939,20 @@
    "ref": "9fefcc429848aa74947a33481046b5f6df90241f",
    "stars": 1
   },
+  "1247785326": {
+   "description": "Custom Integration with an ESPHome configured device using the external component coap_server",
+   "full_name": "rwrozelle/coap_client_for_esphome",
+   "last_updated": "2026-06-16T13:10:01Z",
+   "manifest": {
+    "domain": "coap_client_for_esphome",
+    "name": "CoAP Client for ESPHome",
+    "zeroconf": [
+     "_esphome-coap-server._udp.local."
+    ]
+   },
+   "ref": "2a810d674d6d2a8e247cc6d587a161c9b0dcee49",
+   "stars": 0
+  },
   "1248057654": {
    "description": "A custom Home Assistant integration for controlling an **Irritrol Life-DC** irrigation controller directly over Bluetooth Low Energy.",
    "full_name": "cristtiann/ha-irritrol-lifedc-ble",
@@ -10745,6 +11177,22 @@
    "ref": "6ab460d06fd0dea4030f56596c9e50399f62244e",
    "stars": 1
   },
+  "1250442134": {
+   "description": null,
+   "full_name": "vanyasvl/terma-smart-local",
+   "last_updated": "2026-05-27T13:20:39Z",
+   "manifest": {
+    "domain": "terma",
+    "name": "Terma Smart",
+    "zeroconf": [
+     {
+      "type": "_terma._tcp.local."
+     }
+    ]
+   },
+   "ref": "8332451e002ee7d76eab3e9ae61bcd918ecbf000",
+   "stars": 0
+  },
   "1250467065": {
    "description": "Integração Home Assistant (HACS) para a pedaleira M-Vave Tank-G via Bluetooth LE",
    "full_name": "hudsonbrendon/ha-mvave-tankg",
@@ -10762,6 +11210,22 @@
     "name": "M-Vave Tank-G"
    },
    "ref": "91c9415b31f99c1e33e4d0c6bfb915fc97811f34",
+   "stars": 0
+  },
+  "1251013753": {
+   "description": "Vibecoded slideshow slop for esp HA integration",
+   "full_name": "VelloMagu/MaguSlideShow_HA_addon",
+   "last_updated": "2026-07-26T09:45:08Z",
+   "manifest": {
+    "domain": "esp_slideshow",
+    "name": "ESP Slideshow",
+    "zeroconf": [
+     {
+      "type": "_esp32-slideshow._tcp.local."
+     }
+    ]
+   },
+   "ref": "1457480e54df8a09687d99e30f2cc68fd3bb454a",
    "stars": 0
   },
   "1251148600": {
@@ -11087,6 +11551,22 @@
    "ref": "6a08368c159763b46cba81ae9dff749f37c16ae4",
    "stars": 3
   },
+  "1254000035": {
+   "description": null,
+   "full_name": "JLay2026/ha-aiprime-ble",
+   "last_updated": "2026-06-12T03:38:20Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "MOBIUS"
+     }
+    ],
+    "domain": "aiprime_ble",
+    "name": "AI Prime BLE"
+   },
+   "ref": "cd87bf271cd9ddba023e9f1d3816a8d35df72158",
+   "stars": 0
+  },
   "1254137384": {
    "description": "NEEO Remote Control Integration for Home Assistant",
    "full_name": "magictom74/homeassistant-neeo",
@@ -11218,6 +11698,36 @@
    "ref": "022e6b91433ccbdd1f6554d7e1e619b385180a46",
    "stars": 1
   },
+  "1255078447": {
+   "description": null,
+   "full_name": "christopher-david-smith/iconsole-plus-ha",
+   "last_updated": "2026-07-12T12:54:12Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "49535343-fe7d-4ae5-8fa9-9fafd205e455"
+     }
+    ],
+    "domain": "iconsole_plus",
+    "name": "iConsole+"
+   },
+   "ref": "36296b7c827f96a34543b8abef6001f71eeeba19",
+   "stars": 0
+  },
+  "1255188336": {
+   "description": null,
+   "full_name": "dedero1985/ha-bluesound-custom",
+   "last_updated": "2026-05-31T17:49:07Z",
+   "manifest": {
+    "domain": "bluesound_custom",
+    "name": "Bluesound Custom (Library, Radios & Streaming)",
+    "zeroconf": [
+     "_musc._tcp.local."
+    ]
+   },
+   "ref": "477d54fc145a384b2075ac35294c399c1151e9db",
+   "stars": 1
+  },
   "1255456077": {
    "description": "Home Assistant (HACS) integration for the iGPSPORT iGS10S cycling computer over BLE",
    "full_name": "hudsonbrendon/ha-igps-ble",
@@ -11263,6 +11773,23 @@
     ]
    },
    "ref": "d2f652a453e908fd6a2807a638689a69a8a16d54",
+   "stars": 0
+  },
+  "1255997935": {
+   "description": null,
+   "full_name": "benbridts/ha-tcl-home-bluetooth",
+   "last_updated": "2026-06-06T14:21:15Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "tcl*",
+      "service_uuid": "0000fff6-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "tcl_soundbar",
+    "name": "TCL Home Soundbar"
+   },
+   "ref": "5a9888003912cdb369906c215d334ee9860f79dd",
    "stars": 0
   },
   "1256185209": {
@@ -11340,6 +11867,20 @@
     "name": "MiWiFi"
    },
    "ref": "fe1c71b205d655038c2fd0f81577aa31bfe0d1a7",
+   "stars": 0
+  },
+  "1256877780": {
+   "description": null,
+   "full_name": "Kongjarl/ha-pascal-amp",
+   "last_updated": "2026-06-02T08:23:07Z",
+   "manifest": {
+    "domain": "pascal_amp",
+    "name": "Pascal IP Amplifier",
+    "zeroconf": [
+     "_pasconnect._tcp.local."
+    ]
+   },
+   "ref": "10008a40cef9e3169febe01e94c8ee7d0e602614",
    "stars": 0
   },
   "1257084720": {
@@ -11441,6 +11982,23 @@
    "ref": "e56d2e350aabb54859023246f8636eeb749de9fe",
    "stars": 1
   },
+  "1258677902": {
+   "description": "Unofficial Python library & CLI to control XYAO-LED style 64x16 BLE pixel matrices over Bluetooth — text, scrolling, pixel art, full-color images and animations, no app required.",
+   "full_name": "samcgn/xyaoled-control",
+   "last_updated": "2026-07-03T16:30:49Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "XyaoLED*"
+     }
+    ],
+    "domain": "xyaoled",
+    "name": "XYAO LED Panel"
+   },
+   "ref": "b6fe5a7901cf186eb16ff181b9f6d50d24c5a089",
+   "stars": 1
+  },
   "1260350149": {
    "description": "control your Amaran lights over Home Assistant",
    "full_name": "neyako/amaran-hacs",
@@ -11488,6 +12046,22 @@
     ]
    },
    "ref": "edaf4e8fdd26bb4d9ad65c0542c590ecb03122cc",
+   "stars": 0
+  },
+  "1261150442": {
+   "description": null,
+   "full_name": "tegrd/tegrd_flow",
+   "last_updated": "2026-06-07T13:39:33Z",
+   "manifest": {
+    "domain": "tegrd_flow",
+    "name": "TEGRD Flow",
+    "zeroconf": [
+     {
+      "type": "_tegrd-flow._tcp.local."
+     }
+    ]
+   },
+   "ref": "691e75500ae01cf98804e2ee59d0cc662ef9a08b",
    "stars": 0
   },
   "1261386095": {
@@ -11821,21 +12395,20 @@
    "ref": "8f0d061919af5017355390110bd777a66d76b25b",
    "stars": 0
   },
-  "1265432813": {
-   "description": "Home Assistant custom integration for the Williwaw BLE fan",
-   "full_name": "jlafaye/williwaw-ha",
-   "last_updated": "2026-06-10T19:13:58Z",
+  "1265751557": {
+   "description": null,
+   "full_name": "sam3gp8/ha-tactical-traps",
+   "last_updated": "2026-07-07T01:56:11Z",
    "manifest": {
     "bluetooth": [
      {
-      "connectable": true,
-      "local_name": "Williwaw"
+      "service_uuid": "0000fff0-0000-1000-8000-00805f9b34fb"
      }
     ],
-    "domain": "williwaw",
-    "name": "Williwaw Fan"
+    "domain": "tactical_traps",
+    "name": "Tactical Traps"
    },
-   "ref": "e4f1112a1f40063228aea1c77688e03f5067b1ad",
+   "ref": "da290c43a7665904cc99cb6e65da299324d7ac2a",
    "stars": 0
   },
   "1266033614": {
@@ -11929,6 +12502,22 @@
    },
    "ref": "117b81e4b6641b289f3a8fe1701bd11c83b29554",
    "stars": 0
+  },
+  "1266926990": {
+   "description": null,
+   "full_name": "jesserockz/love2learn-elmo",
+   "last_updated": "2026-06-12T04:50:01Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "dab91435-b5a1-e29c-b041-bcd562613bdf"
+     }
+    ],
+    "domain": "love2learn_elmo",
+    "name": "Love2Learn Elmo"
+   },
+   "ref": "d397a7fb094079f6b1cac5605e95f74d1cb8d4b3",
+   "stars": 1
   },
   "1266943149": {
    "description": "ICOMON BLE Home Assistant Integration",
@@ -12507,6 +13096,27 @@
    "ref": "3c60fcd97fad636687364069bb561c09f7cb1213",
    "stars": 1
   },
+  "1274250069": {
+   "description": null,
+   "full_name": "Tamahome-M/nbpower-charger-ha",
+   "last_updated": "2026-06-25T11:48:42Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "NBP*"
+     },
+     {
+      "connectable": true,
+      "local_name": "NBPower*"
+     }
+    ],
+    "domain": "nbpower_charger",
+    "name": "NBPower EV Charger (BLE)"
+   },
+   "ref": "c523241d90389b8939da058a1716d29f2899bdb1",
+   "stars": 0
+  },
   "1274685447": {
    "description": "Home Assistant custom integration for Tripp Lite/Eaton WebcardLX UPS cards",
    "full_name": "Limecooler/ha-tripp-lite",
@@ -12567,6 +13177,25 @@
    "ref": "146d8dcbcb0468fe9623cf995a9a187d1bf14a88",
    "stars": 0
   },
+  "1275107624": {
+   "description": "Pool Lab local BT, still in development",
+   "full_name": "mf76130/ha-poollab-local",
+   "last_updated": "2026-06-20T13:55:54Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "a7ee04a9-507b-4910-a528-b619d5501924"
+     },
+     {
+      "local_name": "PoolLab*"
+     }
+    ],
+    "domain": "poollab_local",
+    "name": "PoolLab Local"
+   },
+   "ref": "e0c3a25cfb8368ac32f4241b13b568f9ce828428",
+   "stars": 0
+  },
   "1275187898": {
    "description": "Unofficial Home Assistant integration for Harman Kardon SoundSticks 5 WiFi - local mTLS control of lights, EQ, volume & Moment soundscapes.",
    "full_name": "imaggg/Soundstics-5-HACS-integration",
@@ -12598,6 +13227,20 @@
     "name": "FNIRSI FNB58 USB Tester"
    },
    "ref": "a0595bf1bfe23fe7ae9c832fe6645a8d5b85726d",
+   "stars": 0
+  },
+  "1275510461": {
+   "description": null,
+   "full_name": "jongautur/aqara",
+   "last_updated": "2026-06-21T00:53:20Z",
+   "manifest": {
+    "domain": "aqara_local",
+    "name": "Aqara Local (Camera)",
+    "zeroconf": [
+     "_aqara._tcp.local."
+    ]
+   },
+   "ref": "64f4bb0d065bc2df24fad28340382bda736389d2",
    "stars": 0
   },
   "1275725246": {
@@ -12756,6 +13399,47 @@
     "name": "Difluid Microbalance & R2"
    },
    "ref": "bc74455f9ae93f9f4da2950295ed01c4de67f449",
+   "stars": 0
+  },
+  "1278849845": {
+   "description": null,
+   "full_name": "winnerplace/ha-iledcolor-led-matrix",
+   "last_updated": "2026-07-15T05:17:45Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "0000a950-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "iledcolor",
+    "name": "iLEDcolor LED Matrix"
+   },
+   "ref": "1536bb0e8d088db160ec0b6301ed5c2a9ee64f02",
+   "stars": 0
+  },
+  "1279488710": {
+   "description": null,
+   "full_name": "aderusha/ha-revopoint-turntable",
+   "last_updated": "2026-06-25T11:39:19Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "REVO_DUAL_AXIS_TABLE"
+     },
+     {
+      "local_name": "REVO_TA500"
+     },
+     {
+      "local_name": "P_REVO_TA500"
+     },
+     {
+      "service_uuid": "0000ffe1-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "revopoint_turntable",
+    "name": "Revopoint Turntable"
+   },
+   "ref": "8d1dbccebbc9e5b44dc3e17fd3e1a662d446b8b7",
    "stars": 0
   },
   "1279806993": {
@@ -12949,6 +13633,23 @@
    "ref": "203d8bb0b933cbb7a4699d4326264aee5dfe7ad0",
    "stars": 1
   },
+  "1281195263": {
+   "description": null,
+   "full_name": "lilbouu/GrowCube-HA",
+   "last_updated": "2026-07-17T20:37:50Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "hostname": "ESP_*",
+      "macaddress": "Espressif"
+     }
+    ],
+    "domain": "growcube",
+    "name": "GrowCube"
+   },
+   "ref": "509a50602d9c54d1784900159a7a98739145bd76",
+   "stars": 0
+  },
   "1281639696": {
    "description": "Home Assistant integration for Fraimic e-ink frames: browse artwork, build playlists, queue images, preview tone and dithering, and deliver locally or via cloud",
    "full_name": "kristofferR/ha-fraimic-eink",
@@ -13026,22 +13727,6 @@
     "name": "AromaCare"
    },
    "ref": "74ed60b515bf5f5e1b564d15ea7ae10bddcf7143",
-   "stars": 0
-  },
-  "1282522829": {
-   "description": null,
-   "full_name": "bssekhon/aromacore-hacs",
-   "last_updated": "2026-09-02T22:45:40Z",
-   "manifest": {
-    "bluetooth": [
-     {
-      "service_uuid": "0000fff0-0000-1000-8000-00805f9b34fb"
-     }
-    ],
-    "domain": "aroma_link",
-    "name": "Aroma Link"
-   },
-   "ref": "cd2c3a53d04b7207b2a91288b625513f78509809",
    "stars": 0
   },
   "1283018408": {
@@ -13441,6 +14126,31 @@
    "ref": "7e570c9b64fe7df1c79feb09f45cc2348e020a5d",
    "stars": 1
   },
+  "1288652778": {
+   "description": null,
+   "full_name": "JochenFriedrich/sig_health_ble",
+   "last_updated": "2026-07-24T17:09:38Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "00001810-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "service_uuid": "00001808-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "service_uuid": "0000181d-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "service_uuid": "0000181b-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "sig_health_ble",
+    "name": "SIG Health BLE"
+   },
+   "ref": "b643cb6d0bab755dd8f1f994d172a6a3d387b241",
+   "stars": 0
+  },
   "1288769253": {
    "description": "Local (LAN-only) Home Assistant integration for the Phyn Plus smart water shutoff valve — monitors pressure, temperature, flow, and leak/freeze detectors and controls the valve over the JNAP API. No cloud.",
    "full_name": "rplankenhorn/ha-phyn-local",
@@ -13566,6 +14276,23 @@
    },
    "ref": "5e36eec2124bc434a450d072b2d9b7eceac22f5e",
    "stars": 1
+  },
+  "1289635784": {
+   "description": null,
+   "full_name": "mwastray/ryse-homeassist",
+   "last_updated": "2026-07-05T20:33:03Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "RZSS*"
+     }
+    ],
+    "domain": "ryse_ble",
+    "name": "RYSE BLE"
+   },
+   "ref": "6ab93fdd4cf0412395e59af0283344547e1df804",
+   "stars": 0
   },
   "1289774733": {
    "description": "Generic Event-Driven BLE Heart Rate Monitor for Home Assistant over Bluetooth Proxies",
@@ -13870,6 +14597,30 @@
    "ref": "42476c77b11e563387d24a6fa393d46112b2e97c",
    "stars": 1
   },
+  "1296363484": {
+   "description": "test",
+   "full_name": "xkain/TESTHA",
+   "last_updated": "2026-07-10T15:21:35Z",
+   "manifest": {
+    "domain": "testha",
+    "name": "testha",
+    "ssdp": [
+     {
+      "deviceType": "urn:schemas-xkain-org:device:Somfy:1"
+     }
+    ],
+    "zeroconf": [
+     {
+      "properties": {
+       "model": "espsomfy*"
+      },
+      "type": "_espsomfy_rts._tcp.local."
+     }
+    ]
+   },
+   "ref": "5800e9a28dc22df6a1d6d833c17fcb1a3e25f72e",
+   "stars": 0
+  },
   "1296609436": {
    "description": "Home Assistant integration for the FilterMonitor differential-pressure HVAC filter monitor.",
    "full_name": "AirScapeFans/FilterMonitor-HA",
@@ -14012,6 +14763,20 @@
    "ref": "04bbf0cbbdb50f284daaf63dcf5326b5ed7f786c",
    "stars": 2
   },
+  "1297808324": {
+   "description": null,
+   "full_name": "jjack/ha-grubstation",
+   "last_updated": "2026-09-28T14:26:09Z",
+   "manifest": {
+    "domain": "grubstation",
+    "name": "GrubStation",
+    "zeroconf": [
+     "_grubstation._tcp.local."
+    ]
+   },
+   "ref": "b6d1d346c646d3bf04d21f4394344a6e8ea09951",
+   "stars": 0
+  },
   "1298034060": {
    "description": null,
    "full_name": "jordanazulay-maker/Home-Assistant-Lackey",
@@ -14052,6 +14817,22 @@
    },
    "ref": "6eb49cc7d93bbdce52e5f4979afba3903d1153ce",
    "stars": 1
+  },
+  "1298154515": {
+   "description": null,
+   "full_name": "powerbling/ha-circontrol-enext-integration",
+   "last_updated": "2026-07-27T15:53:16Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "55e405d2-af9f-a98f-e54a-7dfe43535349"
+     }
+    ],
+    "domain": "circontrol_enext_bluetooth",
+    "name": "Circontrol eNext wallbox"
+   },
+   "ref": "908374394f80b726ebca3f1e796c77272cdb8845",
+   "stars": 0
   },
   "1298395065": {
    "description": "Bimotal Elevate — Home Assistant integration",
@@ -14229,6 +15010,20 @@
    "ref": "f685020eb9a136bdecd08f500a25c31870cc2602",
    "stars": 0
   },
+  "1300371459": {
+   "description": null,
+   "full_name": "mohistai/ha-custom-component",
+   "last_updated": "2026-07-14T11:22:41Z",
+   "manifest": {
+    "domain": "mjzk_hagw",
+    "name": "MJZK Gateway",
+    "zeroconf": [
+     "_mjzk._tcp.local."
+    ]
+   },
+   "ref": "608d7366e144b0143b5a9f874f40555e4da791f9",
+   "stars": 0
+  },
   "1300827653": {
    "description": "Local TrueGuard MZ and compatible Climax alarm integration for Home Assistant",
    "full_name": "MRDonnii/trueguard-mz-home-assistant",
@@ -14327,25 +15122,6 @@
    },
    "ref": "edfcda69a85d244b5c5202e9fc7b0ec30956dc33",
    "stars": 2
-  },
-  "1301884746": {
-   "description": "Home Assistant custom integration with Realtime weight + body composition from Xiaomi S400 scale via Mi Home v2 BLE GATT auth",
-   "full_name": "sjauijn/xiaomi-s400-live-HAOS",
-   "last_updated": "2026-09-01T01:09:45Z",
-   "manifest": {
-    "bluetooth": [
-     {
-      "local_name": "Xiaomi Scale S400*"
-     },
-     {
-      "local_name": "Body Composition Scale*"
-     }
-    ],
-    "domain": "mi_s400_body_scale",
-    "name": "Mi S400 Body Scale BLE"
-   },
-   "ref": "887f587039bce1556e35b891f5a8d331e5efa61d",
-   "stars": 1
   },
   "1301902921": {
    "description": "Home Assistant Bluetooth integration for Maus-Tec Mercury and Tremble-Me-Not controllers",
@@ -14892,6 +15668,23 @@
    "ref": "eae0b8b1ce153cee534021df52a436069b3b6db4",
    "stars": 0
   },
+  "1305968374": {
+   "description": "HA Integration for Dreame mower with Bluetooth",
+   "full_name": "flecke-m/dreame-ble-mower",
+   "last_updated": "2026-08-22T18:22:28Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "743345ba-72ea-4343-bd74-4b4c16040000"
+     }
+    ],
+    "domain": "dreame_ble_mower",
+    "name": "Dreame Mower BLE (Local)"
+   },
+   "ref": "925139819be00b97339b7244ced07e25a29e9b7c",
+   "stars": 0
+  },
   "1306033878": {
    "description": "Homeassistant integration for digital modbus inputs/outputs supporting visual configuration and flipping digital states",
    "full_name": "bartosz-777/EasyModbus-hacs",
@@ -14961,6 +15754,131 @@
    },
    "ref": "8c405dccca89dc9284b7c79c2ada60247f4eda10",
    "stars": 0
+  },
+  "1306164466": {
+   "description": null,
+   "full_name": "sjauijn/sutefoto-t40c-ble-HAOS",
+   "last_updated": "2026-09-01T01:10:54Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "ST40*"
+     }
+    ],
+    "domain": "sutefoto_t40c_led",
+    "name": "SuteFoto T40C RGB BLE"
+   },
+   "ref": "5f3be9ff6dacd31947e385ddf4a138146812123f",
+   "stars": 1
+  },
+  "1306200596": {
+   "description": null,
+   "full_name": "sjauijn/sony-alpha-remote-HAOS",
+   "last_updated": "2026-09-01T01:13:57Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "DSC-RX100M7"
+     },
+     {
+      "local_name": "DSC-RX100M7G"
+     },
+     {
+      "local_name": "ILCE-1"
+     },
+     {
+      "local_name": "ILCE-6100"
+     },
+     {
+      "local_name": "ILCE-6100L"
+     },
+     {
+      "local_name": "ILCE-6100Y"
+     },
+     {
+      "local_name": "ILCE-6400"
+     },
+     {
+      "local_name": "ILCE-6400L"
+     },
+     {
+      "local_name": "ILCE-6400M"
+     },
+     {
+      "local_name": "ILCE-6600"
+     },
+     {
+      "local_name": "ILCE-6600M"
+     },
+     {
+      "local_name": "ILCE-6700"
+     },
+     {
+      "local_name": "ILCE-7C"
+     },
+     {
+      "local_name": "ILCE-7CL"
+     },
+     {
+      "local_name": "ILCE-7CM2"
+     },
+     {
+      "local_name": "ILCE-7M3"
+     },
+     {
+      "local_name": "ILCE-7M3K"
+     },
+     {
+      "local_name": "ILCE-7M4"
+     },
+     {
+      "local_name": "ILCE-7RM3"
+     },
+     {
+      "local_name": "ILCE-7RM4"
+     },
+     {
+      "local_name": "ILCE-7RM4A"
+     },
+     {
+      "local_name": "ILCE-7RM5"
+     },
+     {
+      "local_name": "ILCE-7SM3"
+     },
+     {
+      "local_name": "ILCE-9"
+     },
+     {
+      "local_name": "ILCE-9M2"
+     },
+     {
+      "local_name": "ILME-FX2"
+     },
+     {
+      "local_name": "ILME-FX3"
+     },
+     {
+      "local_name": "ILME-FX3A"
+     },
+     {
+      "local_name": "ILX-LR1"
+     },
+     {
+      "local_name": "ZV-1"
+     },
+     {
+      "local_name": "ZV-E10"
+     },
+     {
+      "local_name": "ZV-E10L"
+     }
+    ],
+    "domain": "sony_alpha_remote",
+    "name": "Sony Alpha Remote BLE"
+   },
+   "ref": "0ee2d879d9016cc1c772fdb4a958125c50ea807e",
+   "stars": 1
   },
   "1306311974": {
    "description": "Home Assistant integration for Midea BLE fan lights via Bluetooth Proxy",
@@ -15219,6 +16137,22 @@
    "ref": "864391401aa99eafebc6bf081b842d88ee7d16e8",
    "stars": 0
   },
+  "1308707510": {
+   "description": null,
+   "full_name": "travo-tjh/claude-emerald",
+   "last_updated": "2026-07-26T07:03:11Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "00001910-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "emerald_advisor",
+    "name": "Claude Emerald"
+   },
+   "ref": "93a781de09682a78f93a2b1e7c63a8c6f8850e7d",
+   "stars": 0
+  },
   "1309151909": {
    "description": "HomeAssistant drives Boks mail box",
    "full_name": "kamahat/skob-ha",
@@ -15235,6 +16169,20 @@
    },
    "ref": "274de8d23ab488b00c75f651aa2edbc9b273d1c4",
    "stars": 2
+  },
+  "1309711331": {
+   "description": "SolarFlow2400Pro connected to HA by API",
+   "full_name": "lenni76/SolarFlow2400ProAPI",
+   "last_updated": "2026-10-19T09:12:21Z",
+   "manifest": {
+    "domain": "solarflow2400_api",
+    "name": "SolarFlow2400-API",
+    "zeroconf": [
+     "_zendure._tcp.local."
+    ]
+   },
+   "ref": "31ae953147f45c63ed0e802e55af4aa712d9975e",
+   "stars": 0
   },
   "1309717731": {
    "description": "Home Assistant integration for the Laird/Ezurio Sentrius BT610 BLE I/O sensor (passive advertisement parsing)",
@@ -15584,6 +16532,22 @@
     "name": "Micro-Air EasyStart"
    },
    "ref": "e69caa9721a68ef230e3b92051bbdb6891b4b1d1",
+   "stars": 0
+  },
+  "1314567896": {
+   "description": null,
+   "full_name": "wordersie-beep/washi-bms",
+   "last_updated": "2026-09-29T15:51:00Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "WTaHdAZ*"
+     }
+    ],
+    "domain": "washi_bms",
+    "name": "Washi BMS (LiFePO4 Battery)"
+   },
+   "ref": "2509f7781ca0c24f66cd9a1b466ee470690a4f15",
    "stars": 0
   },
   "1314599261": {
@@ -16008,6 +16972,34 @@
    "ref": "43927584a4618c161b263a35008275d8a991754c",
    "stars": 0
   },
+  "1319980405": {
+   "description": null,
+   "full_name": "ducdt1298/tapo-stream-control",
+   "last_updated": "2026-08-02T10:44:56Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "hostname": "c[0-9][0-9][0-9]*_*"
+     },
+     {
+      "hostname": "d[0-9][0-9][0-9]*_*"
+     },
+     {
+      "hostname": "tc[0-9][0-9]*_*"
+     },
+     {
+      "hostname": "d[0-9][0-9][0-9]*c_*"
+     },
+     {
+      "hostname": "h[0-9][0-9][0-9]*_*"
+     }
+    ],
+    "domain": "tapo_stream_control",
+    "name": "Tapo Stream Control"
+   },
+   "ref": "a9c3e5dd62412e1c0531644aab403a56f0e3680b",
+   "stars": 0
+  },
   "1320077047": {
    "description": "Home Assistant integration for the Caratech EasyLevel (CARATIGZ) BLE inclination sensor",
    "full_name": "brewie12/ha-caratigz-level",
@@ -16276,6 +17268,29 @@
    "ref": "510824261c0f538d241e85fe88a66dde32c487c1",
    "stars": 0
   },
+  "1324013196": {
+   "description": null,
+   "full_name": "nhazdun/ha-polar-ble",
+   "last_updated": "2026-08-10T12:43:30Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "manufacturer_id": 107
+     },
+     {
+      "service_uuid": "fb005c80-02e7-f387-1cad-8acd2d8df0c8"
+     },
+     {
+      "local_name": "Polar*",
+      "service_uuid": "0000180d-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "polar_ble",
+    "name": "Polar H10 BLE (live)"
+   },
+   "ref": "4f9163b8c53c13a5556336853fb6079a5091e8ba",
+   "stars": 0
+  },
   "1324663671": {
    "description": "Local API-key Home Assistant integration and dashboard for HydroColumn controllers",
    "full_name": "taylorjsam/home-assistant-hydrocolumn",
@@ -16356,6 +17371,23 @@
     "name": "HDCVT HDMI Matrix"
    },
    "ref": "9cb07c0745175eafcab0c890ca8ecc8e89816786",
+   "stars": 0
+  },
+  "1326208504": {
+   "description": "HA-Integration für den Votronic Bluetooth Connector S-BC",
+   "full_name": "guwo65/votronic",
+   "last_updated": "2026-09-05T16:18:31Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "d0cb6aa7-8548-46d0-99f8-2d02611e5270"
+     }
+    ],
+    "domain": "votronic",
+    "name": "Votronic Energy Monitor"
+   },
+   "ref": "4eec3b9895788decd7dcf298bb4aafa783043ec2",
    "stars": 0
   },
   "1326323683": {
@@ -16577,6 +17609,23 @@
    "ref": "970402ebab55be02215cff49e049b54dbef37ba8",
    "stars": 0
   },
+  "1329429773": {
+   "description": null,
+   "full_name": "keiprojects/solar-of-things-ha-ble",
+   "last_updated": "2026-08-10T05:50:49Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "0000fee7-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "solar_of_things_ble",
+    "name": "Solar of Things BLE"
+   },
+   "ref": "6c74d8c2bd409508d7ce41a025d92679dd8f2397",
+   "stars": 0
+  },
   "1329603178": {
    "description": "Read-only Home Assistant integration for SAJ HS3/eManager systems using local BLE communication.",
    "full_name": "harkoijkema/ha-saj-hs3",
@@ -16727,6 +17776,28 @@
     "name": "Sensirion LED Control"
    },
    "ref": "dc8763756fe76198cb50c52cf6bd56194af2396a",
+   "stars": 0
+  },
+  "1331350424": {
+   "description": null,
+   "full_name": "umstandsheini/ilockit_ha",
+   "last_updated": "2026-08-11T22:00:45Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "ILOCKIT-*"
+     },
+     {
+      "service_uuid": "0000f00f-1212-efde-1523-785fef13d123"
+     },
+     {
+      "service_uuid": "0000f00d-1212-efde-1523-785fef13d123"
+     }
+    ],
+    "domain": "ilockit",
+    "name": "I LOCK IT Smart Bike Lock"
+   },
+   "ref": "2c23a87d14af73d773e57c57cda692277bfb53b3",
    "stars": 0
   },
   "1331399844": {
@@ -17361,20 +18432,6 @@
    "ref": "1ac3c1abd5c91a74bd729d0d58c020f332477a67",
    "stars": 0
   },
-  "1334838183": {
-   "description": "Custom Network UPS Tools (NUT) integration for Home Assistant with auto-generated buttons for ALL commands and action support",
-   "full_name": "Bluscream/nut_custom",
-   "last_updated": "2026-08-15T06:09:51Z",
-   "manifest": {
-    "domain": "nut_custom",
-    "name": "Network UPS Tools (NUT) Custom",
-    "zeroconf": [
-     "_nut._tcp.local."
-    ]
-   },
-   "ref": "a3de7b1d2124fde1e84be3fb813654cceb759c3c",
-   "stars": 0
-  },
   "1335000427": {
    "description": "Home Assistant integration for Smart Grind by Weight",
    "full_name": "Clinteastman/smart-grind-home-assistant",
@@ -17606,6 +18663,26 @@
    "ref": "493a96f972ad263866714166a50dda2aa60bcbfa",
    "stars": 0
   },
+  "1337216706": {
+   "description": "HA plugin for plantmonitor",
+   "full_name": "robint91/ha-plantmonitor",
+   "last_updated": "2026-08-19T17:36:51Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": false,
+      "manufacturer_data_start": [
+       3
+      ],
+      "manufacturer_id": 65535
+     }
+    ],
+    "domain": "plant_monitor_ble",
+    "name": "Plant Monitor BLE"
+   },
+   "ref": "edddcebe15d8ff36fd3f64fe95c2e47588b31e42",
+   "stars": 0
+  },
   "1337314475": {
    "description": "Home-Assistant-Integration für SAX-Power-Heimspeicher über Modbus TCP",
    "full_name": "dr-dimitri/sax-ha",
@@ -17751,22 +18828,6 @@
    "ref": "18df3748114343029e4a81f56648fc1a2bcd23a1",
    "stars": 0
   },
-  "1338331608": {
-   "description": null,
-   "full_name": "futureshape/hass-qutie",
-   "last_updated": "2026-08-18T14:43:07Z",
-   "manifest": {
-    "bluetooth": [
-     {
-      "local_name": "Qutie*"
-     }
-    ],
-    "domain": "qutie",
-    "name": "Qutie"
-   },
-   "ref": "3c3a4fbfb30728d3a5571de6c9d58b002b64bfb1",
-   "stars": 0
-  },
   "1338494430": {
    "description": "Independent Home Assistant (HACS) integration for Zuma Lumisonic / Zuma SL speaker-lights — local control of light, audio and diagnostics.",
    "full_name": "luismalves/zuma-hacs",
@@ -17844,6 +18905,22 @@
    },
    "ref": "2a4a372434706c6ff88e13638f26134b883c5a8d",
    "stars": 1
+  },
+  "1339852133": {
+   "description": null,
+   "full_name": "qlikwer/ha_ld2411s_ble",
+   "last_updated": "2026-08-19T17:58:45Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "HLK-LD2411*"
+     }
+    ],
+    "domain": "ld2411s_ble",
+    "name": "LD2411S BLE"
+   },
+   "ref": "8cfa153574cce5c4dfae6193473cba7cdb33e43c",
+   "stars": 0
   },
   "1340188029": {
    "description": "Home Assistant integration for direct local control of Mitsubishi MSZ heat pumps via a MAC-559IF-E adapter (no cloud, no ECHONET Lite)",
@@ -18409,6 +19486,23 @@
    "ref": "781943bc55d3a7a2e97d23bf2572b565ee11fadc",
    "stars": 0
   },
+  "1341610808": {
+   "description": null,
+   "full_name": "aLAN-LDZ/solaraccelerator_connect_ha",
+   "last_updated": "2026-09-06T07:55:26Z",
+   "manifest": {
+    "domain": "solaraccelerator_connect",
+    "name": "Solar Accelerator Connect",
+    "zeroconf": [
+     {
+      "name": "solaraccelerator*",
+      "type": "_http._tcp.local."
+     }
+    ]
+   },
+   "ref": "94512736ebf3252b8fb1a214b04e966afe657abc",
+   "stars": 3
+  },
   "1341666119": {
    "description": "Parental control for Android TV / Google TV, driven from Home Assistant — screen time limits, app blocking, and one-tap \"more time\" requests. Local, no cloud, no subscription.",
    "full_name": "TomaszSyc/tvsitter",
@@ -18468,6 +19562,41 @@
     ]
    },
    "ref": "6e3cb345c784e33a3546aa34befc608ca33ff32a",
+   "stars": 0
+  },
+  "1342812385": {
+   "description": "Support for blue charm beacon button events",
+   "full_name": "metacode64/bc011pro-button-support",
+   "last_updated": "2026-08-22T13:02:28Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "manufacturer_data_start": [
+       2,
+       21,
+       66,
+       108,
+       117,
+       101,
+       67,
+       104,
+       97,
+       114,
+       109,
+       66,
+       101,
+       97,
+       99,
+       111,
+       110
+      ],
+      "manufacturer_id": 76
+     }
+    ],
+    "domain": "bc011_button",
+    "name": "BC011 Button"
+   },
+   "ref": "77f6c816cc17545e7f69514c74c2f95e421b7f83",
    "stars": 0
   },
   "1342840979": {
@@ -18629,6 +19758,40 @@
    },
    "ref": "96b362972c5807f08b5fa3f7b57efa8f0bedfa75",
    "stars": 1
+  },
+  "1344088621": {
+   "description": null,
+   "full_name": "pete91-prog/Kingsmith-walking-pad",
+   "last_updated": "2026-08-23T20:40:27Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "WalkingPad*"
+     },
+     {
+      "local_name": "KINGSMITH*"
+     },
+     {
+      "local_name": "KS-*"
+     },
+     {
+      "local_name": "ZP-ZEALR1*"
+     },
+     {
+      "local_name": "DYNAMAX*"
+     },
+     {
+      "service_uuid": "0000fe00-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "service_uuid": "00001826-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "kingsmith_walkingpad",
+    "name": "KingSmith WalkingPad (Offline)"
+   },
+   "ref": "fe9c253a6075a595754462e1550baea53a22794c",
+   "stars": 0
   },
   "1344156429": {
    "description": "Home Assistant component to integrate an AMPS 12v fridge",
@@ -18838,6 +20001,22 @@
    },
    "ref": "bb7d6a3eb488b415174de397deadeeef1161e93d",
    "stars": 1
+  },
+  "1345471692": {
+   "description": null,
+   "full_name": "teflux77/ha-lumen-center-sibylla-m",
+   "last_updated": "2026-08-25T21:58:48Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "Newlab*"
+     }
+    ],
+    "domain": "newlab_ble",
+    "name": "Newlab Go BLE Light"
+   },
+   "ref": "089518a0a6499c5b2eb9aa637306c809f456f62c",
+   "stars": 0
   },
   "1345538759": {
    "description": "Home Assistant SleepIQ integration with massage (vibration) support. Core's sleepiq exposes firmness, position, presets and lights but not massage, because asyncsleepiq can write massage state but never reads it. This fills in the read half.",
@@ -19076,6 +20255,22 @@
    "ref": "f1a3257f05f18e0928dfda160cfd3068d3ee9c7f",
    "stars": 1
   },
+  "1347868848": {
+   "description": null,
+   "full_name": "whybutter/idotmatrix",
+   "last_updated": "2026-09-03T04:04:29Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "IDM-*"
+     }
+    ],
+    "domain": "idotmatrix",
+    "name": "iDotMatrix LED Panel"
+   },
+   "ref": "f1d2b6ff515f1a68791a323717361a9e0f02bf5c",
+   "stars": 0
+  },
   "1348026772": {
    "description": "Sub-Zero Refrigerator BLE for Home Assistant",
    "full_name": "eyal0/subzero-ble-homeassistant",
@@ -19255,6 +20450,27 @@
    "ref": "eadf88183838c698a97ee09751f6103b65bc41be",
    "stars": 1
   },
+  "1349819117": {
+   "description": null,
+   "full_name": "aharder3/schneider-ambient-ble",
+   "last_updated": "2026-10-09T11:35:17Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "b35d95c0-6a68-437e-abe7-0ebffd8e0661"
+     },
+     {
+      "connectable": true,
+      "local_name": "WSC*"
+     }
+    ],
+    "domain": "schneider_ambient",
+    "name": "Schneider Ambient BLE"
+   },
+   "ref": "b67ff256b4a033d85847e586700941926f3309d5",
+   "stars": 0
+  },
   "1349822806": {
    "description": "Home Assistant integration for the Art Mode Brightness Android TV app",
    "full_name": "forestwoodassociates/ha-art-brightness",
@@ -19267,6 +20483,22 @@
     ]
    },
    "ref": "05459968740d9d7d07fd29c669a7b19f1ec1d3d7",
+   "stars": 0
+  },
+  "1350337753": {
+   "description": null,
+   "full_name": "icodeforyou/ha-swift-sargent",
+   "last_updated": "2026-09-10T12:52:42Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "SWIFT_BLE*"
+     }
+    ],
+    "domain": "swift_sargent",
+    "name": "Swift Command (Sargent BLE)"
+   },
+   "ref": "f01a667aa3632b08e53d9905b77ed7c85f4e5223",
    "stars": 0
   },
   "1350511941": {
@@ -19336,6 +20568,58 @@
     ]
    },
    "ref": "72fd8f5713733c1052de6952f4a85e1da1559ff2",
+   "stars": 0
+  },
+  "1350806866": {
+   "description": null,
+   "full_name": "Joihnny579/bluettiB",
+   "last_updated": "2026-08-30T16:13:19Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "AC2A*"
+     },
+     {
+      "local_name": "AC60*"
+     },
+     {
+      "local_name": "AC70*"
+     },
+     {
+      "local_name": "AC180*"
+     },
+     {
+      "local_name": "AC200*"
+     },
+     {
+      "local_name": "AC300*"
+     },
+     {
+      "local_name": "AC500*"
+     },
+     {
+      "local_name": "EB3A*"
+     },
+     {
+      "local_name": "EP500*"
+     },
+     {
+      "local_name": "EP600*"
+     },
+     {
+      "local_name": "EP760*"
+     },
+     {
+      "local_name": "EP800*"
+     },
+     {
+      "local_name": "PBOX*"
+     }
+    ],
+    "domain": "bluetti_b",
+    "name": "BluettiB BT"
+   },
+   "ref": "888e7c296ec147853f76ac17260b37bab016ca23",
    "stars": 0
   },
   "1350967180": {
@@ -19493,6 +20777,31 @@
    },
    "ref": "77abae16ee7042872a0bd44d4be775ed9d4fa083",
    "stars": 1
+  },
+  "1351655359": {
+   "description": null,
+   "full_name": "icodeforyou/ha-ble-wattcycle",
+   "last_updated": "2026-09-07T11:43:26Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "0000fff0-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "service_uuid": "0000ff00-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "local_name": "XDZN*"
+     },
+     {
+      "manufacturer_id": 8192
+     }
+    ],
+    "domain": "ha_ble_wattcycle",
+    "name": "WattCycle BLE Battery"
+   },
+   "ref": "ff61e96f2b20b80901ddbeca54570afc3f908d75",
+   "stars": 0
   },
   "1351759612": {
    "description": "does something lol",
@@ -19980,6 +21289,23 @@
    "ref": "544c69150791b436edf4ec8e8271c11db6c28d3c",
    "stars": 1
   },
+  "1355392544": {
+   "description": null,
+   "full_name": "anubis1906/Hatch-Sleep-Integration",
+   "last_updated": "2026-09-03T02:26:19Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "manufacturer_id": 1076
+     }
+    ],
+    "domain": "hatch_sleep",
+    "name": "Hatch Sleep"
+   },
+   "ref": "3117895b78d954d9944b40ffc49694dd92d14b9d",
+   "stars": 0
+  },
   "1355490363": {
    "description": "🔆 HACS component for SMA Modbus",
    "full_name": "burmistrzak/sma-modbus-hacs",
@@ -20408,6 +21734,27 @@
    "ref": "19ed2251a1e95bcb102a1fc40ad48c960291d0cd",
    "stars": 0
   },
+  "1358865009": {
+   "description": null,
+   "full_name": "zitroaen/BLE-ESL-BWRY",
+   "last_updated": "2026-10-04T03:34:16Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "manufacturer_id": 48042
+     },
+     {
+      "connectable": true,
+      "manufacturer_id": 43707
+     }
+    ],
+    "domain": "esl_zhsunyco",
+    "name": "Zhsunyco ESL"
+   },
+   "ref": "b2b3eca79fff994fe3d59a45b01a13ec8efb572b",
+   "stars": 0
+  },
   "1358990009": {
    "description": "Home Assistant integration for KRUPS/Tefal Cook4Me with cloud monitoring, Recipe Hub, pantry/diet recommendations and AI-assisted cook-along recipes.",
    "full_name": "Chreece/HA-Cook4me",
@@ -20463,6 +21810,20 @@
     "name": "Otodata BLE"
    },
    "ref": "5c310a8eb0172a3d695d7ece2b7850fd41822724",
+   "stars": 0
+  },
+  "1359294239": {
+   "description": null,
+   "full_name": "ha-linux-monitoring/ha-server-monitor",
+   "last_updated": "2026-09-06T17:56:00Z",
+   "manifest": {
+    "domain": "ha_server_monitor",
+    "name": "HA Server Monitor",
+    "zeroconf": [
+     "_ha-server-monitor._tcp.local."
+    ]
+   },
+   "ref": "0cb79948cdff784ee8ace9105425f8a76971cd64",
    "stars": 0
   },
   "1359544744": {
@@ -21078,6 +22439,43 @@
    "ref": "618808a964d1661dcc8a10f5c7ffb4ab02216393",
    "stars": 0
   },
+  "1364784617": {
+   "description": null,
+   "full_name": "29SimonB/switchbot-bluetooth-extended",
+   "last_updated": "2026-09-12T10:31:38Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": false,
+      "service_data_uuid": "00000d00-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "connectable": false,
+      "service_data_uuid": "0000fd3d-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "connectable": false,
+      "service_uuid": "cba20d00-224d-11e6-9fb8-0002a5d5c51b"
+     },
+     {
+      "connectable": false,
+      "manufacturer_id": 2409
+     },
+     {
+      "connectable": true,
+      "manufacturer_id": 89
+     },
+     {
+      "connectable": true,
+      "manufacturer_id": 741
+     }
+    ],
+    "domain": "switchbot_bluetooth_extended",
+    "name": "SwitchBot Bluetooth Extended"
+   },
+   "ref": "56ba41d8fb93ffc519d5ee4e4b94f7ca656ea61e",
+   "stars": 1
+  },
   "1365201488": {
    "description": "Self-learning Home Assistant integration for LD2410 BLE presence sensors",
    "full_name": "tinkerborg/homeassistant-smart-ld2410",
@@ -21325,6 +22723,22 @@
    "ref": "3bc35df135afc8e1cabcc3f979c33b15d180e04b",
    "stars": 0
   },
+  "1368707006": {
+   "description": null,
+   "full_name": "ecam315/bluetooth-chicken-door",
+   "last_updated": "2026-09-13T22:04:16Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "BF821*"
+     }
+    ],
+    "domain": "bf821_door",
+    "name": "Bluetooth Chicken Door"
+   },
+   "ref": "39a14c6bd5926dff82b72152bd3219b7ef902327",
+   "stars": 0
+  },
   "1368966434": {
    "description": "Home Assistant custom integration for KeepSmile BLE lights (KS03). Fork of jersey/keepsmile with import fixes for vendored cheshire library.",
    "full_name": "KassieC/keepsmile_homeassistant",
@@ -21549,6 +22963,22 @@
    "ref": "46ca436aeceadfeabbcab9593ad1b9a31b189368",
    "stars": 0
   },
+  "1372027974": {
+   "description": null,
+   "full_name": "koka1979/ha-inventer-connect",
+   "last_updated": "2026-09-15T19:58:23Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "e6834e4b-7b3a-48e6-91e4-f1d005f564d3"
+     }
+    ],
+    "domain": "inventer_connect",
+    "name": "inVENTer Connect"
+   },
+   "ref": "df6f6090220d04e017e8fe03cc7375f7b36f2212",
+   "stars": 0
+  },
   "1372114697": {
    "description": "Home Assistant integration and Lovelace card for OpenHydronic: per-zone thermostats, master manager and hydraulic protections.",
    "full_name": "davdlic/OpenHydronic-HA",
@@ -21564,6 +22994,27 @@
     ]
    },
    "ref": "50e373cbe0c031590abf35b5c7008f98015a3f32",
+   "stars": 0
+  },
+  "1372235875": {
+   "description": null,
+   "full_name": "j-setiawan/ha-anova-ble",
+   "last_updated": "2026-09-15T23:50:14Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "0000ffe0-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "connectable": true,
+      "local_name": "Anova*"
+     }
+    ],
+    "domain": "anova_legacy_ble",
+    "name": "Anova Legacy BLE"
+   },
+   "ref": "b00100429c11272a974040451116be62a6cb89b3",
    "stars": 0
   },
   "1372307223": {
@@ -22242,6 +23693,27 @@
    "ref": "b2576014c322d62139c0dd81e4a4a91cd2baa632",
    "stars": 0
   },
+  "1375221278": {
+   "description": "Reverse-engineered local BLE control for the Cambridge Sound Management Nightingale sleep system — no app, no cloud, no Ayla dependency.",
+   "full_name": "daniel-bergamini/nightingale-unofficial",
+   "last_updated": "2026-09-19T20:46:06Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "80b03553-ac03-41bc-8d3c-931f0a330168"
+     },
+     {
+      "connectable": true,
+      "local_name": "Nightingale"
+     }
+    ],
+    "domain": "nightingale",
+    "name": "Nightingale"
+   },
+   "ref": "9994dc7d1c7500bc2359024cfe5c46eb41ba4b24",
+   "stars": 0
+  },
   "1376265933": {
    "description": "Home Assistant integration for the Solar Frontier Turbo 1P solar inverter, read locally over its XML API",
    "full_name": "luukdobber/ha-solar-frontier-turbo",
@@ -22586,6 +24058,22 @@
    "ref": "77e489bdb773c557c25aaa06c8091b2dec85b37f",
    "stars": 0
   },
+  "1378939179": {
+   "description": null,
+   "full_name": "rnodern/govee-h617a-ble",
+   "last_updated": "2026-09-21T05:26:09Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "Govee_H617A_*"
+     }
+    ],
+    "domain": "govee_h617a_ble",
+    "name": "Govee H617A BLE"
+   },
+   "ref": "4279e64a54a028856902ea12fd9b67a066d6e8e4",
+   "stars": 0
+  },
   "1379968483": {
    "description": null,
    "full_name": "lerch-florian/homeassistant-remote-wake-sleep",
@@ -22705,6 +24193,20 @@
     "name": "Fluval Smart"
    },
    "ref": "7b9e8b376100ed97f1a5cc6c0f1420e88deda74a",
+   "stars": 0
+  },
+  "1381940709": {
+   "description": null,
+   "full_name": "CsepregiArtur/homekey-household",
+   "last_updated": "2026-09-27T16:19:51Z",
+   "manifest": {
+    "domain": "homekey_household",
+    "name": "HomeKey Household",
+    "zeroconf": [
+     "_homekey._tcp.local."
+    ]
+   },
+   "ref": "34309adbcfaaad3f21ff65b1f3afd7ad58e3226d",
    "stars": 0
   },
   "1381977020": {
@@ -23510,6 +25012,35 @@
    "ref": "a1204c5cf3cfcb2f50757d5da4b54a351cfcb2f2",
    "stars": 0
   },
+  "1391242957": {
+   "description": "Galo Repo",
+   "full_name": "diegogalindez/Galo",
+   "last_updated": "2026-09-27T22:32:55Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "RDR*"
+     },
+     {
+      "connectable": true,
+      "manufacturer_id": 1098
+     },
+     {
+      "connectable": true,
+      "service_uuid": "000018ef-5348-494d-414e-4f5f424c4500"
+     },
+     {
+      "connectable": true,
+      "service_uuid": "000018ff-5348-494d-414e-4f5f424c4500"
+     }
+    ],
+    "domain": "shimano_di2",
+    "name": "Shimano Di2"
+   },
+   "ref": "139f08837ee0ac20dea30c629dcf17523af172c5",
+   "stars": 0
+  },
   "1391285014": {
    "description": "Home Assistant HACS integration for Peblar's local REST API",
    "full_name": "JannicSJensen/peblar-rest",
@@ -23653,6 +25184,24 @@
    },
    "ref": "2497e33617461f3e2db43d9dc49b7dab93c71f3b",
    "stars": 1
+  },
+  "1392099611": {
+   "description": null,
+   "full_name": "schmidtbenjamin91-web/rv-level-sensor",
+   "last_updated": "2026-10-03T19:35:58Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "RVLevel-*",
+      "service_uuid": "0000fff0-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "xparkle_rvlevel",
+    "name": "RV Level Sensor"
+   },
+   "ref": "e25e3ff3d4593f11e2dfc2358ae22b8d4c22c0d2",
+   "stars": 0
   },
   "1392911854": {
    "description": "Local Home Assistant integration for INKBIRD BBQ controllers and wireless meat thermometers",
@@ -23803,6 +25352,27 @@
    "ref": "d0480e26369f6271753c9034bd30333190058267",
    "stars": 1
   },
+  "1393944949": {
+   "description": null,
+   "full_name": "spikked27/AOSmith-BLE",
+   "last_updated": "2026-10-11T13:59:04Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "ICOMM-*"
+     },
+     {
+      "connectable": true,
+      "service_uuid": "69400001-b5a3-f393-e0a9-e50e24dcca99"
+     }
+    ],
+    "domain": "aosmith_ble",
+    "name": "AO Smith Local BLE"
+   },
+   "ref": "6ce84e9b6ef76e66f7200c1b7ed7067712a1695d",
+   "stars": 0
+  },
   "1393953789": {
    "description": "Home Assistant integration for the WowWee COJI robot over local Bluetooth",
    "full_name": "SiloCityLabs/coji-ha",
@@ -23840,6 +25410,20 @@
     ]
    },
    "ref": "7f46f1c4ea08be31113abd6078590a5682feb815",
+   "stars": 0
+  },
+  "1394622440": {
+   "description": null,
+   "full_name": "Visiolite-com/xp-master-ha",
+   "last_updated": "2026-10-28T14:22:50Z",
+   "manifest": {
+    "domain": "netroni",
+    "name": "Netroni XP-Master",
+    "zeroconf": [
+     "_netroni._tcp.local."
+    ]
+   },
+   "ref": "3fee9a57306c064b3dc8a0a682c2d951ec36b23f",
    "stars": 0
   },
   "1394642853": {
@@ -24025,6 +25609,24 @@
    "ref": "fddba56c51dfaa5a8b8873fece938dce7df02077",
    "stars": 0
   },
+  "1398193054": {
+   "description": null,
+   "full_name": "lzghzr/LD2401_control",
+   "last_updated": "2026-10-01T20:26:04Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": false,
+      "local_name": "HLK-LD24*",
+      "service_data_uuid": "0000fcd2-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "ld2401_control",
+    "name": "HLK LD2401 OUT Control"
+   },
+   "ref": "bcbb63373e37812945d16c4317ab03d4bb6d906d",
+   "stars": 2
+  },
   "1398359444": {
    "description": "Home Assistant integration for ResMed AirSense 11 CPAPs over local Bluetooth (unofficial, reverse-engineered)",
    "full_name": "maroliar/hass-resmed-airsense",
@@ -24062,6 +25664,22 @@
    },
    "ref": "6fde44262306376aa113d96cb506255245e0146b",
    "stars": 1
+  },
+  "1398690251": {
+   "description": "LEGO Mario Integration",
+   "full_name": "demo2lango/ha-lego-mario",
+   "last_updated": "2026-10-01T19:34:52Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "00001623-1212-efde-1623-785feabcd123"
+     }
+    ],
+    "domain": "lego_mario",
+    "name": "LEGO Mario"
+   },
+   "ref": "56d0b0ba9202865bedaf86ed941a06de343e795b",
+   "stars": 0
   },
   "1398878111": {
    "description": "Animated, Home Assistant-controlled eyes for the Waveshare ESP32-S3 DualEye round displays — Halloween skulls and more",
@@ -24386,6 +26004,25 @@
    "ref": "a246a1132f638938ad0d70ab5be86c366d15a295",
    "stars": 0
   },
+  "1401808537": {
+   "description": null,
+   "full_name": "w035h/ha_fidbox",
+   "last_updated": "2026-10-13T17:00:56Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "FIDBOX*"
+     },
+     {
+      "service_uuid": "1bc5f1d0-0200-b79a-e411-f2a6c0a4ddc9"
+     }
+    ],
+    "domain": "fidbox",
+    "name": "Fidbox"
+   },
+   "ref": "ffb2f3201477e5a7f085c7b46dd2a87434f207eb",
+   "stars": 0
+  },
   "1401963920": {
    "description": "Experimental read-only Taelek BLE integration for Home Assistant. Etherma E-2001 compatibility pending hardware validation.",
    "full_name": "nikopilz-dev/taelek-ble-ha",
@@ -24424,6 +26061,23 @@
    "ref": "ec54232f9fd019ebf642ba57b50584d219f97806",
    "stars": 0
   },
+  "1402132910": {
+   "description": null,
+   "full_name": "VasMan/laserworld-cube-ha",
+   "last_updated": "2026-10-05T16:57:00Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "BLEAPP_*"
+     }
+    ],
+    "domain": "laserworld_cube",
+    "name": "Laserworld Cube Laser"
+   },
+   "ref": "8c4ac344a868e3b1d62e7230e90a4b5859cb09b3",
+   "stars": 0
+  },
   "1402222489": {
    "description": "Show any Home Assistant value on a Xiaomi LYWSD03MMC thermometer LCD (pvvx firmware): rotating screens, battery-aware, UI setup.",
    "full_name": "mikkmihkel/ha-lcd-ticker",
@@ -24447,6 +26101,22 @@
     "name": "LCD Ticker"
    },
    "ref": "af2d29e7a03e2d3579a6d8c69e066309f635fc71",
+   "stars": 0
+  },
+  "1402235822": {
+   "description": null,
+   "full_name": "pradeepk188/OutEquipProHA",
+   "last_updated": "2026-10-02T19:16:21Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "KT2026*"
+     }
+    ],
+    "domain": "outequip_ac",
+    "name": "OutEquip Pro AC"
+   },
+   "ref": "118d0c22cf8cd706c7d93cf1c63ddc1cea6c4617",
    "stars": 0
   },
   "1402248850": {
@@ -24477,6 +26147,41 @@
    "ref": "756b2cc8a33d7afabf3141bee15e4109076cc340",
    "stars": 0
   },
+  "1402823568": {
+   "description": null,
+   "full_name": "aldoushx/domyos_rower",
+   "last_updated": "2026-10-25T17:52:10Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "Domyos-Row*"
+     },
+     {
+      "connectable": true,
+      "local_name": "DOMYOS-ROW*"
+     }
+    ],
+    "domain": "domyos_rower",
+    "name": "Domyos Rower (Bluetooth)"
+   },
+   "ref": "0f6d91c6e89b1725ea0755b0c290921bd463cd5a",
+   "stars": 0
+  },
+  "1403027732": {
+   "description": null,
+   "full_name": "drift-beacon/ha-integration",
+   "last_updated": "2026-10-29T18:26:13Z",
+   "manifest": {
+    "domain": "drift_beacon",
+    "name": "Drift Beacon",
+    "zeroconf": [
+     "_drift-beacon._tcp.local."
+    ]
+   },
+   "ref": "e86d75c57e23983791dd2fa252baaa8a137df60a",
+   "stars": 0
+  },
   "1403029995": {
    "description": "JUNG HOME Bluetooth Mesh: protocol notes, jhmesh library, Home Assistant integration",
    "full_name": "ernetas/junghome-bt-mesh",
@@ -24499,6 +26204,22 @@
    },
    "ref": "9392615893d1409f6591465e068168653f086645",
    "stars": 2
+  },
+  "1403334517": {
+   "description": null,
+   "full_name": "slankes/nestera_chicken_coop_door",
+   "last_updated": "2026-10-03T15:20:59Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "JYCCD_*"
+     }
+    ],
+    "domain": "nestera",
+    "name": "Nestera Chicken Coop Door"
+   },
+   "ref": "4971464e68347022b9a0e8b16991ce44a5bf6014",
+   "stars": 1
   },
   "1403542140": {
    "description": "A Home Assistant Integration for Midea BLE Fans",
@@ -24535,6 +26256,54 @@
     "name": "Xiaomi BLE Control"
    },
    "ref": "11d679a3643d25f7b7455ddadbbea7fc98b9c459",
+   "stars": 0
+  },
+  "1404173043": {
+   "description": null,
+   "full_name": "drtsb/ha-rotel-integration",
+   "last_updated": "2026-10-25T08:03:48Z",
+   "manifest": {
+    "domain": "rotel_control",
+    "name": "Rotel Control",
+    "ssdp": [
+     {
+      "manufacturer": "Rotel"
+     },
+     {
+      "manufacturer": "ROTEL"
+     },
+     {
+      "manufacturer": "Rotel Corporation"
+     },
+     {
+      "manufacturer": "Rotel Co.,Ltd."
+     },
+     {
+      "manufacturer": "Rotel Co., Ltd."
+     },
+     {
+      "manufacturer": "Rotel Corporation."
+     },
+     {
+      "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1",
+      "manufacturer": "Rotel"
+     },
+     {
+      "deviceType": "urn:schemas-upnp-org:device:MediaServer:1",
+      "manufacturer": "Rotel"
+     },
+     {
+      "manufacturer": "Rotel",
+      "st": "upnp:rootdevice"
+     }
+    ],
+    "zeroconf": [
+     "_rotel._tcp.local.",
+     "_rotel-control._tcp.local.",
+     "_rotel-ra._tcp.local."
+    ]
+   },
+   "ref": "8a36b2e55c9d7bc08ed0defc42e54d0de8ac121a",
    "stars": 0
   },
   "1404226044": {
@@ -24715,6 +26484,22 @@
     ]
    },
    "ref": "6f02d74ce236ec7fd0c29bb3766d8013e5af495f",
+   "stars": 0
+  },
+  "1404616919": {
+   "description": null,
+   "full_name": "clemvillon/ha-vmi-purevent",
+   "last_updated": "2026-10-06T15:15:55Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "0003cbbb-0000-1000-8000-00805f9b0131"
+     }
+    ],
+    "domain": "vmi_plus",
+    "name": "VMI Purevent (VisionAir)"
+   },
+   "ref": "3a4f1f7e4d8a60a0297752eddd4a375a81c135a6",
    "stars": 0
   },
   "1404673827": {
@@ -24993,6 +26778,23 @@
    "ref": "32e48d070712a8d64100812106d84112aacf3678",
    "stars": 0
   },
+  "1406659860": {
+   "description": null,
+   "full_name": "Chewbaccalakis/arb-zero-ha",
+   "last_updated": "2026-10-06T03:52:32Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "ARBZERO*"
+     }
+    ],
+    "domain": "arb_zero",
+    "name": "ARB Zero Fridge"
+   },
+   "ref": "c7cfdd4a5f5c624419c41f63878ade41f6ff7800",
+   "stars": 0
+  },
   "1406882043": {
    "description": "Интеграция Gree Airy для Home Assistant с локальным и облачным управлением",
    "full_name": "kuzzrus/ha-gree-climate",
@@ -25246,6 +27048,20 @@
    "ref": "e82e99a20f60666876f357c67e62b1ef2cf86bcd",
    "stars": 0
   },
+  "1408914127": {
+   "description": "HA integration with kk-hmi",
+   "full_name": "marko-rimac-byteLab/kk-hmi-ha",
+   "last_updated": "2026-10-07T15:05:53Z",
+   "manifest": {
+    "domain": "kk_hmi",
+    "name": "KK HMI",
+    "zeroconf": [
+     "_kkstorage._tcp.local."
+    ]
+   },
+   "ref": "589b99ade7ab3ec8a42c9b37fe3af298aa5f80e8",
+   "stars": 0
+  },
   "1409096580": {
    "description": "Local Bluetooth control of the AromaTech Ambience scent diffuser for Home Assistant",
    "full_name": "subtlogic/ha-aromatech-ambience",
@@ -25398,6 +27214,33 @@
     "name": "Vitafit"
    },
    "ref": "d1dc8e654b61ee8fdf3cb98fc9668edfd6955288",
+   "stars": 0
+  },
+  "1410197485": {
+   "description": null,
+   "full_name": "architechlabs/tuesly",
+   "last_updated": "2026-10-26T11:58:37Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "00001827-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "connectable": true,
+      "service_data_uuid": "00001827-0000-1000-8000-00805f9b34fb"
+     },
+     {
+      "local_name": "out_of_mesh*"
+     },
+     {
+      "local_name": "S17*"
+     }
+    ],
+    "domain": "tuesly",
+    "name": "Tuesly"
+   },
+   "ref": "633cc92ec84997229b0aaacd52e6756f9abf12f4",
    "stars": 0
   },
   "1410250600": {
@@ -25607,6 +27450,23 @@
    "ref": "435f3ef117e64223d22591d113955d7870099a9b",
    "stars": 1
   },
+  "1411975864": {
+   "description": "HMI 800 & BBQKess",
+   "full_name": "Sascha883/EMS-ESP-Manager",
+   "last_updated": "2026-10-24T10:26:12Z",
+   "manifest": {
+    "domain": "ems_esp_manager",
+    "name": "EMS-ESP Manager (Bosch & Samsung)",
+    "zeroconf": [
+     {
+      "name": "ems-esp*",
+      "type": "_http._tcp.local."
+     }
+    ]
+   },
+   "ref": "2740766470b185341f1593ac4fef5a51748cb4d3",
+   "stars": 3
+  },
   "1412146092": {
    "description": "Improved Home Assistant integration for Philips Hue devices",
    "full_name": "pnwclw/hue-studio",
@@ -25759,6 +27619,49 @@
    },
    "ref": "66038afca590c8271e9017d18bbbbc27637f5356",
    "stars": 0
+  },
+  "1413311461": {
+   "description": null,
+   "full_name": "mistermej/Bliss-Smartblinds",
+   "last_updated": "2026-10-23T10:58:05Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "HD0*"
+     },
+     {
+      "local_name": "HD1*"
+     },
+     {
+      "local_name": "HD2*"
+     },
+     {
+      "local_name": "HD3*"
+     },
+     {
+      "local_name": "HD4*"
+     },
+     {
+      "local_name": "HD5*"
+     },
+     {
+      "local_name": "HD6*"
+     },
+     {
+      "local_name": "HD7*"
+     },
+     {
+      "local_name": "HD8*"
+     },
+     {
+      "local_name": "HD9*"
+     }
+    ],
+    "domain": "bliss_smartblinds",
+    "name": "Bliss Smartblinds"
+   },
+   "ref": "c6764b6ad26f3f2631277f0d55cf3336e1fb59bc",
+   "stars": 1
   },
   "1413333654": {
    "description": "Experimental local Home Assistant Bluetooth telemetry for Veloretti Ace Two",
@@ -25929,6 +27832,20 @@
    "ref": "c6fb9dca869c5097a4aa1bf765ac108c5298c59e",
    "stars": 0
   },
+  "1414094886": {
+   "description": null,
+   "full_name": "Tk-05/ha-wol-daemon",
+   "last_updated": "2026-10-11T09:12:22Z",
+   "manifest": {
+    "domain": "wol_daemon",
+    "name": "WOL Daemon",
+    "zeroconf": [
+     "_wol-daemon._tcp.local."
+    ]
+   },
+   "ref": "570bc25265e10c3a22507a14aeadcc50f38ac4be",
+   "stars": 0
+  },
   "1414158050": {
    "description": "Home Assistant custom integration for Braun BLE health devices (ThermoScan thermometers, blood pressure monitors)",
    "full_name": "cedhuf/ha-braun-ble",
@@ -25975,6 +27892,23 @@
    },
    "ref": "3f2d8a39aa852b424672ad26212b909fb184f210",
    "stars": 0
+  },
+  "1414194039": {
+   "description": null,
+   "full_name": "Tenqui-Noir/yunmu-ble-ha",
+   "last_updated": "2026-10-22T13:01:36Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "YUNM*"
+     }
+    ],
+    "domain": "yunmu_ble",
+    "name": "Yunmu BLE Meter (Experimental)"
+   },
+   "ref": "5a21dfe505d9eb3034083da681a4fdca5f04f920",
+   "stars": 1
   },
   "1414372404": {
    "description": "Home Assistant Integration for Hume Pod",
@@ -26074,6 +28008,23 @@
     "name": "Oasis Ambient Local BLE"
    },
    "ref": "d2d8fea8bd8f62bf0a5046133c1dbd85b1ab5d95",
+   "stars": 0
+  },
+  "1414612239": {
+   "description": null,
+   "full_name": "VasMan/steinelbt",
+   "last_updated": "2026-10-11T21:07:30Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "2672b000-875a-47ff-b1ef-f3f6872db917"
+     }
+    ],
+    "domain": "steinel_ble",
+    "name": "Steinel Bluetooth"
+   },
+   "ref": "daf7778eb133daa43011f55731aa993a8b97c423",
    "stars": 0
   },
   "1414732989": {
@@ -26363,6 +28314,28 @@
    },
    "ref": "71d2c41dfb0d0c332a44acd63a33f48ba35a90b6",
    "stars": 1
+  },
+  "1418103722": {
+   "description": null,
+   "full_name": "Bluicie/ha-edenwood-deepsound",
+   "last_updated": "2026-10-14T06:42:46Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "manufacturer_data_start": [
+       82,
+       82,
+       67
+      ],
+      "manufacturer_id": 21330
+     }
+    ],
+    "domain": "edenwood_deepsound",
+    "name": "Edenwood Deep Sound"
+   },
+   "ref": "cca3c857fe5090115d13f4a24c4819c0eb264f51",
+   "stars": 0
   },
   "1418239036": {
    "description": null,
@@ -26984,6 +28957,34 @@
    "ref": "3ee2069aeed9240cf54a9d54ff69af224ea49968",
    "stars": 1
   },
+  "1422068990": {
+   "description": "HA_Hitv_Control",
+   "full_name": "ayang851/hitvcontrol",
+   "last_updated": "2026-10-29T03:01:48Z",
+   "manifest": {
+    "domain": "hitvcontrol",
+    "name": "Hisense Home",
+    "ssdp": [
+     {
+      "st": "urn:schemas-upnp-org:device:MediaRenderer:1"
+     },
+     {
+      "st": "urn:schemas-upnp-org:device:MediaRenderer:2"
+     },
+     {
+      "st": "urn:schemas-upnp-org:device:MediaRenderer:3"
+     },
+     {
+      "st": "urn:schemas-upnp-org:device:MediaServer:1"
+     },
+     {
+      "st": "upnp:rootdevice"
+     }
+    ]
+   },
+   "ref": "fd9e0aefee3cfc1855238c3b52673a6671537576",
+   "stars": 0
+  },
   "1422257540": {
    "description": "Home Assistant integration for PulsarNixieClock.",
    "full_name": "markusressel/ha-pulsar-nixie",
@@ -27327,6 +29328,23 @@
    "ref": "1434f5231f8dae95548d9f0b72c43d976e0517f0",
    "stars": 0
   },
+  "1423691292": {
+   "description": null,
+   "full_name": "gjg4000-debug/ha-keto-mojo",
+   "last_updated": "2026-10-17T20:01:11Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "Keto-Mojo*"
+     }
+    ],
+    "domain": "keto_mojo",
+    "name": "Keto-Mojo GK+ Meter"
+   },
+   "ref": "07b7ebaf68d9774f1e06dd92e9fa4b3f2c3b80d5",
+   "stars": 0
+  },
   "1423797719": {
    "description": "Home Assistant custom integration for Pylontech FB-L-16 (Fidus 16kWh / UF5000 / Force H3) battery via BLE",
    "full_name": "chrisc123/pylontech_fbl16-homeassistant",
@@ -27368,6 +29386,20 @@
     "name": "BMC"
    },
    "ref": "037dbdda12b8a7f2da5fe20b7e93bf4aa45ecf6e",
+   "stars": 0
+  },
+  "1423873267": {
+   "description": null,
+   "full_name": "jonathanjuras/artisan-ha-integration",
+   "last_updated": "2026-10-26T12:00:06Z",
+   "manifest": {
+    "domain": "artisan",
+    "name": "Artisan Roaster Scope",
+    "zeroconf": [
+     "_artisan-bridge._tcp.local."
+    ]
+   },
+   "ref": "b698cba5225dd6c90ddd75a8c615a1b3b63dadf3",
    "stars": 0
   },
   "1423880581": {
@@ -34615,6 +36647,27 @@
    "ref": "7804586e4349535c4b16b4119d054a73016b235f",
    "stars": 0
   },
+  "1425492986": {
+   "description": "A simple Cyfran Unifon Smart U intercom controller based on nrf52840",
+   "full_name": "n0n3m4/nrf-intercom",
+   "last_updated": "2026-10-25T05:43:50Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "manufacturer_data_start": [
+       73,
+       67
+      ],
+      "manufacturer_id": 65535
+     }
+    ],
+    "domain": "nrf_intercom",
+    "name": "BLE Intercom"
+   },
+   "ref": "6b5f6fa109074c976786025747b669c128045102",
+   "stars": 0
+  },
   "1425536015": {
    "description": "Home Assistant integration for the boiler controller(HACS)",
    "full_name": "jarekandersaa-hash/fireheatlink-ha",
@@ -34835,6 +36888,20 @@
    "ref": "419f0ea71b60c89cf34c4dd6c34dc4906842a0ab",
    "stars": 0
   },
+  "1426891559": {
+   "description": "hapanel-integration",
+   "full_name": "bobby6robert/hapanel-integration",
+   "last_updated": "2026-10-27T22:44:56Z",
+   "manifest": {
+    "domain": "hapanel",
+    "name": "HA Panel",
+    "zeroconf": [
+     "_hapanel._tcp.local."
+    ]
+   },
+   "ref": "44e13e75c683cd9d4d20ac44608fc44fdcf31edf",
+   "stars": 3
+  },
   "1427182888": {
    "description": "Home Assistant integration for Luke Roberts Model F & Luvo smart lamps (HACS): local Bluetooth control via ESPHome/Shelly proxies, scenes, uplight colour, cloud fallback",
    "full_name": "3DJupp/lukeroberts-homeassistant",
@@ -35050,6 +37117,23 @@
    "ref": "8aa08db8a0a9f9d4c3d3e053cf896111e281f3b2",
    "stars": 0
   },
+  "1427597396": {
+   "description": null,
+   "full_name": "morgandj01/ha-orgsta-s001",
+   "last_updated": "2026-10-25T18:35:29Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "S001"
+     }
+    ],
+    "domain": "orgsta_s001",
+    "name": "ORGSTA S001 Label Printer"
+   },
+   "ref": "059d8270dbd7d8c5aa5634350e1f581df0cdac0e",
+   "stars": 0
+  },
   "1427619193": {
    "description": "Local Bluetooth Home Assistant integration for the Powerpal energy monitor. Live power, energy and battery plus Energy dashboard history, with no cloud, no account and no phone app.",
    "full_name": "realJoshByrnes/ha-powerpal-ble",
@@ -35113,6 +37197,22 @@
    },
    "ref": "0a88356bfb79582f947d5097a66010480095dfce",
    "stars": 3
+  },
+  "1427750041": {
+   "description": null,
+   "full_name": "ShowPilotFPP/ha-showpilot-player",
+   "last_updated": "2026-10-21T01:38:36Z",
+   "manifest": {
+    "domain": "showpilot_player",
+    "name": "ShowPilot Player",
+    "zeroconf": [
+     {
+      "type": "_showpilot-player._tcp.local."
+     }
+    ]
+   },
+   "ref": "29d20b14e5e456f1ec3ce284ecd1278329f8b284",
+   "stars": 0
   },
   "1427788954": {
    "description": "Unofficial Home Assistant integration for AVA OS",
@@ -35422,6 +37522,23 @@
    "ref": "c3ec111e135034ca6301b644dea1aeecdd218265",
    "stars": 0
   },
+  "1429471916": {
+   "description": null,
+   "full_name": "MatixYo/ha-eink-esl",
+   "last_updated": "2026-10-25T12:36:15Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "0000181a-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "eink_esl",
+    "name": "E-Ink ESL"
+   },
+   "ref": "cfc633c27ad0c35e19133ff9f21b6010ec446af4",
+   "stars": 0
+  },
   "1429888950": {
    "description": "UniFi Dream Router 7 for Home Assistant: WiFi, firewall, ports, PoE, clients and every UniFi device behind it, locally, with more control than the official integration.",
    "full_name": "SH1FT-W/unifi-dreamrouter7",
@@ -35590,6 +37707,23 @@
     "name": "HANSA Connect BLE"
    },
    "ref": "da97cc168bc38a1c12ce42f5e238f06eaa01073a",
+   "stars": 0
+  },
+  "1430017754": {
+   "description": null,
+   "full_name": "dermitchi/ha-mow-sense",
+   "last_updated": "2026-10-23T12:19:07Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "service_uuid": "98bd0001-0b0e-421a-84e5-ddbf75dc6de4"
+     }
+    ],
+    "domain": "mow_sense",
+    "name": "Mow Sense"
+   },
+   "ref": "8c9bf1c3ecfe5bb0319158905a7350367dd7138f",
    "stars": 0
   },
   "1430140378": {
@@ -35827,6 +37961,23 @@
     "name": "RVTech Dachhaube"
    },
    "ref": "c1f70083b002eb3dfe7eaac1ea4fdaafc93be178",
+   "stars": 0
+  },
+  "1431335705": {
+   "description": null,
+   "full_name": "BigWebstas/ha-fitbit-aria-air",
+   "last_updated": "2026-10-23T17:24:00Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "Aria Air"
+     }
+    ],
+    "domain": "fitbit_aria_air",
+    "name": "Fitbit Aria Air"
+   },
+   "ref": "0f4109786942f81d9caa20db9bb7e8a3017180f4",
    "stars": 0
   },
   "1431351766": {
@@ -36224,6 +38375,31 @@
    "ref": "93779e025ad63468914c2278eddb2b66798dc915",
    "stars": 0
   },
+  "1432376586": {
+   "description": null,
+   "full_name": "dwyschka/Einhell-freelexo",
+   "last_updated": "2026-10-25T11:25:25Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "Robot_Mower*"
+     },
+     {
+      "connectable": true,
+      "local_name": "Robot Mower*"
+     },
+     {
+      "connectable": true,
+      "local_name": "Robot_MOWER*"
+     }
+    ],
+    "domain": "einhell_mower",
+    "name": "Einhell Robotic Mower"
+   },
+   "ref": "ae0205bace4714dc8e0e6e3aec4d901b15c66988",
+   "stars": 0
+  },
   "1432423505": {
    "description": "Gexis Player in Home Assistant: each player as a media player, with its screen's switches and buttons, a D-pad and a dashboard card",
    "full_name": "gcarstoiu/gexis-player-homeassistant",
@@ -36295,6 +38471,37 @@
    "ref": "9a0e13412c673fcc5c9ae8e01b159b9500e33604",
    "stars": 0
   },
+  "1432672466": {
+   "description": null,
+   "full_name": "dwyschka/govee-h7140-ble",
+   "last_updated": "2026-10-25T08:22:26Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "manufacturer_data_start": [
+       236,
+       0,
+       1,
+       2
+      ],
+      "manufacturer_id": 34818
+     },
+     {
+      "manufacturer_data_start": [
+       236,
+       0,
+       2,
+       1
+      ],
+      "manufacturer_id": 34883
+     }
+    ],
+    "domain": "govee_h7140_ble",
+    "name": "Govee H7140 BLE"
+   },
+   "ref": "457b9765aab49c855edc5579c8abccd646171f99",
+   "stars": 0
+  },
   "1432713521": {
    "description": "A&D UA-651BLE blood pressure monitor for Home Assistant (via ESPHome Bluetooth proxy)",
    "full_name": "GHzJeff/ha-ad-bp-ble",
@@ -36344,6 +38551,28 @@
     "name": "AppLights"
    },
    "ref": "c11d2026031dc58ddd457756ebee22bea47d86e1",
+   "stars": 0
+  },
+  "1432962372": {
+   "description": null,
+   "full_name": "dominguez-posh/ha-devicontrol",
+   "last_updated": "2026-10-25T12:44:46Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "manufacturer_data_start": [
+       115,
+       116,
+       97
+      ],
+      "manufacturer_id": 1414
+     }
+    ],
+    "domain": "kermi_ecotimer",
+    "name": "Kermi EcoTimer"
+   },
+   "ref": "67d270dc964f95bec64698894ad7fff54af5aab2",
    "stars": 0
   },
   "1433047548": {
@@ -36455,6 +38684,25 @@
     "name": "QN Kitchen Scale (Yolanda, Arboleaf CK10A)"
    },
    "ref": "f2d26f7bd7eec5531d91f53e5a322e96bb4aa0e3",
+   "stars": 0
+  },
+  "1433194965": {
+   "description": null,
+   "full_name": "JaKosinski/ha-myirobot",
+   "last_updated": "2026-10-25T13:09:47Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "hostname": "irobot-*"
+     },
+     {
+      "hostname": "roomba-*"
+     }
+    ],
+    "domain": "irobot_local",
+    "name": "iRobot Local"
+   },
+   "ref": "817506cd2d24351b47e86e2c8a777d9c58c143ca",
    "stars": 0
   },
   "1433300106": {
@@ -36594,6 +38842,22 @@
    },
    "ref": "6d5fcbb41102e52c7cad7fe38f129b5061ed8f8c",
    "stars": 0
+  },
+  "1433496626": {
+   "description": null,
+   "full_name": "Zanuuu/ha-lg-webos-tv",
+   "last_updated": "2026-10-26T09:22:41Z",
+   "manifest": {
+    "domain": "lg_webos_tv",
+    "name": "LG webOS TV",
+    "ssdp": [
+     {
+      "st": "urn:lge-com:service:webos-second-screen:1"
+     }
+    ]
+   },
+   "ref": "ddd98f97accc394af4a10f92543cac88b9bbecaa",
+   "stars": 1
   },
   "1433623880": {
    "description": null,
@@ -37043,6 +39307,34 @@
    "ref": "6bc65097c0a51dbee1f1f60da3e6062b4807e751",
    "stars": 0
   },
+  "1435770301": {
+   "description": null,
+   "full_name": "Senseble-B-V/remon-home-integration",
+   "last_updated": "2026-10-27T14:28:17Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "hostname": "saltbuddy-*"
+     },
+     {
+      "hostname": "softener-*"
+     },
+     {
+      "hostname": "softenerdf-*"
+     },
+     {
+      "registered_devices": true
+     }
+    ],
+    "domain": "remon",
+    "name": "Remon",
+    "zeroconf": [
+     "_saltlevel._tcp.local."
+    ]
+   },
+   "ref": "2fe5ca7c757fd005a1dd64aae469e9a4626ca3dd",
+   "stars": 0
+  },
   "1436001156": {
    "description": "Lightweight Linux node monitor for Home Assistant",
    "full_name": "pixelwave/ravn",
@@ -37152,6 +39444,50 @@
     "name": "Govee BLE Strip"
    },
    "ref": "6e991ad96a29435960e55654d3731a9700d288d2",
+   "stars": 0
+  },
+  "1436161964": {
+   "description": null,
+   "full_name": "CacheKingDev/ha-lumaglow",
+   "last_updated": "2026-10-28T14:17:58Z",
+   "manifest": {
+    "domain": "lumaglow",
+    "name": "LumaGlow",
+    "zeroconf": [
+     "_lumaglow._tcp.local."
+    ]
+   },
+   "ref": "935a442d6e2c354b37f0b41bf995578bd20d804c",
+   "stars": 0
+  },
+  "1436169292": {
+   "description": null,
+   "full_name": "EVERYDAYHERO2000/hommyn",
+   "last_updated": "2026-10-27T19:17:07Z",
+   "manifest": {
+    "domain": "hommyn",
+    "name": "Hommyn Local",
+    "zeroconf": [
+     "_syncleo._udp.local."
+    ]
+   },
+   "ref": "a629d023a799dabeaf83dee8b17e70a617e2ec87",
+   "stars": 0
+  },
+  "1436205489": {
+   "description": null,
+   "full_name": "jpvaneerde/jplayer",
+   "last_updated": "2026-10-29T09:53:25Z",
+   "manifest": {
+    "domain": "jplay",
+    "name": "JPlay",
+    "zeroconf": [
+     "_jplay._tcp.local.",
+     "_jplay-display._tcp.local.",
+     "_jplay-hub._tcp.local."
+    ]
+   },
+   "ref": "15caaa7304ae0a8c5ad1b2ff72c6dfa27a6078fa",
    "stars": 0
   },
   "1436343077": {
@@ -37321,6 +39657,20 @@
    "ref": "588d8fd11b400f0aa00b22b3588626a0305f0e99",
    "stars": 0
   },
+  "1437047351": {
+   "description": null,
+   "full_name": "SebastianKristo/pult-forsterker",
+   "last_updated": "2026-10-29T16:19:29Z",
+   "manifest": {
+    "domain": "ki_pultforsterker",
+    "name": "Pultforsterker",
+    "zeroconf": [
+     "_kipultamp._tcp.local."
+    ]
+   },
+   "ref": "5cf085a8dbb27485f6e17cfc5b4365e7083ae422",
+   "stars": 0
+  },
   "1437401063": {
    "description": "Home Assistant integration for the GlowUp TV launcher (HACS)",
    "full_name": "Kenny3231/glowup-ha",
@@ -37364,6 +39714,20 @@
     ]
    },
    "ref": "941300b46c47ac9d586252b943cde17a4a92aea2",
+   "stars": 0
+  },
+  "1437706872": {
+   "description": null,
+   "full_name": "eisus-dev/eisus-ha-integration",
+   "last_updated": "2026-10-28T23:10:50Z",
+   "manifest": {
+    "domain": "eisus",
+    "name": "EISUS",
+    "zeroconf": [
+     "_eisus._tcp.local."
+    ]
+   },
+   "ref": "44904e57d954d5e899345c273c051b8c8c7fdffd",
    "stars": 0
   },
   "1437852068": {
@@ -37592,6 +39956,24 @@
    "ref": "ef6424766aa2a02714921fa821336f7e46b76bca",
    "stars": 0
   },
+  "1438644536": {
+   "description": null,
+   "full_name": "gielk/ha-anova",
+   "last_updated": "2026-10-29T21:09:56Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "Anova*",
+      "service_uuid": "0000ffe0-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "anova_ble",
+    "name": "Anova Precision Cooker (Bluetooth)"
+   },
+   "ref": "fa3c6aab9b3f07b0a8e99f352623cafffec702fd",
+   "stars": 0
+  },
   "1438731275": {
    "description": "Home Assistant integration for Septic Brain",
    "full_name": "septicbrain/ha-brain",
@@ -37635,6 +40017,128 @@
     ]
    },
    "ref": "a4202e6d975912a115c7a15095a9e1e7f7aecd60",
+   "stars": 0
+  },
+  "1438946060": {
+   "description": null,
+   "full_name": "LeoDelizy/Int-gration-Acova-HA",
+   "last_updated": "2026-10-29T22:22:17Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "03366e80-cf3a-11e1-9ab4-0002a5d5c51b"
+     }
+    ],
+    "domain": "acova_ble",
+    "name": "ACOVA BLE"
+   },
+   "ref": "1e29b1576f3623f98b425fcf34a8fea77ad36cc7",
+   "stars": 0
+  },
+  "1438951617": {
+   "description": "Local Bluetooth control for MDA LED rugs in Home Assistant, installable through HACS.",
+   "full_name": "Elijah-Watson/ha-mda-rug",
+   "last_updated": "2026-10-29T20:58:06Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "IOTBT*"
+     }
+    ],
+    "domain": "mda_rug",
+    "name": "MDA Rug"
+   },
+   "ref": "647adbecc2f0f2027e09347b4ef8ce7e26912842",
+   "stars": 0
+  },
+  "1438956800": {
+   "description": "Home Assistant custom integration for MELK/ELK-BLEDOM LED strips. Elkotrol-style short-lived BLE connections.",
+   "full_name": "toragi/melk-led",
+   "last_updated": "2026-10-29T21:04:54Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "local_name": "MELK*"
+     },
+     {
+      "local_name": "ELK-BLE*"
+     },
+     {
+      "local_name": "ELK-BULB*"
+     },
+     {
+      "local_name": "LEDBLE*"
+     }
+    ],
+    "domain": "melk_led",
+    "name": "MELK LED"
+   },
+   "ref": "b9ad344ac0e8c48d2ba3b9ebceed30b5d5291dca",
+   "stars": 0
+  },
+  "1438957702": {
+   "description": "Home Assistant integration for ChefsTemp ProTemp S1 and Breezo",
+   "full_name": "bolkonskiy/protemp-s1",
+   "last_updated": "2026-10-29T21:22:13Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "macaddress": "74E9D8*"
+     }
+    ],
+    "domain": "cheftemp",
+    "name": "ProTemp S1"
+   },
+   "ref": "89f151fd35c67ba3e6c773edf04352c2e67e9b16",
+   "stars": 0
+  },
+  "1438965616": {
+   "description": "The app is gone, the diffuser is not. Local, cloud-free Bluetooth control for the iMist aroma diffuser in Home Assistant – live state, schedules, sleep timer and a sidebar panel.",
+   "full_name": "ElektroGandhi/iMist",
+   "last_updated": "2026-10-29T21:23:10Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "connectable": true,
+      "local_name": "AromaDiffuser",
+      "service_uuid": "0000fff0-0000-1000-8000-00805f9b34fb"
+     }
+    ],
+    "domain": "imist",
+    "name": "iMist Aroma Diffuser"
+   },
+   "ref": "11a1d5c3a52eb07bfa48f94fa84a35266f01ac28",
+   "stars": 0
+  },
+  "1439016006": {
+   "description": "Home Assistant integration for the Harman Kardon Enchant soundbars and speakers: local control, no cloud, with a dashboard card.",
+   "full_name": "bazsc20ne/ha-harman-enchant",
+   "last_updated": "2026-10-29T22:19:29Z",
+   "manifest": {
+    "domain": "harman_enchant",
+    "name": "Harman Kardon Enchant",
+    "zeroconf": [
+     "_jbl-product._tcp.local."
+    ]
+   },
+   "ref": "b473850b924e2f30ec34b2974bc5044a58ad1f17",
+   "stars": 0
+  },
+  "1439019728": {
+   "description": "Native Home Assistant integration for LINAK desks, with centimeter heights and extended DPG1C reads. HACS custom repository.",
+   "full_name": "solarssk/ha-linak",
+   "last_updated": "2026-10-29T22:52:04Z",
+   "manifest": {
+    "bluetooth": [
+     {
+      "service_uuid": "99fa0001-338a-1024-8a49-009c0215f78a"
+     }
+    ],
+    "domain": "ha_linak",
+    "name": "LINAK"
+   },
+   "ref": "82b24a474fda13562829ff0a058a796884a91967",
    "stars": 0
   },
   "183680048": {
@@ -39574,6 +42078,52 @@
    "ref": "6ff66ef15737490a3649acfea777727a49b64314",
    "stars": 0
   },
+  "728396007": {
+   "description": null,
+   "full_name": "donandren/tuya_ext",
+   "last_updated": "2025-03-17T00:00:36Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "macaddress": "105A17*"
+     },
+     {
+      "macaddress": "10D561*"
+     },
+     {
+      "macaddress": "1869D8*"
+     },
+     {
+      "macaddress": "381F8D*"
+     },
+     {
+      "macaddress": "508A06*"
+     },
+     {
+      "macaddress": "68572D*"
+     },
+     {
+      "macaddress": "708976*"
+     },
+     {
+      "macaddress": "7CF666*"
+     },
+     {
+      "macaddress": "84E342*"
+     },
+     {
+      "macaddress": "D4A651*"
+     },
+     {
+      "macaddress": "D81F12*"
+     }
+    ],
+    "domain": "tuya_ext",
+    "name": "Tuya extensions"
+   },
+   "ref": "aa956717bd22a28f933bc44ed23892aec27c1a3e",
+   "stars": 0
+  },
   "729421662": {
    "description": "A home assistant smart things custom integration fixing air purifier integrations",
    "full_name": "CodeFatherG/home-assistant-smarterthings",
@@ -40121,6 +42671,46 @@
     ]
    },
    "ref": "54d5edd4e283e75b60299878442e19135de157c2",
+   "stars": 0
+  },
+  "783463651": {
+   "description": null,
+   "full_name": "sdoe0/ElectroluxClimateComponent",
+   "last_updated": "2024-04-11T10:27:36Z",
+   "manifest": {
+    "dhcp": [
+     {
+      "registered_devices": true
+     },
+     {
+      "macaddress": "34EA34*"
+     },
+     {
+      "macaddress": "24DFA7*"
+     },
+     {
+      "macaddress": "A043B0*"
+     },
+     {
+      "macaddress": "B4430D*"
+     },
+     {
+      "macaddress": "C8F742*"
+     },
+     {
+      "macaddress": "E81656*"
+     },
+     {
+      "macaddress": "E87072*"
+     },
+     {
+      "macaddress": "EC0BAE*"
+     }
+    ],
+    "domain": "electrolux_climate",
+    "name": "Electrolux Climate"
+   },
+   "ref": "2aad4eaf05b3f83ca3d184e5c20f0c55c1c251fa",
    "stars": 0
   },
   "786866053": {
