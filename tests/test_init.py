@@ -19,6 +19,7 @@ from custom_components.marketplace_discovery.const import (
 from homeassistant.components.frontend import DATA_PANELS
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
+from homeassistant.loader import async_get_integration
 from homeassistant.setup import async_setup_component
 
 
@@ -67,8 +68,9 @@ async def test_setup_and_unload(
     assert panel.sidebar_icon == "mdi:store-search"
     assert panel.config["_panel_custom"]["name"] == "marketplace-discovery-panel"
     assert panel.config["_panel_custom"]["embed_iframe"] is False
+    integration = await async_get_integration(hass, DOMAIN)
     assert panel.config["_panel_custom"]["module_url"] == (
-        f"{PANEL_STATIC_URL}/panel.js?v=0.1.0"
+        f"{PANEL_STATIC_URL}/panel.js?v={integration.version}"
     )
     assert config_entry.runtime_data.dataset.data == dataset_payload
 
