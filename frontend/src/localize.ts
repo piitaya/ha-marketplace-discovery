@@ -65,6 +65,9 @@ const en = {
   "card.stop_ignoring": "Stop ignoring",
   "card.open": "Open in Marketplace",
   "card.unknown_device": "Unknown device",
+  "section.installed": "Installed",
+  "section.ignored": "Ignored",
+  "section.available": "Available",
 } satisfies Record<string, Message>;
 
 export type LocalizeKey = keyof typeof en;
@@ -138,6 +141,9 @@ const fr: Dictionary = {
   "card.stop_ignoring": "Ne plus ignorer",
   "card.open": "Ouvrir dans le Marketplace",
   "card.unknown_device": "Appareil inconnu",
+  "section.installed": "Installées",
+  "section.ignored": "Ignorées",
+  "section.available": "Disponibles",
 };
 
 export const DICTIONARIES = { en, fr } as const;

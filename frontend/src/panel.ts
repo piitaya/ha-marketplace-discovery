@@ -11,7 +11,7 @@ import { css, html, LitElement, nothing, type PropertyValues, type TemplateResul
 import { property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { brandIconUrl, SOURCE_LABELS, SOURCES } from "./format.ts";
-import { buildView, type DiscoveryView } from "./group.ts";
+import { buildView, type DiscoveryView, type IntegrationGroup } from "./group.ts";
 import { type MpdIntegrationCard, SOURCE_ICONS } from "./integration-card.ts";
 import { createLocalizer, languageOf, type LocalizeFunc, type Localizer } from "./localize.ts";
 import { sharedStyles } from "./styles.ts";
@@ -468,10 +468,37 @@ export class MarketplaceDiscoveryPanel extends LitElement {
       const filtering = this._filter.trim() !== "" || this._selectedSources.size > 0;
       return html`<div class="card state"><span>${localize(filtering ? "results.no_match" : "results.all_hidden")}</span></div>`;
     }
+    const { localize } = this._localizer;
+    const installed = view.integrations.filter((group) => group.installed);
+    const ignored = view.integrations.filter((group) => group.ignored && !group.installed);
+    const available = view.integrations.filter((group) => !group.installed && !group.ignored);
+    const sections = (
+      [
+        ["section.installed", installed],
+        ["section.ignored", ignored],
+      ] as const
+    ).filter(([, groups]) => groups.length);
+    return html`
+      ${sections.map(
+        ([key, groups]) => html`
+          <h2 class="section-title">${localize(key)} <span class="count">${groups.length}</span></h2>
+          ${this._renderCardList(groups)}
+        `,
+      )}
+      ${
+        available.length && sections.length
+          ? html`<h2 class="section-title">${localize("section.available")} <span class="count">${available.length}</span></h2>`
+          : nothing
+      }
+      ${this._renderCardList(available)}
+    `;
+  }
+
+  private _renderCardList(groups: IntegrationGroup[]): TemplateResult {
     const filtering = this._filter.trim() !== "";
     const dark = this.hass?.themes?.darkMode === true;
     return html`${repeat(
-      view.integrations,
+      groups,
       (group) => group.repository_id,
       (group) => html`
         <mpd-integration-card
@@ -967,6 +994,15 @@ export class MarketplaceDiscoveryPanel extends LitElement {
         background: color-mix(in srgb, currentColor 8%, transparent);
         font-size: var(--ha-font-size-s, 12px);
         text-align: center;
+      }
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: var(--ha-space-2, 8px);
+        margin: var(--ha-space-2, 8px) 0 0;
+        font-size: var(--ha-font-size-m, 14px);
+        font-weight: var(--ha-font-weight-medium, 500);
+        color: var(--secondary-text-color, #5e5e5e);
       }
       .chip:focus-visible {
         outline: 2px solid var(--primary-color, #009ac7);
