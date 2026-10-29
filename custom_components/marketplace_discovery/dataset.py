@@ -1,8 +1,9 @@
 import asyncio
 from collections.abc import Callable
-from datetime import datetime
+from datetime import datetime, timedelta
+from http import HTTPStatus
 import logging
-from typing import Any, TypedDict
+from typing import Any, NotRequired, TypedDict
 
 import aiohttp
 
@@ -29,6 +30,7 @@ FETCH_TIMEOUT = aiohttp.ClientTimeout(total=60)
 class StoredDataset(TypedDict):
     fetched_at: str
     data: dict[str, Any]
+    etag: NotRequired[str | None]
 
 
 class DatasetError(Exception):
@@ -56,6 +58,7 @@ class Dataset:
         self._store: Store[StoredDataset] = Store(hass, STORAGE_VERSION, STORAGE_KEY)
         self.data: dict[str, Any] | None = None
         self.fetched_at: datetime | None = None
+        self.etag: str | None = None
         self.matchers = MarketplaceMatchers({})
         self._listeners: list[CALLBACK_TYPE] = []
         self._unsub_interval: CALLBACK_TYPE | None = None
@@ -81,7 +84,7 @@ class Dataset:
         await self._async_load_cache()
         if self.fetched_at is None:
             await self.async_update()
-        elif dt_util.utcnow() - self.fetched_at >= UPDATE_INTERVAL:
+        else:
             self._update_task = self.hass.async_create_background_task(
                 self.async_update(), "marketplace_discovery dataset update"
             )
@@ -118,14 +121,20 @@ class Dataset:
             return
         if fetched_at is None:
             return
+        etag = stored.get("etag")
+        self.etag = etag if isinstance(etag, str) else None
         self._apply(data, fetched_at)
 
     async def _async_scheduled_update(self, _now: datetime) -> None:
         await self.async_update()
 
+    async def async_update_if_older(self, max_age: timedelta) -> None:
+        if self.fetched_at is None or dt_util.utcnow() - self.fetched_at >= max_age:
+            await self.async_update()
+
     async def async_update(self) -> bool:
         try:
-            data = await self._async_fetch()
+            data, etag = await self._async_fetch()
         except DatasetError as err:
             if self.data is None:
                 _LOGGER.warning("Unable to download the matcher dataset: %s", err)
@@ -136,25 +145,37 @@ class Dataset:
                 )
             return False
         fetched_at = dt_util.utcnow()
+        if data is None:
+            data = self.data
+            etag = self.etag
         await self._store.async_save(
-            {"fetched_at": fetched_at.isoformat(), "data": data}
+            {"fetched_at": fetched_at.isoformat(), "data": data, "etag": etag}
         )
         changed = data != self.data
+        self.etag = etag
         self._apply(data, fetched_at)
         if changed:
             for listener in list(self._listeners):
                 listener()
         return True
 
-    async def _async_fetch(self) -> dict[str, Any]:
+    async def _async_fetch(self) -> tuple[dict[str, Any] | None, str | None]:
         session = async_get_clientsession(self.hass)
+        headers = (
+            {"If-None-Match": self.etag} if self.etag and self.data is not None else {}
+        )
         try:
-            async with session.get(DATASET_URL, timeout=FETCH_TIMEOUT) as response:
+            async with session.get(
+                DATASET_URL, headers=headers, timeout=FETCH_TIMEOUT
+            ) as response:
+                if response.status == HTTPStatus.NOT_MODIFIED:
+                    return None, self.etag
                 response.raise_for_status()
                 data = await response.json(content_type=None)
+                etag = response.headers.get("ETag")
         except (aiohttp.ClientError, TimeoutError, ValueError) as err:
             raise DatasetError(str(err) or type(err).__name__) from err
-        return validate_dataset(data)
+        return validate_dataset(data), etag
 
     def _apply(self, data: dict[str, Any], fetched_at: datetime) -> None:
         self.data = data

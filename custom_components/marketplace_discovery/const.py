@@ -6,6 +6,7 @@ DOMAIN: Final = "marketplace_discovery"
 DATASET_URL: Final = "https://piitaya.github.io/ha-marketplace-discovery/matchers.json"
 DATASET_VERSION: Final = 1
 UPDATE_INTERVAL: Final = timedelta(hours=24)
+SCAN_UPDATE_AGE: Final = timedelta(hours=1)
 STORAGE_KEY: Final = f"{DOMAIN}.dataset"
 STORAGE_VERSION: Final = 1
 IGNORED_STORAGE_KEY: Final = f"{DOMAIN}.ignored"

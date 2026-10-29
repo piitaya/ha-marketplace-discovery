@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Callable, Sequence
 import logging
 from typing import TYPE_CHECKING, Any
@@ -11,7 +12,7 @@ from homeassistant.helpers.device_registry import format_mac
 from homeassistant.loader import async_get_custom_components
 
 from . import sources
-from .const import DOMAIN
+from .const import DOMAIN, SCAN_UPDATE_AGE
 from .matching import SOURCES, MarketplaceMatchers, Match, Source
 
 if TYPE_CHECKING:
@@ -229,10 +230,13 @@ async def ws_matches(
 ) -> None:
     if (data := _async_loaded_data(connection, msg)) is None:
         return
-    if data.dataset.data is None:
-        await data.dataset.async_update()
     if msg["refresh"]:
-        await sources.async_refresh(hass, data.browser)
+        await asyncio.gather(
+            sources.async_refresh(hass, data.browser),
+            data.dataset.async_update_if_older(SCAN_UPDATE_AGE),
+        )
+    elif data.dataset.data is None:
+        await data.dataset.async_update()
     connection.send_result(
         msg["id"],
         {

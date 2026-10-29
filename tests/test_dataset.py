@@ -1,5 +1,6 @@
 import asyncio
 from datetime import timedelta
+from http import HTTPStatus
 from typing import Any
 from unittest.mock import MagicMock, patch
 
@@ -20,7 +21,10 @@ from homeassistant.util import dt as dt_util
 
 
 def store_dataset(
-    hass_storage: dict[str, Any], data: dict[str, Any], age: timedelta
+    hass_storage: dict[str, Any],
+    data: dict[str, Any],
+    age: timedelta,
+    etag: str | None = None,
 ) -> None:
     hass_storage[STORAGE_KEY] = {
         "version": 1,
@@ -29,6 +33,7 @@ def store_dataset(
         "data": {
             "fetched_at": (dt_util.utcnow() - age).isoformat(),
             "data": data,
+            "etag": etag,
         },
     }
 
@@ -60,18 +65,62 @@ async def test_fetch_and_cache(
     dataset.async_shutdown()
 
 
-async def test_fresh_cache_skips_download(
+async def test_fresh_cache_is_checked_with_etag(
     hass: HomeAssistant,
     hass_storage: dict[str, Any],
     aioclient_mock: AiohttpClientMocker,
     dataset_payload: dict[str, Any],
 ) -> None:
-    store_dataset(hass_storage, dataset_payload, timedelta(hours=1))
+    store_dataset(hass_storage, dataset_payload, timedelta(hours=1), etag='"abc"')
+    aioclient_mock.get(DATASET_URL, status=HTTPStatus.NOT_MODIFIED)
+    listener = MagicMock()
+    dataset = Dataset(hass)
+    dataset.async_add_listener(listener)
+    await dataset.async_setup()
+    assert dataset.data == dataset_payload
+    await hass.async_block_till_done()
+
+    assert aioclient_mock.call_count == 1
+    assert aioclient_mock.mock_calls[0][3] == {"If-None-Match": '"abc"'}
+    assert dataset.data == dataset_payload
+    assert dataset.etag == '"abc"'
+    assert dt_util.utcnow() - dataset.fetched_at < timedelta(minutes=1)
+    assert hass_storage[STORAGE_KEY]["data"]["etag"] == '"abc"'
+    listener.assert_not_called()
+    dataset.async_shutdown()
+
+
+async def test_etag_is_stored_after_download(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    aioclient_mock.get(DATASET_URL, json=dataset_payload, headers={"ETag": '"v2"'})
     dataset = await setup_dataset(hass)
 
-    assert aioclient_mock.call_count == 0
-    assert dataset.data == dataset_payload
-    assert dataset.matchers.zeroconf_types == {"_zed._tcp.local."}
+    assert aioclient_mock.mock_calls[0][3] == {}
+    assert dataset.etag == '"v2"'
+    assert hass_storage[STORAGE_KEY]["data"]["etag"] == '"v2"'
+    dataset.async_shutdown()
+
+
+async def test_update_if_older(
+    hass: HomeAssistant,
+    hass_storage: dict[str, Any],
+    aioclient_mock: AiohttpClientMocker,
+    dataset_payload: dict[str, Any],
+) -> None:
+    aioclient_mock.get(DATASET_URL, json=dataset_payload)
+    dataset = await setup_dataset(hass)
+    assert aioclient_mock.call_count == 1
+
+    await dataset.async_update_if_older(timedelta(hours=1))
+    assert aioclient_mock.call_count == 1
+
+    dataset.fetched_at = dt_util.utcnow() - timedelta(hours=2)
+    await dataset.async_update_if_older(timedelta(hours=1))
+    assert aioclient_mock.call_count == 2
     dataset.async_shutdown()
 
 
@@ -101,9 +150,9 @@ async def test_stale_cache_does_not_wait_for_download(
     store_dataset(hass_storage, old, UPDATE_INTERVAL + timedelta(minutes=1))
     release = asyncio.Event()
 
-    async def fetch() -> dict[str, Any]:
+    async def fetch() -> tuple[dict[str, Any], None]:
         await release.wait()
-        return dataset_payload
+        return dataset_payload, None
 
     with patch.object(Dataset, "_async_fetch", side_effect=fetch):
         dataset = await setup_dataset(hass)
@@ -122,12 +171,12 @@ async def test_shutdown_cancels_pending_download(
     store_dataset(hass_storage, dataset_payload, UPDATE_INTERVAL * 2)
     cancelled = asyncio.Event()
 
-    async def fetch() -> dict[str, Any]:
+    async def fetch() -> tuple[dict[str, Any], None]:
         try:
             await asyncio.Event().wait()
         finally:
             cancelled.set()
-        return dataset_payload
+        return dataset_payload, None
 
     with patch.object(Dataset, "_async_fetch", side_effect=fetch):
         dataset = await setup_dataset(hass)
